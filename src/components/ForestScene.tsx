@@ -19,10 +19,10 @@ import {
 const ForestScene = () => {
   useEffect(() => {
     createPlayer({ pos: { x: -2, y: 0, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
+    createCamera({ pos: { x: -2, y: -4, z: 7 }, rot: { x: -pi / 3, y: 0, z: 0 }, sca: {} })
     createEnemy({ pos: { x: 2, y: 0, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
     createEnemy({ pos: { x: 2, y: 2, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
     createEnemy({ pos: { x: 2, y: -2, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
-    createCamera({ pos: { x: 0, y: -4, z: 7 }, rot: { x: -pi / 3, y: 0, z: 0 }, sca: {} })
 
     return () => world.clear()
   }, [])
