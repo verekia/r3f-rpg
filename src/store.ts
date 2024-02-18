@@ -3,6 +3,8 @@ import { create } from 'zustand'
 import { LANDING_ROUTE, Route } from '#/routes'
 
 interface Store {
+  rendererName?: string
+  setRendererName: (name: string) => void
   route: Route
   setRoute: (route: Route) => void
   inputs: {
@@ -15,6 +17,8 @@ interface Store {
 }
 
 const useStore = create<Store>(set => ({
+  rendererName: undefined,
+  setRendererName: name => set(() => ({ rendererName: name })),
   route: LANDING_ROUTE,
   setRoute: (route: Route) => set(() => ({ route })),
   inputs: {

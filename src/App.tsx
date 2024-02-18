@@ -1,4 +1,5 @@
 import Canvas from '#/components/Canvas'
+import RendererInfo from '#/components/RendererInfo'
 import UI from '#/components/UI'
 import Landing from '#/Landing'
 import { LANDING_ROUTE } from '#/routes'
@@ -11,6 +12,7 @@ const App = () => {
     <div className="relative h-full">
       {route === LANDING_ROUTE ? <Landing /> : <UI />}
       <Canvas />
+      <RendererInfo />
     </div>
   )
 }
