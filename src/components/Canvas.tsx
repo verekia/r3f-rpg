@@ -9,7 +9,7 @@ const Canvas = () => {
   const route = useStore(s => s.route)
 
   return (
-    <R3FCanvas className="top-0 z-[-1]" style={{ position: 'absolute' }}>
+    <R3FCanvas className="top-0 z-0" style={{ position: 'absolute' }}>
       {route === LANDING_ROUTE ? null : (
         <>
           <Engine />
