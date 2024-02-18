@@ -1,17 +1,12 @@
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 import { Canvas as R3FCanvas } from '@react-three/fiber'
 
-import ForestScene from '#/components/ForestScene'
 import RendererDetector from '#/components/RendererDetector'
-import { FOREST_ROUTE, LANDING_ROUTE } from '#/routes'
-import useStore from '#/store'
-import Systems from '#/systems/Systems'
 
 let WebGPURenderer: any
 
-const Canvas = () => {
-  const route = useStore(s => s.route)
+const Canvas = ({ children }: { children: ReactNode }) => {
   const [isWebGPUAvailable, setIsWebGPUAvailable] = useState(false)
   const [isReady, setIsReady] = useState(false)
 
@@ -42,12 +37,7 @@ const Canvas = () => {
           },
         })}
       >
-        {route === LANDING_ROUTE ? null : (
-          <>
-            <Systems />
-            {route === FOREST_ROUTE && <ForestScene />}
-          </>
-        )}
+        {children}
         <RendererDetector />
       </R3FCanvas>
     )
