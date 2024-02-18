@@ -4,7 +4,16 @@ import Camera from '#/components/Camera'
 import Enemy from '#/components/Enemy'
 import Player from '#/components/Player'
 import { pi } from '#/lib/util'
-import { cameras, createCamera, createEnemy, createPlayer, ECS, enemies, players } from '#/world'
+import {
+  cameras,
+  createCamera,
+  createEnemy,
+  createPlayer,
+  ECS,
+  enemies,
+  players,
+  world,
+} from '#/world'
 
 const ForestScene = () => {
   useEffect(() => {
@@ -13,6 +22,8 @@ const ForestScene = () => {
     createEnemy({ pos: { x: 2, y: 2, z: 0 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
     createEnemy({ pos: { x: 2, y: -2, z: 0 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
     createCamera({ pos: { x: 0, y: 0, z: 10 }, rot: { x: -pi / 2, y: 0, z: 0 }, sca: {} })
+
+    return () => world.clear()
   }, [])
 
   return (
