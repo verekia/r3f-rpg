@@ -4,6 +4,7 @@ import Camera from '#/components/Camera'
 import Enemy from '#/components/Enemy'
 import Player from '#/components/Player'
 import { pi } from '#/lib/util'
+import ForestModel from '#/models/ForestModel'
 import {
   cameras,
   createCamera,
@@ -17,11 +18,11 @@ import {
 
 const ForestScene = () => {
   useEffect(() => {
-    createPlayer({ pos: { x: -2, y: 0, z: 0 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
-    createEnemy({ pos: { x: 2, y: 0, z: 0 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
-    createEnemy({ pos: { x: 2, y: 2, z: 0 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
-    createEnemy({ pos: { x: 2, y: -2, z: 0 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
-    createCamera({ pos: { x: 0, y: 0, z: 10 }, rot: { x: -pi / 2, y: 0, z: 0 }, sca: {} })
+    createPlayer({ pos: { x: -2, y: 0, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
+    createEnemy({ pos: { x: 2, y: 0, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
+    createEnemy({ pos: { x: 2, y: 2, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
+    createEnemy({ pos: { x: 2, y: -2, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
+    createCamera({ pos: { x: 0, y: -4, z: 7 }, rot: { x: -pi / 3, y: 0, z: 0 }, sca: {} })
 
     return () => world.clear()
   }, [])
@@ -33,10 +34,7 @@ const ForestScene = () => {
       <ECS.Entities in={enemies} children={Enemy} />
       <ECS.Entities in={players} children={Player} />
       <ECS.Entities in={cameras} children={Camera} />
-      <mesh rotation-x={-pi / 2} receiveShadow>
-        <planeGeometry args={[100, 100]} />
-        <meshLambertMaterial color="green" />
-      </mesh>
+      <ForestModel />
     </>
   )
 }

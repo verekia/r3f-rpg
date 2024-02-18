@@ -4,7 +4,7 @@ const Player = () => (
   <ECS.Component name="three">
     <mesh castShadow>
       <boxGeometry />
-      <meshBasicMaterial color="blue" />
+      <meshLambertMaterial color="blue" />
     </mesh>
   </ECS.Component>
 )
