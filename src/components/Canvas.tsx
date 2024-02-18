@@ -12,6 +12,10 @@ const Canvas = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const fn = async () => {
+      if (import.meta.env.VITE_FORCE_WEBGL) {
+        setIsReady(true)
+        return
+      }
       // @ts-ignore
       const capabilities = (await import('three/addons/capabilities/WebGPU.js')).default
       // @ts-ignore

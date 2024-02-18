@@ -28,12 +28,15 @@ const ForestScene = () => {
 
   return (
     <>
-      <ambientLight intensity={Math.PI / 2} />
-      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
-      <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+      <ambientLight intensity={3} />
+      <directionalLight position={[10, 10, 10]} intensity={3} castShadow />
       <ECS.Entities in={enemies} children={Enemy} />
       <ECS.Entities in={players} children={Player} />
       <ECS.Entities in={cameras} children={Camera} />
+      <mesh rotation-x={-pi / 2} receiveShadow>
+        <planeGeometry args={[100, 100]} />
+        <meshLambertMaterial color="green" />
+      </mesh>
     </>
   )
 }

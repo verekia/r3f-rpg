@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { LANDING_ROUTE, Route } from '#/routes'
+import { FOREST_ROUTE, LANDING_ROUTE, Route } from '#/routes'
 
 interface Store {
   rendererName?: string
@@ -19,7 +19,7 @@ interface Store {
 const useStore = create<Store>(set => ({
   rendererName: undefined,
   setRendererName: name => set(() => ({ rendererName: name })),
-  route: LANDING_ROUTE,
+  route: import.meta.env.VITE_PLAY_IMMEDIATELY ? FOREST_ROUTE : LANDING_ROUTE,
   setRoute: (route: Route) => set(() => ({ route })),
   inputs: {
     up: false,

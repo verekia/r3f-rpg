@@ -2,7 +2,7 @@ import { ECS } from '#/world'
 
 const Player = () => (
   <ECS.Component name="three">
-    <mesh>
+    <mesh castShadow>
       <boxGeometry />
       <meshBasicMaterial color="blue" />
     </mesh>
