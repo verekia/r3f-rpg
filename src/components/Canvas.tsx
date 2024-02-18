@@ -5,25 +5,19 @@ import ForestScene from '#/components/ForestScene'
 import { FOREST_ROUTE, LANDING_ROUTE } from '#/routes'
 import useStore from '#/store'
 
-const InnerCanvas = () => {
+const Canvas = () => {
   const route = useStore(s => s.route)
 
-  if (route === LANDING_ROUTE) {
-    return null
-  }
-
   return (
-    <>
-      {route === FOREST_ROUTE && <ForestScene />}
-      <Engine />
-    </>
+    <R3FCanvas className="top-0 z-[-1]" style={{ position: 'absolute' }}>
+      {route === LANDING_ROUTE ? null : (
+        <>
+          <Engine />
+          {route === FOREST_ROUTE && <ForestScene />}
+        </>
+      )}
+    </R3FCanvas>
   )
 }
-
-const Canvas = () => (
-  <R3FCanvas className="top-0 z-[-1]" style={{ position: 'absolute' }}>
-    <InnerCanvas />
-  </R3FCanvas>
-)
 
 export default Canvas
