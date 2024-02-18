@@ -5,11 +5,14 @@ import Enemy from '#/components/Enemy'
 import Player from '#/components/Player'
 import { pi } from '#/lib/util'
 import ForestModel from '#/models/ForestModel'
+import ForestNavmesh from '#/models/ForestNavmesh'
+import ForestObstacles from '#/models/ForestObstacles'
 import {
   cameras,
   createCamera,
   createEnemy,
   createPlayer,
+  dcZones,
   ECS,
   enemies,
   players,
@@ -18,11 +21,18 @@ import {
 
 const ForestScene = () => {
   useEffect(() => {
-    createPlayer({ pos: { x: -2, y: 0, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
-    createCamera({ pos: { x: -2, y: -4, z: 7 }, rot: { x: -pi / 3, y: 0, z: 0 }, sca: {} })
-    createEnemy({ pos: { x: 2, y: 0, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
-    createEnemy({ pos: { x: 2, y: 2, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
-    createEnemy({ pos: { x: 2, y: -2, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
+    const player = createPlayer({ pos: { x: 0, y: 0, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
+
+    const [dcZone] = dcZones
+    // The DC system might not be ready yet
+    if (dcZone) {
+      dcZone.dcZone.system.insert(player.dcBody)
+    }
+
+    createCamera({ pos: { x: 0, y: -4, z: 7 }, rot: { x: -pi / 3, y: 0, z: 0 }, sca: {} })
+    createEnemy({ pos: { x: -2, y: 5, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
+    createEnemy({ pos: { x: 5, y: -1, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
+    createEnemy({ pos: { x: -4, y: -4, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
 
     return () => world.clear()
   }, [])
@@ -35,6 +45,8 @@ const ForestScene = () => {
       <ECS.Entities in={players} children={Player} />
       <ECS.Entities in={cameras} children={Camera} />
       <ForestModel />
+      <ForestNavmesh />
+      <ForestObstacles />
     </>
   )
 }

@@ -1,4 +1,15 @@
-# React + TypeScript + Vite
+# R3F RPG
+
+## TODO
+
+- Navmesh (extract as JSON?)
+- Aggro system
+- Characters, weapons
+- Detect Collisions
+- Sprite effects
+- Bake lighting and shadows into the map
+
+## Old Vite README
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

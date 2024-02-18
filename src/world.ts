@@ -1,3 +1,4 @@
+import { Circle, System as DetectCollisionsSystem, Polygon } from 'detect-collisions'
 import { World } from 'miniplex'
 import createReactAPI from 'miniplex-react'
 import { Object3D } from 'three'
@@ -22,17 +23,22 @@ export type Entity = {
   player?: boolean
   enemy?: boolean
   camera?: boolean
+  dcZone?: { system: DetectCollisionsSystem; obstaclesPolygon: Polygon }
+  dcBody?: Circle
   tra?: Tra
 }
 
 export const world = new World<Entity>()
 
-export const createPlayer = (tra: Tra) => world.add({ player: true, tra })
+export const createPlayer = (tra: Tra) =>
+  world.add({ player: true, tra, dcBody: new Circle({ x: 0, y: 0 }, 0.5) })
 export const createEnemy = (tra: Tra) => world.add({ enemy: true, tra })
 export const createCamera = (tra: Tra) => world.add({ camera: true, tra })
 
-export const players = world.with('player', 'tra')
+export const players = world.with('player', 'tra', 'dcBody')
 export const enemies = world.with('enemy', 'tra')
 export const cameras = world.with('camera', 'tra')
+export const dcZones = world.with('dcZone')
+export const dcBodies = world.with('dcBody')
 
 export const ECS = createReactAPI(world)
