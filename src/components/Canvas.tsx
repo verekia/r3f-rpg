@@ -1,9 +1,9 @@
 import { Canvas as R3FCanvas } from '@react-three/fiber'
 
-import Engine from '#/components/Engine'
 import ForestScene from '#/components/ForestScene'
 import { FOREST_ROUTE, LANDING_ROUTE } from '#/routes'
 import useStore from '#/store'
+import Systems from '#/systems/Systems'
 
 const Canvas = () => {
   const route = useStore(s => s.route)
@@ -12,7 +12,7 @@ const Canvas = () => {
     <R3FCanvas className="top-0 z-0" style={{ position: 'absolute' }}>
       {route === LANDING_ROUTE ? null : (
         <>
-          <Engine />
+          <Systems />
           {route === FOREST_ROUTE && <ForestScene />}
         </>
       )}

@@ -1,38 +1,30 @@
-import { useRef, useState } from 'react'
+import { useEffect } from 'react'
 
-import { MeshProps, useFrame } from '@react-three/fiber'
-import { Mesh } from 'three'
+import Camera from '#/components/Camera'
+import Enemy from '#/components/Enemy'
+import Player from '#/components/Player'
+import { pi } from '#/lib/util'
+import { cameras, createCamera, createEnemy, createPlayer, ECS, enemies, players } from '#/world'
 
-const Box = (props: MeshProps) => {
-  const meshRef = useRef<Mesh>(null)
-  const [hovered, setHover] = useState(false)
-  const [active, setActive] = useState(false)
-
-  useFrame((_, dt) => (meshRef.current!.rotation.x += dt))
+const ForestScene = () => {
+  useEffect(() => {
+    createPlayer({ pos: { x: -2, y: 0, z: 0 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
+    createEnemy({ pos: { x: 2, y: 0, z: 0 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
+    createEnemy({ pos: { x: 2, y: 2, z: 0 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
+    createEnemy({ pos: { x: 2, y: -2, z: 0 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
+    createCamera({ pos: { x: 0, y: 0, z: 10 }, rot: { x: -pi / 2, y: 0, z: 0 }, sca: {} })
+  }, [])
 
   return (
-    <mesh
-      {...props}
-      ref={meshRef}
-      scale={active ? 1.5 : 1}
-      onClick={() => setActive(!active)}
-      onPointerOver={() => setHover(true)}
-      onPointerOut={() => setHover(false)}
-    >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
-    </mesh>
+    <>
+      <ambientLight intensity={Math.PI / 2} />
+      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
+      <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+      <ECS.Entities in={enemies} children={Enemy} />
+      <ECS.Entities in={players} children={Player} />
+      <ECS.Entities in={cameras} children={Camera} />
+    </>
   )
 }
-
-const ForestScene = () => (
-  <>
-    <ambientLight intensity={Math.PI / 2} />
-    <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
-    <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-    <Box position={[-1.2, 0, 0]} />
-    <Box position={[1.2, 0, 0]} />
-  </>
-)
 
 export default ForestScene
