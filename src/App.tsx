@@ -7,13 +7,9 @@ import useStore from '#/store'
 const App = () => {
   const route = useStore(s => s.route)
 
-  if (route === LANDING_ROUTE) {
-    return <Landing />
-  }
-
   return (
     <div className="relative h-full">
-      <UI />
+      {route === LANDING_ROUTE ? <Landing /> : <UI />}
       <Canvas />
     </div>
   )
