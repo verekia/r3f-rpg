@@ -1,14 +1,12 @@
-import { ECS, Entity } from '#/world'
+import { ECS } from '#/world'
 
-const Enemy = (props: Entity) => {
-  return (
-    <ECS.Component name="three">
-      <mesh>
-        <boxGeometry />
-        <meshBasicMaterial color="red" />
-      </mesh>
-    </ECS.Component>
-  )
-}
+const Enemy = () => (
+  <ECS.Component name="three">
+    <mesh>
+      <boxGeometry />
+      <meshBasicMaterial color="red" />
+    </mesh>
+  </ECS.Component>
+)
 
 export default Enemy
