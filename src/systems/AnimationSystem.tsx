@@ -10,16 +10,10 @@ const AnimationSystem = () => {
       return
     }
 
-    const previousAnimation = player.animation
-
     if (player.tra.pos.velX || player.tra.pos.velY) {
-      player.animation = 'Running'
+      player.player.usePlayerStore.getState().setAnimation('Running')
     } else {
-      player.animation = 'Idle'
-    }
-
-    if (previousAnimation !== player.animation) {
-      player.reactRef.current.rerender()
+      player.player.usePlayerStore.getState().setAnimation('Idle')
     }
   })
 
