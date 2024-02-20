@@ -26,16 +26,23 @@ export type Entity = {
   dcZone?: { system: DetectCollisionsSystem; obstaclesPolygon: Polygon }
   dcBody?: Circle
   tra?: Tra
+  animation?: 'Idle' | 'Running'
+  reactRef?: any
 }
 
 export const world = new World<Entity>()
 
 export const createPlayer = (tra: Tra) =>
-  world.add({ player: true, tra, dcBody: new Circle({ x: 0, y: 0 }, 0.5) })
+  world.add({
+    player: true,
+    tra,
+    dcBody: new Circle({ x: 0, y: 0 }, 0.5),
+    animation: 'Idle',
+  })
 export const createEnemy = (tra: Tra) => world.add({ enemy: true, tra })
 export const createCamera = (tra: Tra) => world.add({ camera: true, tra })
 
-export const players = world.with('player', 'tra', 'dcBody')
+export const players = world.with('player', 'tra', 'dcBody', 'animation')
 export const enemies = world.with('enemy', 'tra')
 export const cameras = world.with('camera', 'tra')
 export const dcZones = world.with('dcZone')

@@ -29,7 +29,7 @@ const ForestObstacles = () => {
       positionsArray.push({ x: positions[i], y: positions[i + 1] })
     }
 
-    console.log(positionsArray)
+    // console.log(positionsArray)
 
     const system = new System()
     const obstaclesPolygon = system.createPolygon(

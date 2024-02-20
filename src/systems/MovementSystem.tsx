@@ -37,6 +37,8 @@ const MovementSystem = () => {
       return
     }
 
+    player.tra.rot.z = angle
+
     // Logic taken from Mini Mana
 
     const desiredPosX = player.tra.pos.x + Math.cos(angle) * PLAYER_RADIUS * 0.8

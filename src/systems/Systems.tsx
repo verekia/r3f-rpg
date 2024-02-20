@@ -1,3 +1,4 @@
+import AnimationSystem from '#/systems/AnimationSystem'
 import CameraFollowSystem from '#/systems/CameraFollow'
 import InputSystem from '#/systems/InputSystem'
 import MovementSystem from '#/systems/MovementSystem'
@@ -11,6 +12,7 @@ const Systems = () => (
     <TraToThreeSystem />
     <VelocitySystem />
     <MovementSystem />
+    <AnimationSystem />
   </>
 )
 

@@ -16,7 +16,7 @@ const path = '/models/forest/forest-navmesh-transformed.glb'
 const ForestNavmesh = () => {
   const { nodes } = useGLTF(path) as GLTFResult
 
-  console.log(nodes.Navmesh.geometry.attributes.position.array)
+  // console.log(nodes.Navmesh.geometry.attributes.position.array)
 
   return null
 

@@ -8,6 +8,7 @@
 - Detect Collisions
 - Sprite effects
 - Bake lighting and shadows into the map
+- Systems unit test
 
 ## Old Vite README
 
