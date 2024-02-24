@@ -1,31 +1,39 @@
 import { useFrame } from '@react-three/fiber'
 
+import { pi } from '#/lib/util'
 import { cameras, players } from '#/world'
 
-const Y_OFFSET = -4
-const RECT_WIDTH = 1.5
-const RECT_HEIGHT = 1
-const CATCH_UP_SPEED = 4
+const lerp = (a: number, b: number, t: number): number => a + (b - a) * t
+
+const Z_OFFSET = 3.5
+const DISTANCE_FROM_PLAYER = 4
 
 const CameraFollowSystem = () => {
-  useFrame((_, dt) => {
+  useFrame(() => {
     const [player] = players
     const [camera] = cameras
 
-    if (!player) {
+    if (!player || !camera) {
       return
     }
 
-    const dx = player.tra.pos.x - camera.tra.pos.x
-    const dy = player.tra.pos.y - camera.tra.pos.y + Y_OFFSET
+    camera.tra.pos.x = lerp(
+      camera.tra.pos.x,
+      player.tra.pos.x - Math.cos(player.tra.rot.z) * DISTANCE_FROM_PLAYER,
+      0.1,
+    )
 
-    const speedX = Math.max(0, Math.abs(dx) - RECT_WIDTH / 2) * dt * CATCH_UP_SPEED
-    const speedY = Math.max(0, Math.abs(dy) - RECT_HEIGHT / 2) * dt * CATCH_UP_SPEED
+    camera.tra.pos.y = lerp(
+      camera.tra.pos.y,
+      player.tra.pos.y - Math.sin(player.tra.rot.z) * DISTANCE_FROM_PLAYER,
+      0.1,
+    )
 
-    if (speedX > 0 || speedY > 0) {
-      camera.tra.pos.x += Math.sign(dx) * speedX
-      camera.tra.pos.y += Math.sign(dy) * speedY
-    }
+    camera.three!.rotation.order = 'YXZ'
+    camera.tra.pos.z = lerp(camera.tra.pos.z!, Z_OFFSET, 0.1)
+    camera.tra.rot.z = lerp(camera.tra.rot.z, player.tra.rot.z, 0.1) - pi / 4
+    camera.tra.rot.x = lerp(camera.tra.rot.x!, -pi / 8.5, 0.1)
+    camera.tra.rot.y = lerp(camera.tra.rot.y!, 0, 0.1)
   })
 
   return null

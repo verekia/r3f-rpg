@@ -2,18 +2,22 @@ import { create } from 'zustand'
 
 import { FOREST_ROUTE, LANDING_ROUTE, Route } from '#/routes'
 
-interface Store {
+type Inputs = {
+  forward: boolean
+  backward: boolean
+  turnLeft: boolean
+  turnRight: boolean
+  strafeLeft: boolean
+  strafeRight: boolean
+}
+
+type Store = {
   rendererName?: string
   setRendererName: (name: string) => void
   route: Route
   setRoute: (route: Route) => void
-  inputs: {
-    up: boolean
-    down: boolean
-    left: boolean
-    right: boolean
-  }
-  setInput: (input: string, value: boolean) => void
+  inputs: Inputs
+  setInput: (key: keyof Inputs, value: boolean) => void
 }
 
 const useStore = create<Store>(set => ({
@@ -22,12 +26,15 @@ const useStore = create<Store>(set => ({
   route: import.meta.env.VITE_PLAY_IMMEDIATELY ? FOREST_ROUTE : LANDING_ROUTE,
   setRoute: (route: Route) => set(() => ({ route })),
   inputs: {
-    up: false,
-    down: false,
-    left: false,
-    right: false,
+    forward: false,
+    backward: false,
+    turnLeft: false,
+    turnRight: false,
+    strafeLeft: false,
+    strafeRight: false,
   },
-  setInput: (input, value) => set(state => ({ inputs: { ...state.inputs, [input]: value } })),
+  setInput: (key: keyof Inputs, value: boolean) =>
+    set(state => ({ inputs: { ...state.inputs, [key]: value } })),
 }))
 
 export default useStore

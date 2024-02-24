@@ -6,25 +6,33 @@ const InputSystem = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === 'KeyW') {
-        useStore.getState().setInput('up', true)
+        useStore.getState().setInput('forward', true)
       } else if (e.code === 'KeyS') {
-        useStore.getState().setInput('down', true)
+        useStore.getState().setInput('backward', true)
       } else if (e.code === 'KeyA') {
-        useStore.getState().setInput('left', true)
+        useStore.getState().setInput('turnLeft', true)
       } else if (e.code === 'KeyD') {
-        useStore.getState().setInput('right', true)
+        useStore.getState().setInput('turnRight', true)
+      } else if (e.code === 'KeyQ') {
+        useStore.getState().setInput('strafeLeft', true)
+      } else if (e.code === 'KeyE') {
+        useStore.getState().setInput('strafeRight', true)
       }
     }
 
     const handleKeyUp = (e: KeyboardEvent) => {
       if (e.code === 'KeyW') {
-        useStore.getState().setInput('up', false)
+        useStore.getState().setInput('forward', false)
       } else if (e.code === 'KeyS') {
-        useStore.getState().setInput('down', false)
+        useStore.getState().setInput('backward', false)
       } else if (e.code === 'KeyA') {
-        useStore.getState().setInput('left', false)
+        useStore.getState().setInput('turnLeft', false)
       } else if (e.code === 'KeyD') {
-        useStore.getState().setInput('right', false)
+        useStore.getState().setInput('turnRight', false)
+      } else if (e.code === 'KeyQ') {
+        useStore.getState().setInput('strafeLeft', false)
+      } else if (e.code === 'KeyE') {
+        useStore.getState().setInput('strafeRight', false)
       }
     }
 
