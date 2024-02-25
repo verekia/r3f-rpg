@@ -1,6 +1,6 @@
 import { useFrame } from '@react-three/fiber'
 
-import { PLAYER_ROTATION_SPEED, PLAYER_SPEED } from '#/lib/constants'
+import { PLAYER_ROTATION_SPEED, PLAYER_SPEED, PLAYER_SPEED_BACKWARD } from '#/lib/constants'
 import { pi } from '#/lib/util'
 import useStore from '#/store'
 import { players } from '#/world'
@@ -15,44 +15,60 @@ const MovementSystem = () => {
 
     if (!player) return
 
+    const isGrounded = player.tra.pos.z! <= Z_OFFSET
+
     const forward = () => {
       player.tra.pos.velX = Math.cos(player.tra.rot.z) * PLAYER_SPEED
       player.tra.pos.velY = Math.sin(player.tra.rot.z) * PLAYER_SPEED
+      isGrounded && player.player.usePlayerStore.getState().setAnimation('Running')
     }
 
     const backward = () => {
-      player.tra.pos.velX = -Math.cos(player.tra.rot.z) * PLAYER_SPEED
-      player.tra.pos.velY = -Math.sin(player.tra.rot.z) * PLAYER_SPEED
+      player.tra.pos.velX = -Math.cos(player.tra.rot.z) * PLAYER_SPEED_BACKWARD
+      player.tra.pos.velY = -Math.sin(player.tra.rot.z) * PLAYER_SPEED_BACKWARD
+      isGrounded && player.player.usePlayerStore.getState().setAnimation('Walking Backward')
     }
 
     const strafeLeft = () => {
       player.tra.pos.velX = Math.cos(player.tra.rot.z + pi / 2) * PLAYER_SPEED
       player.tra.pos.velY = Math.sin(player.tra.rot.z + pi / 2) * PLAYER_SPEED
+      isGrounded && player.player.usePlayerStore.getState().setAnimation('Strafe Left')
     }
 
     const strafeRight = () => {
       player.tra.pos.velX = -Math.cos(player.tra.rot.z + pi / 2) * PLAYER_SPEED
       player.tra.pos.velY = -Math.sin(player.tra.rot.z + pi / 2) * PLAYER_SPEED
+      isGrounded && player.player.usePlayerStore.getState().setAnimation('Strafe Right')
     }
 
     const forwardLeft = () => {
       player.tra.pos.velX = Math.cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED
       player.tra.pos.velY = Math.sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED
+      isGrounded && player.player.usePlayerStore.getState().setAnimation('Running')
     }
 
     const forwardRight = () => {
       player.tra.pos.velX = Math.cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED
       player.tra.pos.velY = Math.sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED
+      isGrounded && player.player.usePlayerStore.getState().setAnimation('Running')
     }
 
     const backwardLeft = () => {
-      player.tra.pos.velX = -Math.cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED
-      player.tra.pos.velY = -Math.sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED
+      player.tra.pos.velX = -Math.cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED_BACKWARD
+      player.tra.pos.velY = -Math.sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED_BACKWARD
+      isGrounded && player.player.usePlayerStore.getState().setAnimation('Walking Backward')
     }
 
     const backwardRight = () => {
-      player.tra.pos.velX = -Math.cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED
-      player.tra.pos.velY = -Math.sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED
+      player.tra.pos.velX = -Math.cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED_BACKWARD
+      player.tra.pos.velY = -Math.sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED_BACKWARD
+      isGrounded && player.player.usePlayerStore.getState().setAnimation('Walking Backward')
+    }
+
+    const idle = () => {
+      player.tra.pos.velX = 0
+      player.tra.pos.velY = 0
+      isGrounded && player.player.usePlayerStore.getState().setAnimation('Idle')
     }
 
     if (
@@ -112,8 +128,7 @@ const MovementSystem = () => {
     ) {
       backwardRight()
     } else {
-      player.tra.pos.velX = 0
-      player.tra.pos.velY = 0
+      idle()
     }
 
     if (
@@ -176,11 +191,11 @@ const MovementSystem = () => {
       backwardRight()
     }
 
-    const isGrounded = player.tra.pos.z! <= Z_OFFSET
-
     if (isGrounded) {
       player.tra.pos.z = Z_OFFSET // Ensure player is exactly on the ground
       player.tra.pos.velZ = 0 // Reset vertical velocity when grounded
+    } else {
+      player.player.usePlayerStore.getState().setAnimation('Jumping')
     }
 
     if (player.tra.pos.velZ === undefined) {

@@ -2,7 +2,7 @@ import { Circle, System as DetectCollisionsSystem, Polygon } from 'detect-collis
 import { World } from 'miniplex'
 import createReactAPI from 'miniplex-react'
 import { Object3D } from 'three'
-import { create } from 'zustand'
+import { create, StoreApi, UseBoundStore } from 'zustand'
 
 export type Tra = {
   pos: { x: number; y: number; z?: number; velX?: number; velY?: number; velZ?: number }
@@ -19,20 +19,28 @@ export type Tra = {
   }
 }
 
+type PlayerAnimation =
+  | 'Idle'
+  | 'Running'
+  | 'Walking Backward'
+  | 'Strafe Left'
+  | 'Strafe Right'
+  | 'Jumping'
+
+type PlayerStore = {
+  animation: PlayerAnimation
+  setAnimation: (animation: PlayerAnimation) => void
+}
+
 export type Entity = {
   three?: Object3D
-  player?: { usePlayerStore: any }
+  player?: { usePlayerStore: UseBoundStore<StoreApi<PlayerStore>> }
   enemy?: boolean
   camera?: boolean
   dcZone?: { system: DetectCollisionsSystem; obstaclesPolygon: Polygon }
   dcBody?: Circle
   tra?: Tra
   reactRef?: any
-}
-
-type PlayerStore = {
-  animation: 'Idle' | 'Running'
-  setAnimation: (animation: 'Idle' | 'Running') => void
 }
 
 export const world = new World<Entity>()
@@ -42,7 +50,7 @@ export const createPlayer = (tra: Tra) =>
     player: {
       usePlayerStore: create<PlayerStore>(set => ({
         animation: 'Idle',
-        setAnimation: (animation: 'Idle' | 'Running') => set({ animation }),
+        setAnimation: (animation: PlayerAnimation) => set({ animation }),
       })),
     },
     tra,
