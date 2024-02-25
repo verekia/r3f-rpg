@@ -31,6 +31,8 @@ type Store = {
   exitFullscreen: () => void
   lockLandscape: () => void
   unlockOrientation: () => void
+  lockEscape: () => void
+  unlockEscape: () => void
 }
 
 export const useInputStore = create<Store>((set, get) => ({
@@ -49,6 +51,7 @@ export const useInputStore = create<Store>((set, get) => ({
     }
 
     get().lockLandscape()
+    get().lockEscape()
   },
   exitFullscreen: () => {
     if (document.exitFullscreen) {
@@ -62,6 +65,7 @@ export const useInputStore = create<Store>((set, get) => ({
     }
 
     get().unlockOrientation()
+    get().unlockEscape()
   },
   lockLandscape: () => {
     if (screen.orientation.type.startsWith('landscape')) {
@@ -74,6 +78,16 @@ export const useInputStore = create<Store>((set, get) => ({
   unlockOrientation: () => {
     if ('unlock' in screen.orientation) {
       screen.orientation.unlock()
+    }
+  },
+  lockEscape: () => {
+    if ('keyboard' in navigator && 'lock' in (navigator.keyboard as any)) {
+      ;((navigator.keyboard as any).lock as any)(['Escape'])
+    }
+  },
+  unlockEscape: () => {
+    if ('keyboard' in navigator && 'unlock' in (navigator.keyboard as any)) {
+      ;((navigator.keyboard as any).unlock as any)()
     }
   },
 }))
