@@ -49,12 +49,17 @@ const InputSystem = () => {
       }
     }
 
+    const handleFullscreenChange = () => {
+      setInput('fullscreen', document.fullscreenElement !== null)
+    }
+
     window.addEventListener('keydown', handleKeyDown)
     window.addEventListener('keyup', handleKeyUp)
     document.addEventListener('pointerlockchange', handlePointerLockChange)
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mousedown', handleMouseDown)
     document.addEventListener('mouseup', handleMouseUp)
+    document.addEventListener('fullscreenchange', handleFullscreenChange)
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
@@ -63,6 +68,7 @@ const InputSystem = () => {
       document.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mousedown', handleMouseDown)
       document.removeEventListener('mouseup', handleMouseUp)
+      document.removeEventListener('fullscreenchange', handleFullscreenChange)
     }
   }, [])
 
