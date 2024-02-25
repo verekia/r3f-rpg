@@ -148,6 +148,34 @@ const MovementSystem = () => {
     }
 
     if (
+      useStore.getState().inputs.pointerLock &&
+      useStore.getState().inputs.mouseLeft &&
+      useStore.getState().inputs.mouseRight &&
+      !useStore.getState().controls.turnLeft &&
+      !useStore.getState().controls.turnRight &&
+      !useStore.getState().controls.strafeLeft &&
+      !useStore.getState().controls.strafeRight
+    ) {
+      forward()
+    } else if (
+      useStore.getState().inputs.pointerLock &&
+      useStore.getState().inputs.mouseLeft &&
+      useStore.getState().inputs.mouseRight &&
+      (useStore.getState().controls.strafeLeft || useStore.getState().controls.turnLeft) &&
+      !useStore.getState().controls.turnRight &&
+      !useStore.getState().controls.strafeRight
+    ) {
+      forwardLeft()
+    } else if (
+      useStore.getState().inputs.pointerLock &&
+      useStore.getState().inputs.mouseLeft &&
+      useStore.getState().inputs.mouseRight &&
+      (useStore.getState().controls.strafeRight || useStore.getState().controls.turnRight) &&
+      !useStore.getState().controls.turnLeft &&
+      !useStore.getState().controls.strafeLeft
+    ) {
+      forwardRight()
+    } else if (
       useStore.getState().controls.turnLeft &&
       !useStore.getState().controls.forward &&
       !useStore.getState().controls.backward &&

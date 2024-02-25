@@ -15,9 +15,22 @@ type Controls = {
 }
 
 type Inputs = {
+  keyW: boolean
+  keyA: boolean
+  keyS: boolean
+  keyD: boolean
+  keyQ: boolean
+  keyE: boolean
+  space: boolean
+  arrowUp: boolean
+  arrowDown: boolean
+  arrowLeft: boolean
+  arrowRight: boolean
+  mouseLeft: boolean
+  mouseRight: boolean
   pointerLock: boolean
-  pointerMovementX: number
-  pointerMovementY: number
+  mouseMovementX: number
+  mouseMovementY: number
 }
 
 type Store = {
@@ -57,9 +70,11 @@ const useStore = create<Store>(set => ({
     arrowDown: false,
     arrowLeft: false,
     arrowRight: false,
+    mouseLeft: false,
+    mouseRight: false,
     pointerLock: false,
-    pointerMovementX: 0,
-    pointerMovementY: 0,
+    mouseMovementX: 0,
+    mouseMovementY: 0,
   },
   setRendererName: name => set(() => ({ rendererName: name })),
   setRoute: (route: Route) => set(() => ({ route })),

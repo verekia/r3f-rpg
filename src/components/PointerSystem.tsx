@@ -12,46 +12,46 @@ const PointerSystem = () => {
       useStore.getState().setInput('pointerLock', document.pointerLockElement !== null)
     }
 
-    const handlePointerMove = (e: PointerEvent) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (useStore.getState().inputs.pointerLock) {
-        useStore.getState().setInput('pointerMovementX', e.movementX)
-        useStore.getState().setInput('pointerMovementY', e.movementY)
+        useStore.getState().setInput('mouseMovementX', e.movementX)
+        useStore.getState().setInput('mouseMovementY', e.movementY)
       } else {
         useStore.getState().setControl('manualRotZ', undefined)
         useStore.getState().setControl('manualRotX', undefined)
       }
     }
 
-    const handlePointerUp = () => {
-      if (useStore.getState().inputs.pointerLock) {
-        document.exitPointerLock()
-      }
-    }
-
     // For some reason, pointer down event doesn't get fired when one mouse button is
     // already down and another is pressed. Using mouseDown is a workaround.
     const handleMouseDown = (e: MouseEvent) => {
-      if (useStore.getState().inputs.pointerLock && e.button === 0) {
-        useStore.getState().setControl('forward', true)
+      if (e.button === 0) {
+        useStore.getState().setInput('mouseLeft', true)
+      } else if (e.button === 2) {
+        useStore.getState().setInput('mouseRight', true)
       }
     }
 
     const handleMouseUp = (e: MouseEvent) => {
-      if (useStore.getState().inputs.pointerLock && e.button === 0) {
-        useStore.getState().setControl('forward', false)
+      if (e.button === 0) {
+        useStore.getState().setInput('mouseLeft', false)
+      } else if (e.button === 2) {
+        useStore.getState().setInput('mouseRight', false)
+      }
+
+      if (useStore.getState().inputs.pointerLock && e.button === 2) {
+        document.exitPointerLock()
       }
     }
 
     document.addEventListener('pointerlockchange', handlePointerLockChange)
-    document.addEventListener('pointermove', handlePointerMove)
-    document.addEventListener('pointerup', handlePointerUp)
+    document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mousedown', handleMouseDown)
     document.addEventListener('mouseup', handleMouseUp)
 
     return () => {
       document.removeEventListener('pointerlockchange', handlePointerLockChange)
-      document.removeEventListener('pointermove', handlePointerMove)
-      document.removeEventListener('pointerup', handlePointerUp)
+      document.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mousedown', handleMouseDown)
       document.removeEventListener('mouseup', handleMouseUp)
     }
@@ -59,19 +59,19 @@ const PointerSystem = () => {
 
   useFrame(() => {
     if (useStore.getState().inputs.pointerLock) {
-      const { pointerMovementX, pointerMovementY } = useStore.getState().inputs
+      const { mouseMovementX, mouseMovementY } = useStore.getState().inputs
 
       useStore
         .getState()
         .setControl(
           'manualRotZ',
-          -(Math.abs(pointerMovementX) < SENSITIVITY_THRESHOLD ? 0 : pointerMovementX) / 100,
+          -(Math.abs(mouseMovementX) < SENSITIVITY_THRESHOLD ? 0 : mouseMovementX) / 100,
         )
       useStore
         .getState()
         .setControl(
           'manualRotX',
-          -(Math.abs(pointerMovementY) < SENSITIVITY_THRESHOLD ? 0 : pointerMovementY) / 100,
+          -(Math.abs(mouseMovementY) < SENSITIVITY_THRESHOLD ? 0 : mouseMovementY) / 100,
         )
     }
   })
