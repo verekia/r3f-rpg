@@ -23,6 +23,6 @@
     "baseUrl": "src",
     "paths": { "#/*": ["*"] }
   },
-  "include": ["src"],
+  "include": ["src", "global.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

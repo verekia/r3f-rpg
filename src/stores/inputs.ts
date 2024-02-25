@@ -29,9 +29,11 @@ type Store = {
   setInput: <K extends keyof Inputs>(key: K, value: Inputs[K]) => void
   enterFullscreen: () => void
   exitFullscreen: () => void
+  lockLandscape: () => void
+  unlockOrientation: () => void
 }
 
-export const useInputStore = create<Store>(set => ({
+export const useInputStore = create<Store>((set, get) => ({
   inputs: defaultInputs,
   setInput: <K extends keyof Inputs>(key: K, value: Inputs[K]) =>
     set(state => ({ inputs: { ...state.inputs, [key]: value } })),
@@ -45,6 +47,8 @@ export const useInputStore = create<Store>(set => ({
     } else if ((document.documentElement as any).msRequestFullscreen) {
       ;(document.documentElement as any).msRequestFullscreen()
     }
+
+    get().lockLandscape()
   },
   exitFullscreen: () => {
     if (document.exitFullscreen) {
@@ -55,6 +59,21 @@ export const useInputStore = create<Store>(set => ({
       ;(document as any).webkitExitFullscreen()
     } else if ((document as any).msExitFullscreen) {
       ;(document as any).msExitFullscreen()
+    }
+
+    get().unlockOrientation()
+  },
+  lockLandscape: () => {
+    if (screen.orientation.type.startsWith('landscape')) {
+      return
+    }
+    if ('lock' in screen.orientation) {
+      screen.orientation.lock('landscape')
+    }
+  },
+  unlockOrientation: () => {
+    if ('unlock' in screen.orientation) {
+      screen.orientation.unlock()
     }
   },
 }))
