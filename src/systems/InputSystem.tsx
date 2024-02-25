@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 
-import { setControl } from '#/stores/controls'
 import { getInput, inputKeys, setInput } from '#/stores/inputs'
 
 import type { Inputs } from '#/stores/inputs'

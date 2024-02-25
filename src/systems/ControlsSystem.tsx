@@ -8,9 +8,6 @@ import { useInputStore } from '#/stores/inputs'
 const SENSITIVITY_THRESHOLD = 6
 const MAX_MOVEMENT = 60
 
-// This systems registers intents of player controls based on i. It does not manager
-// whether or not these actions are valid.
-
 // This is to avoid creating objects at every frame
 const yes = () => true
 const no = () => false
@@ -51,7 +48,8 @@ const w_e = { KeyW: true, KeyE: true }
 const q_s = { KeyQ: true, KeyS: true }
 const e_s = { KeyE: true, KeyS: true }
 
-let prevPointerLock = false
+// This system registers intents of player controls based on inputs and resolves input conflicts.
+// It does not manage whether or not these intents are valid in the world.
 
 const ControlsSystem = () => {
   useFrame(() => {
@@ -171,18 +169,6 @@ const ControlsSystem = () => {
 
     setControl('jump', inputs.Space)
 
-    if (inputs.pointerLock !== prevPointerLock) {
-      if (inputs.pointerLock) {
-        setControl('manualRotZ', 0)
-        setControl('manualRotX', 0)
-      } else {
-        setControl('manualRotZ', undefined)
-        setControl('manualRotX', undefined)
-      }
-    }
-
-    prevPointerLock = inputs.pointerLock
-
     if (inputs.pointerLock) {
       setControl(
         'manualRotZ',
@@ -197,6 +183,9 @@ const ControlsSystem = () => {
           ? 0
           : clamp(inputs.mouseMovementY, MAX_MOVEMENT)) / 100,
       )
+    } else {
+      setControl('manualRotZ', undefined)
+      setControl('manualRotX', undefined)
     }
   })
 

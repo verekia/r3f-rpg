@@ -39,8 +39,10 @@ const Canvas = ({ children }: { children: ReactNode }) => {
         style={{ position: 'absolute' }}
         onContextMenu={e => e.preventDefault()}
         onMouseMove={e => {
+          // Note: This can cause many exceptions if the fullscreen is not allowed
           if (e.buttons === 2) {
             document.body.requestPointerLock()
+            longRightClickTimeoutRef.current && clearTimeout(longRightClickTimeoutRef.current)
           }
         }}
         onMouseUp={e => {

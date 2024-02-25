@@ -3,7 +3,6 @@ import { useFrame } from '@react-three/fiber'
 import { PLAYER_ROTATION_SPEED, PLAYER_SPEED, PLAYER_SPEED_BACKWARD } from '#/lib/constants'
 import { lerp, pi } from '#/lib/util'
 import { useControlsStore } from '#/stores/controls'
-import { useInputStore } from '#/stores/inputs'
 import { players } from '#/world'
 
 const GRAVITY = -9.8 // Adjust gravity force as needed
@@ -11,15 +10,13 @@ const JUMP_VELOCITY = 4.5 // Adjust for desired jump strength
 const Z_OFFSET = 0
 const MODEL_ROT_LERP_FACTOR = 0.4
 
-let prevManualRotZ = (0 as number) || undefined
-
 const MovementSystem = () => {
   useFrame((_, dt) => {
     const [player] = players
 
     if (!player) return
 
-    const controls = useControlsStore.getState().controls
+    const { controls } = useControlsStore.getState()
 
     const isGrounded = player.tra.pos.z! <= Z_OFFSET
 
@@ -145,16 +142,12 @@ const MovementSystem = () => {
       idle()
     }
 
-    if (controls.manualRotZ !== prevManualRotZ) {
-      player.tra.rot.velZ = 0
-    }
-
-    prevManualRotZ = controls.manualRotZ
-
     if (controls.turnLeft && controls.manualRotZ === undefined) {
       player.tra.rot.velZ = PLAYER_ROTATION_SPEED
     } else if (controls.turnRight && controls.manualRotZ === undefined) {
       player.tra.rot.velZ = -PLAYER_ROTATION_SPEED
+    } else if (player.tra.rot.velZ && controls.manualRotZ !== undefined) {
+      player.tra.rot.velZ = 0
     } else if (controls.manualRotZ !== undefined) {
       player.tra.rot.z += controls.manualRotZ! * 0.5
     } else {
