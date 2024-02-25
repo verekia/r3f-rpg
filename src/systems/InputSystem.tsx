@@ -1,51 +1,72 @@
 import { useEffect } from 'react'
 
-import useStore from '#/store'
+import { setControl } from '#/stores/controls'
+import { getInput, inputKeys, setInput } from '#/stores/inputs'
+
+import type { Inputs } from '#/stores/inputs'
 
 const InputSystem = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.code === 'KeyW') {
-        useStore.getState().setControl('forward', true)
-      } else if (e.code === 'KeyS') {
-        useStore.getState().setControl('backward', true)
-      } else if (e.code === 'KeyA') {
-        useStore.getState().setControl('turnLeft', true)
-      } else if (e.code === 'KeyD') {
-        useStore.getState().setControl('turnRight', true)
-      } else if (e.code === 'KeyQ') {
-        useStore.getState().setControl('strafeLeft', true)
-      } else if (e.code === 'KeyE') {
-        useStore.getState().setControl('strafeRight', true)
-      } else if (e.code === 'Space') {
-        useStore.getState().setControl('jump', true)
+      if (inputKeys.includes(e.code as keyof Inputs)) {
+        setInput(e.code as keyof Inputs, true)
       }
     }
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.code === 'KeyW') {
-        useStore.getState().setControl('forward', false)
-      } else if (e.code === 'KeyS') {
-        useStore.getState().setControl('backward', false)
-      } else if (e.code === 'KeyA') {
-        useStore.getState().setControl('turnLeft', false)
-      } else if (e.code === 'KeyD') {
-        useStore.getState().setControl('turnRight', false)
-      } else if (e.code === 'KeyQ') {
-        useStore.getState().setControl('strafeLeft', false)
-      } else if (e.code === 'KeyE') {
-        useStore.getState().setControl('strafeRight', false)
-      } else if (e.code === 'Space') {
-        useStore.getState().setControl('jump', false)
+      if (inputKeys.includes(e.code as keyof Inputs)) {
+        setInput(e.code as keyof Inputs, false)
+      }
+    }
+
+    const handlePointerLockChange = () => {
+      setInput('pointerLock', document.pointerLockElement !== null)
+    }
+
+    const handleMouseMove = (e: MouseEvent) => {
+      setInput('mouseMovementX', e.movementX)
+      setInput('mouseMovementY', e.movementY)
+    }
+
+    // For some reason, pointer down event doesn't get fired when one mouse button is
+    // already down and another is pressed. Using mouseDown is a workaround.
+    const handleMouseDown = (e: MouseEvent) => {
+      if (e.button === 0) {
+        setInput('mouseLeft', true)
+      } else if (e.button === 2) {
+        setInput('mouseRight', true)
+      }
+    }
+
+    const handleMouseUp = (e: MouseEvent) => {
+      if (e.button === 0) {
+        setInput('mouseLeft', false)
+      } else if (e.button === 2) {
+        setInput('mouseRight', false)
+      }
+
+      if (getInput('pointerLock') && e.button === 2) {
+        document.exitPointerLock()
+        // This shouldn't be here
+        setControl('manualRotZ', undefined)
+        setControl('manualRotX', undefined)
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     window.addEventListener('keyup', handleKeyUp)
+    document.addEventListener('pointerlockchange', handlePointerLockChange)
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mousedown', handleMouseDown)
+    document.addEventListener('mouseup', handleMouseUp)
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
+      document.removeEventListener('pointerlockchange', handlePointerLockChange)
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mousedown', handleMouseDown)
+      document.removeEventListener('mouseup', handleMouseUp)
     }
   }, [])
 

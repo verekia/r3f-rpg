@@ -2,7 +2,8 @@ import { useFrame } from '@react-three/fiber'
 
 import { PLAYER_ROTATION_SPEED, PLAYER_SPEED, PLAYER_SPEED_BACKWARD } from '#/lib/constants'
 import { lerp, pi } from '#/lib/util'
-import useStore from '#/store'
+import { useControlsStore } from '#/stores/controls'
+import { useInputStore } from '#/stores/inputs'
 import { players } from '#/world'
 
 const GRAVITY = -9.8 // Adjust gravity force as needed
@@ -15,6 +16,8 @@ const MovementSystem = () => {
     const [player] = players
 
     if (!player) return
+
+    const controls = useControlsStore.getState().controls
 
     const isGrounded = player.tra.pos.z! <= Z_OFFSET
 
@@ -120,152 +123,34 @@ const MovementSystem = () => {
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Idle')
     }
 
-    if (
-      useStore.getState().controls.forward &&
-      !useStore.getState().controls.strafeLeft &&
-      !useStore.getState().controls.strafeRight &&
-      !useStore.getState().controls.backward
-    ) {
+    if (controls.forward) {
       forward()
-    } else if (
-      useStore.getState().controls.backward &&
-      !useStore.getState().controls.strafeLeft &&
-      !useStore.getState().controls.strafeRight &&
-      !useStore.getState().controls.forward
-    ) {
+    } else if (controls.backward) {
       backward()
-    } else if (
-      useStore.getState().controls.strafeLeft &&
-      !useStore.getState().controls.forward &&
-      !useStore.getState().controls.strafeRight &&
-      !useStore.getState().controls.backward
-    ) {
+    } else if (controls.strafeLeft) {
       strafeLeft()
-    } else if (
-      useStore.getState().controls.strafeRight &&
-      !useStore.getState().controls.forward &&
-      !useStore.getState().controls.strafeLeft &&
-      !useStore.getState().controls.backward
-    ) {
+    } else if (controls.strafeRight) {
       strafeRight()
-    } else if (
-      useStore.getState().controls.forward &&
-      useStore.getState().controls.strafeLeft &&
-      !useStore.getState().controls.strafeRight &&
-      !useStore.getState().controls.backward
-    ) {
+    } else if (controls.forwardLeft) {
       forwardLeft()
-    } else if (
-      useStore.getState().controls.forward &&
-      !useStore.getState().controls.strafeLeft &&
-      useStore.getState().controls.strafeRight &&
-      !useStore.getState().controls.backward
-    ) {
+    } else if (controls.forwardRight) {
       forwardRight()
-    } else if (
-      useStore.getState().controls.backward &&
-      useStore.getState().controls.strafeLeft &&
-      !useStore.getState().controls.strafeRight &&
-      !useStore.getState().controls.forward
-    ) {
+    } else if (controls.backwardLeft) {
       backwardLeft()
-    } else if (
-      useStore.getState().controls.backward &&
-      !useStore.getState().controls.strafeLeft &&
-      useStore.getState().controls.strafeRight &&
-      !useStore.getState().controls.forward
-    ) {
+    } else if (controls.backwardRight) {
       backwardRight()
     } else {
       idle()
     }
 
-    if (
-      useStore.getState().controls.turnLeft &&
-      useStore.getState().controls.manualRotZ === undefined
-    ) {
+    if (controls.turnLeft && controls.manualRotZ === undefined) {
       player.tra.rot.velZ = PLAYER_ROTATION_SPEED
-    } else if (
-      useStore.getState().controls.turnRight &&
-      useStore.getState().controls.manualRotZ === undefined
-    ) {
+    } else if (controls.turnRight && controls.manualRotZ === undefined) {
       player.tra.rot.velZ = -PLAYER_ROTATION_SPEED
-    } else if (useStore.getState().controls.manualRotZ !== undefined) {
-      player.tra.rot.z += useStore.getState().controls.manualRotZ! * 0.5
+    } else if (controls.manualRotZ !== undefined) {
+      player.tra.rot.z += controls.manualRotZ! * 0.5
     } else {
       player.tra.rot.velZ = 0
-    }
-
-    if (
-      useStore.getState().inputs.pointerLock &&
-      useStore.getState().inputs.mouseLeft &&
-      useStore.getState().inputs.mouseRight &&
-      !useStore.getState().controls.turnLeft &&
-      !useStore.getState().controls.turnRight &&
-      !useStore.getState().controls.strafeLeft &&
-      !useStore.getState().controls.strafeRight
-    ) {
-      forward()
-    } else if (
-      useStore.getState().inputs.pointerLock &&
-      useStore.getState().inputs.mouseLeft &&
-      useStore.getState().inputs.mouseRight &&
-      (useStore.getState().controls.strafeLeft || useStore.getState().controls.turnLeft) &&
-      !useStore.getState().controls.turnRight &&
-      !useStore.getState().controls.strafeRight
-    ) {
-      forwardLeft()
-    } else if (
-      useStore.getState().inputs.pointerLock &&
-      useStore.getState().inputs.mouseLeft &&
-      useStore.getState().inputs.mouseRight &&
-      (useStore.getState().controls.strafeRight || useStore.getState().controls.turnRight) &&
-      !useStore.getState().controls.turnLeft &&
-      !useStore.getState().controls.strafeLeft
-    ) {
-      forwardRight()
-    } else if (
-      useStore.getState().controls.turnLeft &&
-      !useStore.getState().controls.forward &&
-      !useStore.getState().controls.backward &&
-      useStore.getState().controls.manualRotZ !== undefined
-    ) {
-      strafeLeft()
-    } else if (
-      useStore.getState().controls.turnRight &&
-      !useStore.getState().controls.forward &&
-      !useStore.getState().controls.backward &&
-      useStore.getState().controls.manualRotZ !== undefined
-    ) {
-      strafeRight()
-    } else if (
-      useStore.getState().controls.turnLeft &&
-      useStore.getState().controls.forward &&
-      !useStore.getState().controls.backward &&
-      useStore.getState().controls.manualRotZ !== undefined
-    ) {
-      forwardLeft()
-    } else if (
-      useStore.getState().controls.turnRight &&
-      useStore.getState().controls.forward &&
-      !useStore.getState().controls.backward &&
-      useStore.getState().controls.manualRotZ !== undefined
-    ) {
-      forwardRight()
-    } else if (
-      useStore.getState().controls.turnLeft &&
-      !useStore.getState().controls.forward &&
-      useStore.getState().controls.backward &&
-      useStore.getState().controls.manualRotZ !== undefined
-    ) {
-      backwardLeft()
-    } else if (
-      useStore.getState().controls.turnRight &&
-      !useStore.getState().controls.forward &&
-      useStore.getState().controls.backward &&
-      useStore.getState().controls.manualRotZ !== undefined
-    ) {
-      backwardRight()
     }
 
     if (isGrounded) {
@@ -283,7 +168,7 @@ const MovementSystem = () => {
     player.tra.pos.velZ! += GRAVITY * dt * 1.8
 
     // Check if jump input is active and player is grounded
-    if (useStore.getState().controls.jump && isGrounded) {
+    if (controls.jump && isGrounded) {
       player.tra.pos.velZ = JUMP_VELOCITY // Apply initial jump velocity
     }
 

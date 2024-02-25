@@ -2,7 +2,7 @@ import { useFrame } from '@react-three/fiber'
 
 import { DEFAULT_CAMERA_ROT_X } from '#/lib/constants'
 import { lerp, pi } from '#/lib/util'
-import useStore from '#/store'
+import { useInputStore } from '#/stores/inputs'
 import { cameras, players } from '#/world'
 
 const Z_OFFSET = 3
@@ -31,7 +31,7 @@ const CameraFollowSystem = () => {
     camera.tra.rot.z = lerp(camera.tra.rot.z, player.tra.rot.z, 0.5) - pi / 4
     camera.tra.rot.y = lerp(camera.tra.rot.y!, 0, 0.1)
 
-    if (useStore.getState().inputs.pointerLock) {
+    if (useInputStore.getState().inputs.pointerLock) {
       // if (useStore.getState().controls.manualRotX) {
       //   camera.tra.rot.x! = lerp(
       //     camera.tra.rot.x!,
