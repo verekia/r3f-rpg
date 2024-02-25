@@ -1,9 +1,7 @@
 import { useFrame } from '@react-three/fiber'
 
-import { pi } from '#/lib/util'
+import { lerp, pi } from '#/lib/util'
 import { cameras, players } from '#/world'
-
-const lerp = (a: number, b: number, t: number): number => a + (b - a) * t
 
 const Z_OFFSET = 3
 const DISTANCE_FROM_PLAYER = 4

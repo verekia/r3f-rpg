@@ -30,6 +30,8 @@ type PlayerAnimation =
 type PlayerStore = {
   animation: PlayerAnimation
   setAnimation: (animation: PlayerAnimation) => void
+  modelRotZ: number
+  setModelRotZ: (modelRotZ: number) => void
 }
 
 export type Entity = {
@@ -51,6 +53,8 @@ export const createPlayer = (tra: Tra) =>
       usePlayerStore: create<PlayerStore>(set => ({
         animation: 'Idle',
         setAnimation: (animation: PlayerAnimation) => set({ animation }),
+        modelRotZ: 0,
+        setModelRotZ: (modelRotZ: number) => set({ modelRotZ }),
       })),
     },
     tra,

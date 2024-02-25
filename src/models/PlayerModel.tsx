@@ -28,7 +28,9 @@ interface GLTFAction extends THREE.AnimationClip {
 
 const path = '/models/player/player-transformed.glb'
 
-const PlayerModel = (props: JSX.IntrinsicElements['group'] & { action: ActionName }) => {
+const PlayerModel = (
+  props: JSX.IntrinsicElements['group'] & { action: ActionName; modelRotZ: number },
+) => {
   const group = useRef<THREE.Group>(null)
   const { nodes, materials, animations } = useGLTF(path) as GLTFResult
   const { actions } = useAnimations(animations, group)
@@ -70,7 +72,7 @@ const PlayerModel = (props: JSX.IntrinsicElements['group'] & { action: ActionNam
 
   return (
     <group ref={group} {...props} dispose={null}>
-      <group name="Scene">
+      <group name="Scene" rotation-y={props.modelRotZ}>
         <group name="Player" rotation={[pi / 2, 0, -pi / 2]} scale={0.008}>
           <primitive object={nodes.mixamorigHips} />
           {/* <mesh ref={swordRef} scale={1000}>

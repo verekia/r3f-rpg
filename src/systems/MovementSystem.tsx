@@ -1,13 +1,14 @@
 import { useFrame } from '@react-three/fiber'
 
 import { PLAYER_ROTATION_SPEED, PLAYER_SPEED, PLAYER_SPEED_BACKWARD } from '#/lib/constants'
-import { pi } from '#/lib/util'
+import { lerp, pi } from '#/lib/util'
 import useStore from '#/store'
 import { players } from '#/world'
 
 const GRAVITY = -9.8 // Adjust gravity force as needed
 const JUMP_VELOCITY = 4.5 // Adjust for desired jump strength
 const Z_OFFSET = 0
+const MODEL_ROT_LERP_FACTOR = 0.4
 
 const MovementSystem = () => {
   useFrame((_, dt) => {
@@ -21,48 +22,88 @@ const MovementSystem = () => {
       player.tra.pos.velX = Math.cos(player.tra.rot.z) * PLAYER_SPEED
       player.tra.pos.velY = Math.sin(player.tra.rot.z) * PLAYER_SPEED
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Running')
+      player.player.usePlayerStore
+        .getState()
+        .setModelRotZ(
+          lerp(player.player.usePlayerStore.getState().modelRotZ, 0, MODEL_ROT_LERP_FACTOR),
+        )
     }
 
     const backward = () => {
       player.tra.pos.velX = -Math.cos(player.tra.rot.z) * PLAYER_SPEED_BACKWARD
       player.tra.pos.velY = -Math.sin(player.tra.rot.z) * PLAYER_SPEED_BACKWARD
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Walking Backward')
+      player.player.usePlayerStore
+        .getState()
+        .setModelRotZ(
+          lerp(player.player.usePlayerStore.getState().modelRotZ, 0, MODEL_ROT_LERP_FACTOR),
+        )
     }
 
     const strafeLeft = () => {
       player.tra.pos.velX = Math.cos(player.tra.rot.z + pi / 2) * PLAYER_SPEED
       player.tra.pos.velY = Math.sin(player.tra.rot.z + pi / 2) * PLAYER_SPEED
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Strafe Left')
+      player.player.usePlayerStore
+        .getState()
+        .setModelRotZ(
+          lerp(player.player.usePlayerStore.getState().modelRotZ, 0, MODEL_ROT_LERP_FACTOR),
+        )
     }
 
     const strafeRight = () => {
       player.tra.pos.velX = -Math.cos(player.tra.rot.z + pi / 2) * PLAYER_SPEED
       player.tra.pos.velY = -Math.sin(player.tra.rot.z + pi / 2) * PLAYER_SPEED
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Strafe Right')
+      player.player.usePlayerStore
+        .getState()
+        .setModelRotZ(
+          lerp(player.player.usePlayerStore.getState().modelRotZ, 0, MODEL_ROT_LERP_FACTOR),
+        )
     }
 
     const forwardLeft = () => {
       player.tra.pos.velX = Math.cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED
       player.tra.pos.velY = Math.sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Running')
+      player.player.usePlayerStore
+        .getState()
+        .setModelRotZ(
+          lerp(player.player.usePlayerStore.getState().modelRotZ, pi / 4, MODEL_ROT_LERP_FACTOR),
+        )
     }
 
     const forwardRight = () => {
       player.tra.pos.velX = Math.cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED
       player.tra.pos.velY = Math.sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Running')
+      player.player.usePlayerStore
+        .getState()
+        .setModelRotZ(
+          lerp(player.player.usePlayerStore.getState().modelRotZ, -pi / 4, MODEL_ROT_LERP_FACTOR),
+        )
     }
 
     const backwardLeft = () => {
       player.tra.pos.velX = -Math.cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED_BACKWARD
       player.tra.pos.velY = -Math.sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED_BACKWARD
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Walking Backward')
+      player.player.usePlayerStore
+        .getState()
+        .setModelRotZ(
+          lerp(player.player.usePlayerStore.getState().modelRotZ, -pi / 4, MODEL_ROT_LERP_FACTOR),
+        )
     }
 
     const backwardRight = () => {
       player.tra.pos.velX = -Math.cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED_BACKWARD
       player.tra.pos.velY = -Math.sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED_BACKWARD
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Walking Backward')
+      player.player.usePlayerStore
+        .getState()
+        .setModelRotZ(
+          lerp(player.player.usePlayerStore.getState().modelRotZ, pi / 4, MODEL_ROT_LERP_FACTOR),
+        )
     }
 
     const idle = () => {
