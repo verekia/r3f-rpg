@@ -17,6 +17,8 @@
     "detect-collisions": "^9.2.4",
     "miniplex": "^2.0.0",
     "miniplex-react": "^2.0.1",
+    "nipplejs": "^0.10.1",
+    "radash": "^12.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "three": "^0.161.0",
