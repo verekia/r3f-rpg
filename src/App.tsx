@@ -11,7 +11,7 @@ const App = () => {
   const route = useStore(s => s.route)
 
   return (
-    <div className="relative h-full">
+    <div className="relative h-full select-none">
       {route === LANDING_ROUTE ? <Landing /> : <UI />}
       <Canvas>
         {route === LANDING_ROUTE ? null : (

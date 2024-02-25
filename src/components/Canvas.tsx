@@ -32,6 +32,18 @@ const Canvas = ({ children }: { children: ReactNode }) => {
         className="top-0 z-0"
         style={{ position: 'absolute' }}
         onContextMenu={e => e.preventDefault()}
+        onPointerMove={e => {
+          // if right click, enable pointer lock
+          if (e.buttons === 2) {
+            document.body.requestPointerLock()
+          }
+        }}
+        onPointerUp={e => {
+          // if right click, disable pointer lock
+          if (e.button === 2) {
+            document.exitPointerLock()
+          }
+        }}
         shadows
         {...(isWebGPUAvailable && {
           gl: canvas => {

@@ -6,37 +6,37 @@ const InputSystem = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === 'KeyW') {
-        useStore.getState().setInput('forward', true)
+        useStore.getState().setControl('forward', true)
       } else if (e.code === 'KeyS') {
-        useStore.getState().setInput('backward', true)
+        useStore.getState().setControl('backward', true)
       } else if (e.code === 'KeyA') {
-        useStore.getState().setInput('turnLeft', true)
+        useStore.getState().setControl('turnLeft', true)
       } else if (e.code === 'KeyD') {
-        useStore.getState().setInput('turnRight', true)
+        useStore.getState().setControl('turnRight', true)
       } else if (e.code === 'KeyQ') {
-        useStore.getState().setInput('strafeLeft', true)
+        useStore.getState().setControl('strafeLeft', true)
       } else if (e.code === 'KeyE') {
-        useStore.getState().setInput('strafeRight', true)
+        useStore.getState().setControl('strafeRight', true)
       } else if (e.code === 'Space') {
-        useStore.getState().setInput('jump', true)
+        useStore.getState().setControl('jump', true)
       }
     }
 
     const handleKeyUp = (e: KeyboardEvent) => {
       if (e.code === 'KeyW') {
-        useStore.getState().setInput('forward', false)
+        useStore.getState().setControl('forward', false)
       } else if (e.code === 'KeyS') {
-        useStore.getState().setInput('backward', false)
+        useStore.getState().setControl('backward', false)
       } else if (e.code === 'KeyA') {
-        useStore.getState().setInput('turnLeft', false)
+        useStore.getState().setControl('turnLeft', false)
       } else if (e.code === 'KeyD') {
-        useStore.getState().setInput('turnRight', false)
+        useStore.getState().setControl('turnRight', false)
       } else if (e.code === 'KeyQ') {
-        useStore.getState().setInput('strafeLeft', false)
+        useStore.getState().setControl('strafeLeft', false)
       } else if (e.code === 'KeyE') {
-        useStore.getState().setInput('strafeRight', false)
+        useStore.getState().setControl('strafeRight', false)
       } else if (e.code === 'Space') {
-        useStore.getState().setInput('jump', false)
+        useStore.getState().setControl('jump', false)
       }
     }
 

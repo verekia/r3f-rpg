@@ -15,81 +15,165 @@ const MovementSystem = () => {
 
     if (!player) return
 
-    if (
-      useStore.getState().inputs.forward &&
-      !useStore.getState().inputs.strafeLeft &&
-      !useStore.getState().inputs.strafeRight &&
-      !useStore.getState().inputs.backward
-    ) {
+    const forward = () => {
       player.tra.pos.velX = Math.cos(player.tra.rot.z) * PLAYER_SPEED
       player.tra.pos.velY = Math.sin(player.tra.rot.z) * PLAYER_SPEED
-    } else if (
-      useStore.getState().inputs.backward &&
-      !useStore.getState().inputs.strafeLeft &&
-      !useStore.getState().inputs.strafeRight &&
-      !useStore.getState().inputs.forward
-    ) {
+    }
+
+    const backward = () => {
       player.tra.pos.velX = -Math.cos(player.tra.rot.z) * PLAYER_SPEED
       player.tra.pos.velY = -Math.sin(player.tra.rot.z) * PLAYER_SPEED
-    } else if (
-      useStore.getState().inputs.strafeLeft &&
-      !useStore.getState().inputs.forward &&
-      !useStore.getState().inputs.strafeRight &&
-      !useStore.getState().inputs.backward
-    ) {
+    }
+
+    const strafeLeft = () => {
       player.tra.pos.velX = Math.cos(player.tra.rot.z + pi / 2) * PLAYER_SPEED
       player.tra.pos.velY = Math.sin(player.tra.rot.z + pi / 2) * PLAYER_SPEED
-    } else if (
-      useStore.getState().inputs.strafeRight &&
-      !useStore.getState().inputs.forward &&
-      !useStore.getState().inputs.strafeLeft &&
-      !useStore.getState().inputs.backward
-    ) {
+    }
+
+    const strafeRight = () => {
       player.tra.pos.velX = -Math.cos(player.tra.rot.z + pi / 2) * PLAYER_SPEED
       player.tra.pos.velY = -Math.sin(player.tra.rot.z + pi / 2) * PLAYER_SPEED
-    } else if (
-      useStore.getState().inputs.forward &&
-      useStore.getState().inputs.strafeLeft &&
-      !useStore.getState().inputs.strafeRight &&
-      !useStore.getState().inputs.backward
-    ) {
+    }
+
+    const forwardLeft = () => {
       player.tra.pos.velX = Math.cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED
       player.tra.pos.velY = Math.sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED
-    } else if (
-      useStore.getState().inputs.forward &&
-      !useStore.getState().inputs.strafeLeft &&
-      useStore.getState().inputs.strafeRight &&
-      !useStore.getState().inputs.backward
-    ) {
+    }
+
+    const forwardRight = () => {
       player.tra.pos.velX = Math.cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED
       player.tra.pos.velY = Math.sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED
-    } else if (
-      useStore.getState().inputs.backward &&
-      useStore.getState().inputs.strafeLeft &&
-      !useStore.getState().inputs.strafeRight &&
-      !useStore.getState().inputs.forward
-    ) {
+    }
+
+    const backwardLeft = () => {
       player.tra.pos.velX = -Math.cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED
       player.tra.pos.velY = -Math.sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED
-    } else if (
-      useStore.getState().inputs.backward &&
-      !useStore.getState().inputs.strafeLeft &&
-      useStore.getState().inputs.strafeRight &&
-      !useStore.getState().inputs.forward
-    ) {
+    }
+
+    const backwardRight = () => {
       player.tra.pos.velX = -Math.cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED
       player.tra.pos.velY = -Math.sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED
+    }
+
+    if (
+      useStore.getState().controls.forward &&
+      !useStore.getState().controls.strafeLeft &&
+      !useStore.getState().controls.strafeRight &&
+      !useStore.getState().controls.backward
+    ) {
+      forward()
+    } else if (
+      useStore.getState().controls.backward &&
+      !useStore.getState().controls.strafeLeft &&
+      !useStore.getState().controls.strafeRight &&
+      !useStore.getState().controls.forward
+    ) {
+      backward()
+    } else if (
+      useStore.getState().controls.strafeLeft &&
+      !useStore.getState().controls.forward &&
+      !useStore.getState().controls.strafeRight &&
+      !useStore.getState().controls.backward
+    ) {
+      strafeLeft()
+    } else if (
+      useStore.getState().controls.strafeRight &&
+      !useStore.getState().controls.forward &&
+      !useStore.getState().controls.strafeLeft &&
+      !useStore.getState().controls.backward
+    ) {
+      strafeRight()
+    } else if (
+      useStore.getState().controls.forward &&
+      useStore.getState().controls.strafeLeft &&
+      !useStore.getState().controls.strafeRight &&
+      !useStore.getState().controls.backward
+    ) {
+      forwardLeft()
+    } else if (
+      useStore.getState().controls.forward &&
+      !useStore.getState().controls.strafeLeft &&
+      useStore.getState().controls.strafeRight &&
+      !useStore.getState().controls.backward
+    ) {
+      forwardRight()
+    } else if (
+      useStore.getState().controls.backward &&
+      useStore.getState().controls.strafeLeft &&
+      !useStore.getState().controls.strafeRight &&
+      !useStore.getState().controls.forward
+    ) {
+      backwardLeft()
+    } else if (
+      useStore.getState().controls.backward &&
+      !useStore.getState().controls.strafeLeft &&
+      useStore.getState().controls.strafeRight &&
+      !useStore.getState().controls.forward
+    ) {
+      backwardRight()
     } else {
       player.tra.pos.velX = 0
       player.tra.pos.velY = 0
     }
 
-    if (useStore.getState().inputs.turnLeft) {
+    if (
+      useStore.getState().controls.turnLeft &&
+      useStore.getState().controls.manualRotZ === undefined
+    ) {
       player.tra.rot.velZ = PLAYER_ROTATION_SPEED
-    } else if (useStore.getState().inputs.turnRight) {
+    } else if (
+      useStore.getState().controls.turnRight &&
+      useStore.getState().controls.manualRotZ === undefined
+    ) {
       player.tra.rot.velZ = -PLAYER_ROTATION_SPEED
+    } else if (useStore.getState().controls.manualRotZ !== undefined) {
+      player.tra.rot.z += useStore.getState().controls.manualRotZ! * 0.5
     } else {
       player.tra.rot.velZ = 0
+    }
+
+    if (
+      useStore.getState().controls.turnLeft &&
+      !useStore.getState().controls.forward &&
+      !useStore.getState().controls.backward &&
+      useStore.getState().controls.manualRotZ !== undefined
+    ) {
+      strafeLeft()
+    } else if (
+      useStore.getState().controls.turnRight &&
+      !useStore.getState().controls.forward &&
+      !useStore.getState().controls.backward &&
+      useStore.getState().controls.manualRotZ !== undefined
+    ) {
+      strafeRight()
+    } else if (
+      useStore.getState().controls.turnLeft &&
+      useStore.getState().controls.forward &&
+      !useStore.getState().controls.backward &&
+      useStore.getState().controls.manualRotZ !== undefined
+    ) {
+      forwardLeft()
+    } else if (
+      useStore.getState().controls.turnRight &&
+      useStore.getState().controls.forward &&
+      !useStore.getState().controls.backward &&
+      useStore.getState().controls.manualRotZ !== undefined
+    ) {
+      forwardRight()
+    } else if (
+      useStore.getState().controls.turnLeft &&
+      !useStore.getState().controls.forward &&
+      useStore.getState().controls.backward &&
+      useStore.getState().controls.manualRotZ !== undefined
+    ) {
+      backwardLeft()
+    } else if (
+      useStore.getState().controls.turnRight &&
+      !useStore.getState().controls.forward &&
+      useStore.getState().controls.backward &&
+      useStore.getState().controls.manualRotZ !== undefined
+    ) {
+      backwardRight()
     }
 
     const isGrounded = player.tra.pos.z! <= Z_OFFSET
@@ -107,7 +191,7 @@ const MovementSystem = () => {
     player.tra.pos.velZ! += GRAVITY * dt * 1.8
 
     // Check if jump input is active and player is grounded
-    if (useStore.getState().inputs.jump && isGrounded) {
+    if (useStore.getState().controls.jump && isGrounded) {
       player.tra.pos.velZ = JUMP_VELOCITY // Apply initial jump velocity
     }
 

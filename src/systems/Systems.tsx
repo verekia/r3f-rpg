@@ -1,3 +1,4 @@
+import PointerSystem from '#/components/PointerSystem'
 import AnimationSystem from '#/systems/AnimationSystem'
 import CameraFollowSystem from '#/systems/CameraFollow'
 import InputSystem from '#/systems/InputSystem'
@@ -13,6 +14,7 @@ const Systems = () => (
     <VelocitySystem />
     <MovementSystem />
     <AnimationSystem />
+    <PointerSystem />
   </>
 )
 
