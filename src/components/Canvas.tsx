@@ -29,6 +29,7 @@ const Canvas = ({ children }: { children: ReactNode }) => {
   return (
     isReady && (
       <R3FCanvas
+        dpr={[1, 1.5]}
         className="top-0 z-0"
         style={{ position: 'absolute' }}
         onContextMenu={e => e.preventDefault()}
