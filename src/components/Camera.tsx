@@ -4,7 +4,7 @@ import { ECS } from '#/world'
 
 const Camera = () => (
   <ECS.Component name="three">
-    <PerspectiveCamera makeDefault />
+    <PerspectiveCamera makeDefault rotation-order="YXZ" />
   </ECS.Component>
 )
 

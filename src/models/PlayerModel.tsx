@@ -38,9 +38,9 @@ const PlayerModel = (props: JSX.IntrinsicElements['group'] & { action: ActionNam
   // Object.keys(actions)
 
   useEffect(() => {
-    actions[props.action]?.reset().fadeIn(0.5).play()
+    actions[props.action]?.reset().fadeIn(0.12).play()
     return () => {
-      actions[props.action]?.fadeOut(0.5)
+      actions[props.action]?.fadeOut(0.12)
     }
   }, [props.action])
 
@@ -71,7 +71,7 @@ const PlayerModel = (props: JSX.IntrinsicElements['group'] & { action: ActionNam
   return (
     <group ref={group} {...props} dispose={null}>
       <group name="Scene">
-        <group name="Player" rotation={[pi / 2, 0, -pi / 2]} scale={0.01}>
+        <group name="Player" rotation={[pi / 2, 0, -pi / 2]} scale={0.008}>
           <primitive object={nodes.mixamorigHips} />
           {/* <mesh ref={swordRef} scale={1000}>
             <boxGeometry args={[1, 0.05, 0.05]} />

@@ -17,6 +17,8 @@ const InputSystem = () => {
         useStore.getState().setInput('strafeLeft', true)
       } else if (e.code === 'KeyE') {
         useStore.getState().setInput('strafeRight', true)
+      } else if (e.code === 'Space') {
+        useStore.getState().setInput('jump', true)
       }
     }
 
@@ -33,6 +35,8 @@ const InputSystem = () => {
         useStore.getState().setInput('strafeLeft', false)
       } else if (e.code === 'KeyE') {
         useStore.getState().setInput('strafeRight', false)
+      } else if (e.code === 'Space') {
+        useStore.getState().setInput('jump', false)
       }
     }
 

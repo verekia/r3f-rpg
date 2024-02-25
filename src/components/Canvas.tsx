@@ -31,6 +31,7 @@ const Canvas = ({ children }: { children: ReactNode }) => {
       <R3FCanvas
         className="top-0 z-0"
         style={{ position: 'absolute' }}
+        onContextMenu={e => e.preventDefault()}
         shadows
         {...(isWebGPUAvailable && {
           gl: canvas => {

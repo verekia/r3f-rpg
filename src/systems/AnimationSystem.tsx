@@ -10,7 +10,9 @@ const AnimationSystem = () => {
       return
     }
 
-    if (player.tra.pos.velX || player.tra.pos.velY) {
+    if (player.tra.pos.z! > 0.1) {
+      player.player.usePlayerStore.getState().setAnimation('Jumping')
+    } else if (player.tra.pos.velX || player.tra.pos.velY) {
       player.player.usePlayerStore.getState().setAnimation('Running')
     } else {
       player.player.usePlayerStore.getState().setAnimation('Idle')

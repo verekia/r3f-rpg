@@ -9,6 +9,7 @@ type Inputs = {
   turnRight: boolean
   strafeLeft: boolean
   strafeRight: boolean
+  jump: boolean
 }
 
 type Store = {
@@ -32,6 +33,7 @@ const useStore = create<Store>(set => ({
     turnRight: false,
     strafeLeft: false,
     strafeRight: false,
+    jump: false,
   },
   setInput: (key: keyof Inputs, value: boolean) =>
     set(state => ({ inputs: { ...state.inputs, [key]: value } })),
