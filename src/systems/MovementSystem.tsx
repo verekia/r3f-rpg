@@ -47,7 +47,11 @@ const MovementSystem = () => {
       player.player.usePlayerStore
         .getState()
         .setModelRotZ(
-          lerp(player.player.usePlayerStore.getState().modelRotZ, 0, MODEL_ROT_LERP_FACTOR),
+          lerp(
+            player.player.usePlayerStore.getState().modelRotZ,
+            isGrounded ? 0 : pi / 2,
+            MODEL_ROT_LERP_FACTOR,
+          ),
         )
     }
 
@@ -58,7 +62,11 @@ const MovementSystem = () => {
       player.player.usePlayerStore
         .getState()
         .setModelRotZ(
-          lerp(player.player.usePlayerStore.getState().modelRotZ, 0, MODEL_ROT_LERP_FACTOR),
+          lerp(
+            player.player.usePlayerStore.getState().modelRotZ,
+            isGrounded ? 0 : -pi / 2,
+            MODEL_ROT_LERP_FACTOR,
+          ),
         )
     }
 

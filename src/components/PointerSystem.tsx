@@ -2,9 +2,11 @@ import { useEffect } from 'react'
 
 import { useFrame } from '@react-three/fiber'
 
+import { clamp } from '#/lib/util'
 import useStore from '#/store'
 
 const SENSITIVITY_THRESHOLD = 6
+const MAX_MOVEMENT = 60
 
 const PointerSystem = () => {
   useEffect(() => {
@@ -41,6 +43,8 @@ const PointerSystem = () => {
 
       if (useStore.getState().inputs.pointerLock && e.button === 2) {
         document.exitPointerLock()
+        useStore.getState().setControl('manualRotZ', undefined)
+        useStore.getState().setControl('manualRotX', undefined)
       }
     }
 
@@ -65,13 +69,17 @@ const PointerSystem = () => {
         .getState()
         .setControl(
           'manualRotZ',
-          -(Math.abs(mouseMovementX) < SENSITIVITY_THRESHOLD ? 0 : mouseMovementX) / 100,
+          -(Math.abs(mouseMovementX) < SENSITIVITY_THRESHOLD
+            ? 0
+            : clamp(mouseMovementX, MAX_MOVEMENT)) / 100,
         )
       useStore
         .getState()
         .setControl(
           'manualRotX',
-          -(Math.abs(mouseMovementY) < SENSITIVITY_THRESHOLD ? 0 : mouseMovementY) / 100,
+          -(Math.abs(mouseMovementY) < SENSITIVITY_THRESHOLD
+            ? 0
+            : clamp(mouseMovementY, MAX_MOVEMENT)) / 100,
         )
     }
   })
