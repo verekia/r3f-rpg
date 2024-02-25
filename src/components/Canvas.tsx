@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 
 import { Canvas as R3FCanvas } from '@react-three/fiber'
 
@@ -9,6 +9,7 @@ let WebGPURenderer: any
 const Canvas = ({ children }: { children: ReactNode }) => {
   const [isWebGPUAvailable, setIsWebGPUAvailable] = useState(false)
   const [isReady, setIsReady] = useState(false)
+  const longRightClickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     const fn = async () => {
@@ -24,6 +25,10 @@ const Canvas = ({ children }: { children: ReactNode }) => {
       setIsReady(true)
     }
     fn()
+
+    return () => {
+      longRightClickTimeoutRef.current && clearTimeout(longRightClickTimeoutRef.current)
+    }
   }, [])
 
   return (
@@ -33,16 +38,21 @@ const Canvas = ({ children }: { children: ReactNode }) => {
         className="top-0 z-0"
         style={{ position: 'absolute' }}
         onContextMenu={e => e.preventDefault()}
-        onPointerMove={e => {
-          // if right click, enable pointer lock
+        onMouseMove={e => {
           if (e.buttons === 2) {
             document.body.requestPointerLock()
           }
         }}
-        onPointerUp={e => {
-          // if right click, disable pointer lock
+        onMouseUp={e => {
           if (e.button === 2) {
-            document.exitPointerLock()
+            longRightClickTimeoutRef.current && clearTimeout(longRightClickTimeoutRef.current)
+          }
+        }}
+        onMouseDown={e => {
+          if (e.button === 2) {
+            longRightClickTimeoutRef.current = setTimeout(() => {
+              document.body.requestPointerLock()
+            }, 300)
           }
         }}
         shadows

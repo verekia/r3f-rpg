@@ -42,12 +42,16 @@ const mouse_both_e = { mouseLeft: true, mouseRight: true, KeyE: true }
 const mouse_both_q = { mouseLeft: true, mouseRight: true, KeyQ: true }
 const mouse_both_d = { mouseLeft: true, mouseRight: true, KeyD: true }
 const mouse_both_a = { mouseLeft: true, mouseRight: true, KeyA: true }
+const mouse_both_left = { mouseLeft: true, mouseRight: true, ArrowLeft: true }
+const mouse_both_right = { mouseLeft: true, mouseRight: true, ArrowRight: true }
 const q_w_e = { KeyQ: true, KeyW: true, KeyE: true }
 const q_s_e = { KeyQ: true, KeyS: true, KeyE: true }
 const q_w = { KeyQ: true, KeyW: true }
 const w_e = { KeyW: true, KeyE: true }
 const q_s = { KeyQ: true, KeyS: true }
 const e_s = { KeyE: true, KeyS: true }
+
+let prevPointerLock = false
 
 const ControlsSystem = () => {
   useFrame(() => {
@@ -116,7 +120,7 @@ const ControlsSystem = () => {
         .with(q_w, yes)
         .with(P.union(a_w_pointerLock, up_left_pointerLock), yes)
         .with(mouse_both_q, yes)
-        .with(mouse_both_a, yes)
+        .with(P.union(mouse_both_a, mouse_both_left), yes)
         .otherwise(no),
     )
 
@@ -127,7 +131,7 @@ const ControlsSystem = () => {
         .with(w_e, yes)
         .with(P.union(d_w_pointerLock, up_right_pointerLock), yes)
         .with(mouse_both_e, yes)
-        .with(mouse_both_d, yes)
+        .with(P.union(mouse_both_d, mouse_both_right), yes)
         .otherwise(no),
     )
 
@@ -166,6 +170,18 @@ const ControlsSystem = () => {
     )
 
     setControl('jump', inputs.Space)
+
+    if (inputs.pointerLock !== prevPointerLock) {
+      if (inputs.pointerLock) {
+        setControl('manualRotZ', 0)
+        setControl('manualRotX', 0)
+      } else {
+        setControl('manualRotZ', undefined)
+        setControl('manualRotX', undefined)
+      }
+    }
+
+    prevPointerLock = inputs.pointerLock
 
     if (inputs.pointerLock) {
       setControl(

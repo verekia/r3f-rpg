@@ -47,9 +47,6 @@ const InputSystem = () => {
 
       if (getInput('pointerLock') && e.button === 2) {
         document.exitPointerLock()
-        // This shouldn't be here
-        setControl('manualRotZ', undefined)
-        setControl('manualRotX', undefined)
       }
     }
 

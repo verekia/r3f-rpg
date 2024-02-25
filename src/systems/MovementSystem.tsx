@@ -11,6 +11,8 @@ const JUMP_VELOCITY = 4.5 // Adjust for desired jump strength
 const Z_OFFSET = 0
 const MODEL_ROT_LERP_FACTOR = 0.4
 
+let prevManualRotZ = (0 as number) || undefined
+
 const MovementSystem = () => {
   useFrame((_, dt) => {
     const [player] = players
@@ -142,6 +144,12 @@ const MovementSystem = () => {
     } else {
       idle()
     }
+
+    if (controls.manualRotZ !== prevManualRotZ) {
+      player.tra.rot.velZ = 0
+    }
+
+    prevManualRotZ = controls.manualRotZ
 
     if (controls.turnLeft && controls.manualRotZ === undefined) {
       player.tra.rot.velZ = PLAYER_ROTATION_SPEED
