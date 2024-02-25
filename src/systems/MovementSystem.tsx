@@ -168,11 +168,6 @@ const MovementSystem = () => {
     // Apply gravity
     player.tra.pos.velZ! += GRAVITY * dt * 1.8
 
-    // Check if jump input is active and player is grounded
-    if (controls.jump && isGrounded) {
-      player.tra.pos.velZ = JUMP_VELOCITY // Apply initial jump velocity
-    }
-
     // Clamp player's position to ground level to prevent it from going below
     if (player.tra.pos.z! < 0) {
       player.tra.pos.z = Z_OFFSET
@@ -181,6 +176,15 @@ const MovementSystem = () => {
   })
 
   return null
+}
+
+export const jump = () => {
+  const [player] = players
+  const isGrounded = player.tra.pos.z! <= Z_OFFSET
+
+  if (isGrounded) {
+    player.tra.pos.velZ = JUMP_VELOCITY
+  }
 }
 
 export default MovementSystem

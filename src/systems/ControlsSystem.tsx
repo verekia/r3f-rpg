@@ -4,6 +4,7 @@ import { match, P } from 'ts-pattern'
 import { clamp } from '#/lib/util'
 import { setControl } from '#/stores/controls'
 import { useInputStore } from '#/stores/inputs'
+import { jump } from '#/systems/MovementSystem'
 
 const SENSITIVITY_THRESHOLD = 6
 const MAX_MOVEMENT = 60
@@ -50,6 +51,8 @@ const e_s = { KeyE: true, KeyS: true }
 
 // This system registers intents of player controls based on inputs and resolves input conflicts.
 // It does not manage whether or not these intents are valid in the world.
+
+let previousJumpInput = false
 
 const ControlsSystem = () => {
   useFrame(() => {
@@ -187,6 +190,13 @@ const ControlsSystem = () => {
       setControl('manualRotZ', undefined)
       setControl('manualRotX', undefined)
     }
+
+    if (!previousJumpInput && inputs.Space) {
+      if (inputs.Space) {
+        jump()
+      }
+    }
+    previousJumpInput = inputs.Space
   })
 
   return null
