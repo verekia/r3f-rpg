@@ -1,51 +1,40 @@
 import { useEffect, useRef } from 'react'
 
 import clsx from 'clsx'
+import NippleJS, { EventData, JoystickManager, JoystickOutputData } from 'nipplejs'
 import { throttle } from 'radash'
 
-import type { EventData, JoystickManager, JoystickOutputData } from 'nipplejs'
+import { setInput } from '#/stores/inputs'
 
 let nippleManager: JoystickManager
 
 const Nipple = ({ className, ...props }: { className?: string }) => {
   const ref = useRef<HTMLDivElement>(null)
 
-  const handleStart = (evt: EventData, data: JoystickOutputData) => {
-    // console.log('start')
-    // console.log(data)
-    // data.el.style.backgroundColor = 'red'
-    const joystick = nippleManager.get(data.identifier)
-    console.log(joystick)
+  const handleStart = (_: EventData, { force, angle }: JoystickOutputData) => {
+    setInput('nippleAngle', undefined)
+    setInput('nippleForce', undefined)
   }
 
-  const handleEnd = (evt: EventData, data: JoystickOutputData) => {
-    // console.log('end')
+  const handleEnd = (_: EventData, { force, angle }: JoystickOutputData) => {
+    setInput('nippleAngle', undefined)
+    setInput('nippleForce', undefined)
   }
 
-  // const handleMove = throttle({ interval: 20 }, (evt: EventData, data: JoystickOutputData) => {
-  //   // console.log(data)
-  // })
-
-  const handleMove = (evt: EventData, data: JoystickOutputData) => {
-    // console.log(data)
-  }
+  const handleMove = throttle(
+    { interval: 20 },
+    (_: EventData, { force, angle }: JoystickOutputData) => {
+      setInput('nippleAngle', angle.radian)
+      setInput('nippleForce', force)
+    },
+  )
 
   useEffect(() => {
-    const nippleFn = async () => {
-      if (nippleManager) {
-        return
-      }
-      nippleManager = (await import('nipplejs')).default.create({
-        mode: 'dynamic',
-        zone: ref.current as HTMLDivElement,
-      })
+    if (window.matchMedia('(hover: none)').matches) {
+      nippleManager = NippleJS.create({ zone: ref.current as HTMLDivElement })
       nippleManager.on('start', handleStart)
       nippleManager.on('end', handleEnd)
       nippleManager.on('move', handleMove)
-    }
-    // media query to detect hover: none
-    if (window.matchMedia('(hover: none)').matches) {
-      nippleFn()
     }
 
     return () => {

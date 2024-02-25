@@ -18,6 +18,8 @@ const defaultInputs = {
   mouseMovementX: 0,
   mouseMovementY: 0,
   fullscreen: false,
+  nippleAngle: undefined as number | undefined,
+  nippleForce: undefined as number | undefined,
 }
 
 export type Inputs = typeof defaultInputs

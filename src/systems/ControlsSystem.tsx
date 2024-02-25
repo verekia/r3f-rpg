@@ -1,7 +1,7 @@
 import { useFrame } from '@react-three/fiber'
 import { match, P } from 'ts-pattern'
 
-import { clamp } from '#/lib/util'
+import between, { clamp, pi } from '#/lib/util'
 import { setControl } from '#/stores/controls'
 import { useInputStore } from '#/stores/inputs'
 import { jump } from '#/systems/MovementSystem'
@@ -58,117 +58,127 @@ const ControlsSystem = () => {
   useFrame(() => {
     const { inputs } = useInputStore.getState()
 
-    setControl(
-      'forward',
-      match(inputs)
-        .with(q_w_e, yes)
-        .with(q, no)
-        .with(e, no)
-        .with(P.union(s, down), no)
-        .with(P.union(a_pointerLock, left_pointerLock), no)
-        .with(P.union(d_pointerLock, right_pointerLock), no)
-        .with(P.union(w, up), yes)
-        .with(mouse_both, yes)
-        .otherwise(no),
-    )
+    if (inputs.nippleForce && inputs.nippleForce > 0.2 && inputs.nippleAngle) {
+      setControl('forward', between(inputs.nippleAngle, pi / 4, (3 * pi) / 4))
+      setControl('turnLeft', between(inputs.nippleAngle, (2 * pi) / 3, (4 * pi) / 3))
+      setControl(
+        'turnRight',
+        between(inputs.nippleAngle, (2 * pi) / 3, 2 * pi) || between(inputs.nippleAngle, 0, pi / 3),
+      )
+      setControl('backward', between(inputs.nippleAngle, (5 * pi) / 4, (7 * pi) / 4))
+    } else {
+      setControl(
+        'forward',
+        match(inputs)
+          .with(q_w_e, yes)
+          .with(q, no)
+          .with(e, no)
+          .with(P.union(s, down), no)
+          .with(P.union(a_pointerLock, left_pointerLock), no)
+          .with(P.union(d_pointerLock, right_pointerLock), no)
+          .with(P.union(w, up), yes)
+          .with(mouse_both, yes)
+          .otherwise(no),
+      )
 
-    setControl(
-      'backward',
-      match(inputs)
-        .with(q_s_e, yes)
-        .with(q, no)
-        .with(e, no)
-        .with(P.union(w, up), no)
-        .with(mouse_both, no)
-        .with(P.union(a_pointerLock, left_pointerLock), no)
-        .with(P.union(d_pointerLock, right_pointerLock), no)
-        .with(P.union(s, down), yes)
-        .otherwise(no),
-    )
+      setControl(
+        'backward',
+        match(inputs)
+          .with(q_s_e, yes)
+          .with(q, no)
+          .with(e, no)
+          .with(P.union(w, up), no)
+          .with(mouse_both, no)
+          .with(P.union(a_pointerLock, left_pointerLock), no)
+          .with(P.union(d_pointerLock, right_pointerLock), no)
+          .with(P.union(s, down), yes)
+          .otherwise(no),
+      )
 
-    setControl(
-      'strafeLeft',
-      match(inputs)
-        .with(P.union(up, w), no)
-        .with(P.union(down, s), no)
-        .with(e, no)
-        .with(d_pointerLock, no)
-        .with(mouse_both, no)
-        .with(q, yes)
-        .with(a_pointerLock, yes)
-        .with(left_pointerLock, yes)
-        .otherwise(no),
-    )
+      setControl(
+        'strafeLeft',
+        match(inputs)
+          .with(P.union(up, w), no)
+          .with(P.union(down, s), no)
+          .with(e, no)
+          .with(d_pointerLock, no)
+          .with(mouse_both, no)
+          .with(q, yes)
+          .with(a_pointerLock, yes)
+          .with(left_pointerLock, yes)
+          .otherwise(no),
+      )
 
-    setControl(
-      'strafeRight',
-      match(inputs)
-        .with(q, no)
-        .with(a_pointerLock, no)
-        .with(P.union(up, w), no)
-        .with(P.union(down, s), no)
-        .with(mouse_both, no)
-        .with(e, yes)
-        .with(d_pointerLock, yes)
-        .with(right_pointerLock, yes)
-        .otherwise(no),
-    )
+      setControl(
+        'strafeRight',
+        match(inputs)
+          .with(q, no)
+          .with(a_pointerLock, no)
+          .with(P.union(up, w), no)
+          .with(P.union(down, s), no)
+          .with(mouse_both, no)
+          .with(e, yes)
+          .with(d_pointerLock, yes)
+          .with(right_pointerLock, yes)
+          .otherwise(no),
+      )
 
-    setControl(
-      'forwardLeft',
-      match(inputs)
-        // .with(w_e, no)
-        .with(q_w, yes)
-        .with(P.union(a_w_pointerLock, up_left_pointerLock), yes)
-        .with(mouse_both_q, yes)
-        .with(P.union(mouse_both_a, mouse_both_left), yes)
-        .otherwise(no),
-    )
+      setControl(
+        'forwardLeft',
+        match(inputs)
+          // .with(w_e, no)
+          .with(q_w, yes)
+          .with(P.union(a_w_pointerLock, up_left_pointerLock), yes)
+          .with(mouse_both_q, yes)
+          .with(P.union(mouse_both_a, mouse_both_left), yes)
+          .otherwise(no),
+      )
 
-    setControl(
-      'forwardRight',
-      match(inputs)
-        // .with(q_w, no)
-        .with(w_e, yes)
-        .with(P.union(d_w_pointerLock, up_right_pointerLock), yes)
-        .with(mouse_both_e, yes)
-        .with(P.union(mouse_both_d, mouse_both_right), yes)
-        .otherwise(no),
-    )
+      setControl(
+        'forwardRight',
+        match(inputs)
+          // .with(q_w, no)
+          .with(w_e, yes)
+          .with(P.union(d_w_pointerLock, up_right_pointerLock), yes)
+          .with(mouse_both_e, yes)
+          .with(P.union(mouse_both_d, mouse_both_right), yes)
+          .otherwise(no),
+      )
 
-    setControl(
-      'backwardLeft',
-      match(inputs)
-        .with(q_s, yes)
-        .with(P.union(a_s_pointerLock, left_down_pointerLock), yes)
-        .otherwise(no),
-    )
+      setControl(
+        'backwardLeft',
+        match(inputs)
+          .with(q_s, yes)
+          .with(P.union(a_s_pointerLock, left_down_pointerLock), yes)
+          .otherwise(no),
+      )
 
-    setControl(
-      'backwardRight',
-      match(inputs)
-        .with(e_s, yes)
-        .with(P.union(d_s_pointerLock, right_down_pointerLock), yes)
-        .otherwise(no),
-    )
+      setControl(
+        'backwardRight',
+        match(inputs)
+          .with(e_s, yes)
+          .with(P.union(d_s_pointerLock, right_down_pointerLock), yes)
+          .otherwise(no),
+      )
 
-    setControl(
-      'turnLeft',
-      match(inputs)
-        .with(pointerLock, no)
-        .with(P.union(d, right), no)
-        .with(P.union(a, left), yes)
-        .otherwise(no),
-    )
+      setControl(
+        'turnLeft',
+        match(inputs)
+          .with(pointerLock, no)
+          .with(P.union(d, right), no)
+          .with(P.union(a, left), yes)
+          .otherwise(no),
+      )
 
-    setControl(
-      'turnRight',
-      match(inputs)
-        .with(pointerLock, no)
-        .with(P.union(a, left), no)
-        .with(P.union(d, right), yes)
-        .otherwise(no),
-    )
+      setControl(
+        'turnRight',
+        match(inputs)
+          .with(pointerLock, no)
+          .with(P.union(a, left), no)
+          .with(P.union(d, right), yes)
+          .otherwise(no),
+      )
+    }
 
     setControl('jump', inputs.Space)
 
