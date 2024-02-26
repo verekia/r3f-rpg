@@ -4,7 +4,8 @@ import { match, P } from 'ts-pattern'
 import between, { clamp, pi } from '#/lib/util'
 import { setControl } from '#/stores/controls'
 import { useInputStore } from '#/stores/inputs'
-import { jump } from '#/systems/MovementSystem'
+import { cameraUTurn } from '#/systems/CameraFollow'
+import { jump, uTurn } from '#/systems/MovementSystem'
 
 const SENSITIVITY_THRESHOLD = 6
 const MAX_MOVEMENT = 60
@@ -89,6 +90,7 @@ const joystickBackwardRight = () => {
 // It does not manage whether or not these intents are valid in the world.
 
 let previousJumpInput = false
+let previousUTurnInput = false
 
 const ControlsSystem = () => {
   useFrame(() => {
@@ -247,6 +249,14 @@ const ControlsSystem = () => {
       }
     }
     previousJumpInput = inputs.Space
+
+    if (!previousUTurnInput && inputs.KeyX) {
+      if (inputs.KeyX) {
+        uTurn()
+        cameraUTurn()
+      }
+    }
+    previousUTurnInput = inputs.KeyX
   })
 
   return null

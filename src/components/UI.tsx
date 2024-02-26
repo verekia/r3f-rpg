@@ -2,7 +2,7 @@ import FullscreenButton from '#/components/FullscreenButton'
 import Nipple from '#/components/Nipple'
 import { LANDING_ROUTE } from '#/routes'
 import useStore from '#/store'
-import { jump } from '#/systems/MovementSystem'
+import { jump, uTurn } from '#/systems/MovementSystem'
 
 const UI = () => (
   <>
@@ -18,10 +18,19 @@ const UI = () => (
       <button onClick={() => useStore.getState().setRoute(LANDING_ROUTE)}>Menu</button>
     </div>
     <div
+      className="hover-hover:hidden absolute bottom-10 left-10 z-10 rounded-md bg-black/50 p-2 text-white"
+      onPointerDown={uTurn}
+    >
+      U-turn
+    </div>
+    <div
       className="hover-hover:hidden absolute bottom-16 right-10 z-10 rounded-md bg-black/50 p-2 text-white"
       onPointerDown={jump}
     >
       Jump
+    </div>
+    <div className="hover-none:hidden absolute bottom-10 left-10 z-10 rounded-tl-xl  px-5 py-2">
+      X: U-Turn, Space: Jump
     </div>
     <div className="absolute bottom-0 right-0 z-10 rounded-tl-xl bg-slate-400 px-5 py-2 text-white">
       Actions

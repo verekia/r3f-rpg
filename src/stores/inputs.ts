@@ -7,6 +7,7 @@ const defaultInputs = {
   KeyD: false,
   KeyQ: false,
   KeyE: false,
+  KeyX: false,
   Space: false,
   ArrowUp: false,
   ArrowDown: false,
