@@ -1,7 +1,7 @@
-import useStore from '#/store'
+import { useCanvasStore } from '@v1v2/engine'
 
 const RendererInfo = () => {
-  const rendererName = useStore(s => s.rendererName)
+  const rendererName = useCanvasStore(s => s.rendererName)
 
   if (!rendererName) return null
 

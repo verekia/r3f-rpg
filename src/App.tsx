@@ -1,4 +1,5 @@
-import Canvas from '#/components/Canvas'
+import { Canvas } from '@v1v2/engine'
+
 import ForestScene from '#/components/ForestScene'
 import RendererInfo from '#/components/RendererInfo'
 import UI from '#/components/UI'

@@ -1,7 +1,7 @@
 import { useFrame } from '@react-three/fiber'
+import { lerp, pi } from '@v1v2/engine'
 
 import { DEFAULT_CAMERA_ROT_X } from '#/lib/constants'
-import { lerp, pi } from '#/lib/util'
 import { useInputStore } from '#/stores/inputs'
 import { cameras, players } from '#/world'
 

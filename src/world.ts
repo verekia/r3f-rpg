@@ -88,6 +88,8 @@ export const createPlayer = (tra: Tra) =>
 export const createEnemy = (tra: Tra) => world.add({ ...createBase(), enemy: true, tra })
 export const createCamera = (tra: Tra) => world.add({ ...createBase(), camera: true, tra })
 export const createEvent = (event: Event) => world.add({ ...createBase(), event })
+export const createDCZone = (system: DetectCollisionsSystem, obstaclesPolygon: Polygon) =>
+  world.add({ ...createBase(), dcZone: { system, obstaclesPolygon } })
 
 export const markForRemoval = (e: Entity) => world.addComponent(e, 'toBeRemoved', true)
 

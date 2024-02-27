@@ -5,7 +5,7 @@ import { System } from 'detect-collisions'
 import * as THREE from 'three'
 import { GLTF } from 'three-stdlib'
 
-import { dcBodies, world } from '#/world'
+import { createDCZone, dcBodies, world } from '#/world'
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -42,7 +42,8 @@ const ForestObstacles = () => {
       ],
       { isStatic: true },
     )
-    const dcZone = world.add({ dcZone: { system, obstaclesPolygon } })
+
+    const dcZone = createDCZone(system, obstaclesPolygon)
 
     for (const e of dcBodies) {
       system.insert(e.dcBody)

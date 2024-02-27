@@ -1,10 +1,6 @@
 export const exists = (value: unknown) => value != null
-export const lerp = (a: number, b: number, t: number): number => a + (b - a) * t
-export const clamp = (value: number, limit: number) => Math.max(Math.min(value, limit), -limit)
 
-export const pi = Math.PI
-
-const between = (
+export const between = (
   value: number,
   lowerBound: number,
   upperBound: number,
@@ -25,5 +21,3 @@ const between = (
         : option === 'include-lower' || option === 'exclude-upper'
           ? lowerBound <= value && value < upperBound
           : false
-
-export default between
