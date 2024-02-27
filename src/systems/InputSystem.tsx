@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 
-import { getInput, inputKeys, setInput } from '#/stores/inputs'
+import { getInput, inputKeys, setInput, useInputStore } from '#/stores/inputs'
+import { createEvent } from '#/world'
 
 import type { Inputs } from '#/stores/inputs'
 
@@ -8,6 +9,9 @@ const InputSystem = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (inputKeys.includes(e.code as keyof Inputs)) {
+        if (!useInputStore.getState().inputs[e.code as keyof Inputs]) {
+          createEvent({ category: 'input', type: 'keypress', key: e.code })
+        }
         setInput(e.code as keyof Inputs, true)
       }
     }

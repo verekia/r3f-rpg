@@ -6,6 +6,7 @@ import { setControl } from '#/stores/controls'
 import { useInputStore } from '#/stores/inputs'
 import { cameraUTurn } from '#/systems/CameraFollow'
 import { jump, uTurn } from '#/systems/MovementSystem'
+import { inputEvents, markForRemoval } from '#/world'
 
 const SENSITIVITY_THRESHOLD = 6
 const MAX_MOVEMENT = 60
@@ -88,9 +89,6 @@ const joystickBackwardRight = () => {
 
 // This system registers intents of player controls based on inputs and resolves input conflicts.
 // It does not manage whether or not these intents are valid in the world.
-
-let previousJumpInput = false
-let previousUTurnInput = false
 
 const ControlsSystem = () => {
   useFrame(() => {
@@ -243,20 +241,17 @@ const ControlsSystem = () => {
       setControl('manualRotX', undefined)
     }
 
-    if (!previousJumpInput && inputs.Space) {
-      if (inputs.Space) {
+    for (const e of inputEvents) {
+      if (e.event.type === 'keypress' && e.event.key === 'Space') {
         jump()
       }
-    }
-    previousJumpInput = inputs.Space
-
-    if (!previousUTurnInput && inputs.KeyX) {
-      if (inputs.KeyX) {
+      if (e.event.type === 'keypress' && e.event.key === 'KeyX') {
         uTurn()
         cameraUTurn()
       }
+
+      markForRemoval(e)
     }
-    previousUTurnInput = inputs.KeyX
   })
 
   return null

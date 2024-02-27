@@ -1,5 +1,6 @@
 import { clsx } from 'clsx'
 
+import { enterFullscreen, exitFullscreen } from '#/lib/helpers/inputs'
 import { useInputStore } from '#/stores/inputs'
 
 import { EnterFullscreenIcon, ExitFullscreenIcon } from './icons'
@@ -13,11 +14,7 @@ const FullscreenButton = ({ className, ...props }: { className?: string }) => {
         'inline-flex items-center justify-center rounded-md p-1 outline-none focus-visible:ring-4 focus-visible:ring-blue-400 focus-visible:ring-offset-4',
         className,
       )}
-      onClick={() =>
-        isFullscreen
-          ? useInputStore.getState().exitFullscreen()
-          : useInputStore.getState().enterFullscreen()
-      }
+      onClick={() => (isFullscreen ? exitFullscreen() : enterFullscreen())}
       {...props}
     >
       {isFullscreen ? (
