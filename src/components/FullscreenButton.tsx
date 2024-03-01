@@ -1,12 +1,10 @@
+import { enterFullscreen, exitFullscreen, useBrowserStore } from '@v1v2/engine'
 import { clsx } from 'clsx'
 
-import { enterFullscreen, exitFullscreen } from '#/lib/helpers/inputs'
-import { useInputStore } from '#/stores/inputs'
-
-import { EnterFullscreenIcon, ExitFullscreenIcon } from './icons'
+import { EnterFullscreenIcon, ExitFullscreenIcon } from '#/components/icons'
 
 const FullscreenButton = ({ className, ...props }: { className?: string }) => {
-  const isFullscreen = useInputStore(s => s.inputs.fullscreen)
+  const isFullscreen = useBrowserStore(s => s.isFullscreen)
 
   return (
     <button

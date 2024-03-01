@@ -1,6 +1,6 @@
 import { ReactNode, useRef } from 'react'
 
-import { Canvas as V1V2Canvas } from '@v1v2/engine'
+import { lockPointer, Canvas as V1V2Canvas } from '@v1v2/engine'
 
 const Canvas = ({ children }: { children: ReactNode }) => {
   const longRightClickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -14,7 +14,7 @@ const Canvas = ({ children }: { children: ReactNode }) => {
       onMouseMove={e => {
         // Note: This can cause many exceptions if the fullscreen is not allowed
         if (e.buttons === 2) {
-          document.body.requestPointerLock()
+          lockPointer()
           longRightClickTimeoutRef.current && clearTimeout(longRightClickTimeoutRef.current)
         }
       }}
@@ -26,7 +26,7 @@ const Canvas = ({ children }: { children: ReactNode }) => {
       onMouseDown={e => {
         if (e.button === 2) {
           longRightClickTimeoutRef.current = setTimeout(() => {
-            document.body.requestPointerLock()
+            lockPointer()
           }, 300)
         }
       }}

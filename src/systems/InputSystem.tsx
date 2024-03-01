@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 
-import { getInput, inputKeys, setInput, useInputStore } from '#/stores/inputs'
+import { getBrowserState, unlockPointer } from '@v1v2/engine'
+
+import { inputKeys, setInput, useInputStore } from '#/stores/inputs'
 import { createEvent } from '#/world'
 
 import type { Inputs } from '#/stores/inputs'
@@ -20,10 +22,6 @@ const InputSystem = () => {
       if (inputKeys.includes(e.code as keyof Inputs)) {
         setInput(e.code as keyof Inputs, false)
       }
-    }
-
-    const handlePointerLockChange = () => {
-      setInput('pointerLock', document.pointerLockElement !== null)
     }
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -48,31 +46,23 @@ const InputSystem = () => {
         setInput('mouseRight', false)
       }
 
-      if (getInput('pointerLock') && e.button === 2) {
-        document.exitPointerLock()
+      if (getBrowserState().isPointerLocked && e.button === 2) {
+        unlockPointer()
       }
-    }
-
-    const handleFullscreenChange = () => {
-      setInput('fullscreen', document.fullscreenElement !== null)
     }
 
     window.addEventListener('keydown', handleKeyDown)
     window.addEventListener('keyup', handleKeyUp)
-    document.addEventListener('pointerlockchange', handlePointerLockChange)
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mousedown', handleMouseDown)
     document.addEventListener('mouseup', handleMouseUp)
-    document.addEventListener('fullscreenchange', handleFullscreenChange)
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
-      document.removeEventListener('pointerlockchange', handlePointerLockChange)
       document.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mousedown', handleMouseDown)
       document.removeEventListener('mouseup', handleMouseUp)
-      document.removeEventListener('fullscreenchange', handleFullscreenChange)
     }
   }, [])
 
