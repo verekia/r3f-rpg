@@ -48,7 +48,7 @@ const joystickBackwardRight = () => {
 
 const getForward = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked } = getBrowserState()
+  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = getBrowserState()
 
   if (i.KeyQ && i.KeyW && i.KeyE) return true
 
@@ -58,7 +58,7 @@ const getForward = () => {
   if (isPointerLocked && (i.KeyD || i.ArrowRight)) return false
 
   if (i.KeyW || i.ArrowUp) return true
-  if (i.mouseLeft && i.mouseRight) return true
+  if (isLeftMouseDown && isRightMouseDown) return true
   if (joystickForward()) return true
 
   return false
@@ -66,12 +66,12 @@ const getForward = () => {
 
 const getBackward = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked } = getBrowserState()
+  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = getBrowserState()
 
   if (i.KeyQ && i.KeyS && i.KeyE) return true
   if (i.KeyQ || i.KeyE) return false
   if (i.KeyW || i.ArrowUp) return false
-  if (i.mouseLeft && i.mouseRight) return false
+  if (isLeftMouseDown && isRightMouseDown) return false
   if (isPointerLocked && (i.KeyA || i.ArrowLeft)) return false
   if (isPointerLocked && (i.KeyD || i.ArrowRight)) return false
   if (i.KeyS || i.ArrowDown) return true
@@ -104,13 +104,13 @@ const getTurnRight = () => {
 
 const getStrafeLeft = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked } = getBrowserState()
+  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = getBrowserState()
 
   if (i.ArrowUp || i.KeyW) return false
   if (i.ArrowDown || i.KeyS) return false
   if (i.KeyE) return false
   if (isPointerLocked && (i.KeyD || i.ArrowRight)) return false
-  if (i.mouseLeft && i.mouseRight) return false
+  if (isLeftMouseDown && isRightMouseDown) return false
   if (i.KeyQ) return true
   if (isPointerLocked && (i.KeyA || i.ArrowLeft)) return true
   if (joystickStrafeLeft()) return true
@@ -120,13 +120,13 @@ const getStrafeLeft = () => {
 
 const getStrafeRight = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked } = getBrowserState()
+  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = getBrowserState()
 
   if (i.KeyQ) return false
   if (isPointerLocked && (i.KeyA || i.ArrowLeft)) return false
   if (i.KeyW || i.ArrowUp) return false
   if (i.KeyS || i.ArrowDown) return false
-  if (i.mouseLeft && i.mouseRight) return false
+  if (isLeftMouseDown && isRightMouseDown) return false
   if (i.KeyE) return true
   if (isPointerLocked && (i.KeyD || i.ArrowRight)) return true
   if (joystickStrafeRight()) return true
@@ -136,24 +136,24 @@ const getStrafeRight = () => {
 
 const getForwardLeft = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked } = getBrowserState()
+  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = getBrowserState()
 
   if (i.KeyQ && i.KeyW) return true
   if (isPointerLocked && ((i.KeyA && i.KeyW) || (i.ArrowUp && i.ArrowLeft))) return true
-  if (i.mouseLeft && i.mouseRight && i.KeyQ) return true
-  if (i.mouseLeft && i.mouseRight && (i.ArrowLeft || i.KeyA)) return true
+  if (isLeftMouseDown && isRightMouseDown && i.KeyQ) return true
+  if (isLeftMouseDown && isRightMouseDown && (i.ArrowLeft || i.KeyA)) return true
 
   return false
 }
 
 const getForwardRight = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked } = getBrowserState()
+  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = getBrowserState()
 
   if (i.KeyE && i.KeyW) return true
   if (isPointerLocked && ((i.KeyD && i.KeyW) || (i.ArrowUp && i.ArrowRight))) return true
-  if (i.mouseLeft && i.mouseRight && i.KeyE) return true
-  if (i.mouseLeft && i.mouseRight && (i.ArrowRight || i.KeyD)) return true
+  if (isLeftMouseDown && isRightMouseDown && i.KeyE) return true
+  if (isLeftMouseDown && isRightMouseDown && (i.ArrowRight || i.KeyD)) return true
 
   return false
 }

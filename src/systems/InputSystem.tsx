@@ -26,21 +26,7 @@ const InputSystem = () => {
 
     // For some reason, pointer down event doesn't get fired when one mouse button is
     // already down and another is pressed. Using mouseDown is a workaround.
-    const handleMouseDown = (e: MouseEvent) => {
-      if (e.button === 0) {
-        setInput('mouseLeft', true)
-      } else if (e.button === 2) {
-        setInput('mouseRight', true)
-      }
-    }
-
     const handleMouseUp = (e: MouseEvent) => {
-      if (e.button === 0) {
-        setInput('mouseLeft', false)
-      } else if (e.button === 2) {
-        setInput('mouseRight', false)
-      }
-
       if (getBrowserState().isPointerLocked && e.button === 2) {
         unlockPointer()
       }
@@ -48,13 +34,11 @@ const InputSystem = () => {
 
     window.addEventListener('keydown', handleKeyDown)
     window.addEventListener('keyup', handleKeyUp)
-    document.addEventListener('mousedown', handleMouseDown)
     document.addEventListener('mouseup', handleMouseUp)
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
-      document.removeEventListener('mousedown', handleMouseDown)
       document.removeEventListener('mouseup', handleMouseUp)
     }
   }, [])

@@ -1,6 +1,7 @@
 import {
   CanHoverEvents,
   FullscreenChangeEvents,
+  MouseDownEvents,
   MouseMoveEvents,
   PointerLockEvents,
 } from '@v1v2/engine'
@@ -33,6 +34,7 @@ const App = () => {
       <PointerLockEvents />
       <CanHoverEvents />
       <FullscreenChangeEvents />
+      <MouseDownEvents />
     </div>
   )
 }
