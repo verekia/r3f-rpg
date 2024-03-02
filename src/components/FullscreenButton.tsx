@@ -5,14 +5,14 @@ import {
   lockOrientation,
   unlockKeys,
   unlockOrientation,
-  useBrowserStore,
+  useEngine,
 } from '@v1v2/engine'
 import { clsx } from 'clsx'
 
 import { EnterFullscreenIcon, ExitFullscreenIcon } from '#/components/icons'
 
 const FullscreenButton = ({ className, ...props }: { className?: string }) => {
-  const isFullscreen = useBrowserStore(s => s.isFullscreen)
+  const isFullscreen = useEngine(s => s.isFullscreen)
 
   return (
     <button

@@ -1,14 +1,6 @@
 import { useCallback } from 'react'
 
-import {
-  CanHoverEvents,
-  FullscreenChangeEvents,
-  getBrowserState,
-  MouseDownEvents,
-  MouseMoveEvents,
-  PointerLockEvents,
-  unlockPointer,
-} from '@v1v2/engine'
+import { CanvasEngine, engine, UIEngine, unlockPointer } from '@v1v2/engine'
 
 import Canvas from '#/components/Canvas'
 import ForestScene from '#/components/ForestScene'
@@ -23,7 +15,7 @@ const App = () => {
   const route = useStore(s => s.route)
 
   const handleRightMouseUp = useCallback(() => {
-    if (getBrowserState().isPointerLocked) {
+    if (engine().isPointerLocked) {
       unlockPointer()
     }
   }, [])
@@ -38,13 +30,10 @@ const App = () => {
             {route === FOREST_ROUTE && <ForestScene />}
           </>
         )}
+        <CanvasEngine />
       </Canvas>
       <RendererInfo />
-      <MouseMoveEvents />
-      <PointerLockEvents />
-      <CanHoverEvents />
-      <FullscreenChangeEvents />
-      <MouseDownEvents onRightMouseUp={handleRightMouseUp} />
+      <UIEngine onRightMouseUp={handleRightMouseUp} />
     </div>
   )
 }
