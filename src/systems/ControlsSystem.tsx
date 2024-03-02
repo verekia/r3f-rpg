@@ -205,7 +205,7 @@ const ControlsSystem = () => {
         setControl('manualRotZ', -clamp(mouseMovementX, MAX_MOVEMENT) / 100)
       }
       if (mouseMovementY !== undefined) {
-        setControl('manualRotX', -clamp(mouseMovementY, MAX_MOVEMENT) / 100)
+        setControl('manualRotX', clamp(mouseMovementY, MAX_MOVEMENT) / 100)
       }
     } else if (
       mobileJoystick1.force !== undefined &&
