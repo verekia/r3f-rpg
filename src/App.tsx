@@ -1,4 +1,9 @@
-import { BrowserEvents } from '@v1v2/engine'
+import {
+  CanHoverEvents,
+  FullscreenChangeEvents,
+  MouseMoveEvents,
+  PointerLockEvents,
+} from '@v1v2/engine'
 
 import Canvas from '#/components/Canvas'
 import ForestScene from '#/components/ForestScene'
@@ -24,7 +29,10 @@ const App = () => {
         )}
       </Canvas>
       <RendererInfo />
-      <BrowserEvents />
+      <MouseMoveEvents />
+      <PointerLockEvents />
+      <CanHoverEvents />
+      <FullscreenChangeEvents />
     </div>
   )
 }

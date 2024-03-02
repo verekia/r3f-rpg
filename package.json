@@ -13,7 +13,7 @@
   "dependencies": {
     "@react-three/drei": "^9.97.6",
     "@react-three/fiber": "^8.15.16",
-    "@v1v2/engine": "^0.0.11",
+    "@v1v2/engine": "^0.0.12",
     "clsx": "^2.1.0",
     "detect-collisions": "^9.2.4",
     "miniplex": "^2.0.0",
