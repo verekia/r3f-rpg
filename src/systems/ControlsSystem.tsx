@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber'
-import { clamp, getBrowserState, pi } from '@v1v2/engine'
+import { clamp, getBrowserState, liveBrowserState, pi } from '@v1v2/engine'
 
 import { between } from '#/lib/util'
 import { setControl } from '#/stores/controls'
@@ -8,7 +8,6 @@ import { cameraUTurn } from '#/systems/CameraFollow'
 import { jump, uTurn } from '#/systems/MovementSystem'
 import { inputEvents, markForRemoval } from '#/world'
 
-const SENSITIVITY_THRESHOLD = 6
 const MAX_MOVEMENT = 60
 
 const joystickForward = () => {
@@ -201,19 +200,12 @@ const ControlsSystem = () => {
     setControl('jump', inputs.Space)
 
     if (getBrowserState().isPointerLocked) {
-      setControl(
-        'manualRotZ',
-        -(Math.abs(inputs.mouseMovementX) < SENSITIVITY_THRESHOLD
-          ? 0
-          : clamp(inputs.mouseMovementX, MAX_MOVEMENT)) / 100,
-      )
-
-      setControl(
-        'manualRotX',
-        -(Math.abs(inputs.mouseMovementY) < SENSITIVITY_THRESHOLD
-          ? 0
-          : clamp(inputs.mouseMovementY, MAX_MOVEMENT)) / 100,
-      )
+      if (liveBrowserState.mouseMovementX !== undefined) {
+        setControl('manualRotZ', -clamp(liveBrowserState.mouseMovementX, MAX_MOVEMENT) / 100)
+      }
+      if (liveBrowserState.mouseMovementY !== undefined) {
+        setControl('manualRotX', -clamp(liveBrowserState.mouseMovementY, MAX_MOVEMENT) / 100)
+      }
     } else if (inputs.nippleAngle && inputs.nippleForce && inputs.nippleForce > 0.2) {
       if (between(inputs.nippleAngle, 0, pi)) {
         setControl('manualRotZ', (inputs.nippleAngle - pi / 2) * 0.1)

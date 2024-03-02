@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
 
+import { throttleDebounce } from '@v1v2/engine'
 import clsx from 'clsx'
 import NippleJS, { EventData, JoystickManager, JoystickOutputData } from 'nipplejs'
-import { throttle } from 'radash'
 
 import { setInput } from '#/stores/inputs'
 
@@ -21,13 +21,10 @@ const Nipple = ({ className, ...props }: { className?: string }) => {
     setInput('nippleForce', undefined)
   }
 
-  const handleMove = throttle(
-    { interval: 20 },
-    (_: EventData, { force, angle }: JoystickOutputData) => {
-      setInput('nippleAngle', angle.radian)
-      setInput('nippleForce', force)
-    },
-  )
+  const handleMove = throttleDebounce((_: EventData, { force, angle }: JoystickOutputData) => {
+    setInput('nippleAngle', angle.radian)
+    setInput('nippleForce', force)
+  }, 30)
 
   useEffect(() => {
     if (window.matchMedia('(hover: none)').matches) {

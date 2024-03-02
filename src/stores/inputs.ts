@@ -15,8 +15,6 @@ const defaultInputs = {
   ArrowRight: false,
   mouseLeft: false,
   mouseRight: false,
-  mouseMovementX: 0,
-  mouseMovementY: 0,
   nippleAngle: undefined as number | undefined,
   nippleForce: undefined as number | undefined,
 }
