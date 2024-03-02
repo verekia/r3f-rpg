@@ -13,8 +13,11 @@ const defaultInputs = {
   ArrowDown: false,
   ArrowLeft: false,
   ArrowRight: false,
-  nippleAngle: undefined as number | undefined,
-  nippleForce: undefined as number | undefined,
+}
+
+export const mobileJoystick1 = {
+  angle: undefined as number | undefined,
+  force: undefined as number | undefined,
 }
 
 export type Inputs = typeof defaultInputs

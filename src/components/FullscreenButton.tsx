@@ -1,4 +1,12 @@
-import { enterFullscreen, exitFullscreen, useBrowserStore } from '@v1v2/engine'
+import {
+  enterFullscreen,
+  exitFullscreen,
+  lockKeys,
+  lockOrientation,
+  unlockKeys,
+  unlockOrientation,
+  useBrowserStore,
+} from '@v1v2/engine'
 import { clsx } from 'clsx'
 
 import { EnterFullscreenIcon, ExitFullscreenIcon } from '#/components/icons'
@@ -12,7 +20,17 @@ const FullscreenButton = ({ className, ...props }: { className?: string }) => {
         'inline-flex items-center justify-center rounded-md p-1 outline-none focus-visible:ring-4 focus-visible:ring-blue-400 focus-visible:ring-offset-4',
         className,
       )}
-      onClick={() => (isFullscreen ? exitFullscreen() : enterFullscreen())}
+      onClick={() => {
+        if (isFullscreen) {
+          exitFullscreen()
+          unlockKeys()
+          unlockOrientation()
+        } else {
+          enterFullscreen()
+          lockOrientation('landscape')
+          lockKeys(['Escape'])
+        }
+      }}
       {...props}
     >
       {isFullscreen ? (

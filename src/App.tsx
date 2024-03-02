@@ -1,9 +1,13 @@
+import { useCallback } from 'react'
+
 import {
   CanHoverEvents,
   FullscreenChangeEvents,
+  getBrowserState,
   MouseDownEvents,
   MouseMoveEvents,
   PointerLockEvents,
+  unlockPointer,
 } from '@v1v2/engine'
 
 import Canvas from '#/components/Canvas'
@@ -17,6 +21,12 @@ import Systems from '#/systems/Systems'
 
 const App = () => {
   const route = useStore(s => s.route)
+
+  const handleRightMouseUp = useCallback(() => {
+    if (getBrowserState().isPointerLocked) {
+      unlockPointer()
+    }
+  }, [])
 
   return (
     <div className="relative h-full select-none">
@@ -34,7 +44,7 @@ const App = () => {
       <PointerLockEvents />
       <CanHoverEvents />
       <FullscreenChangeEvents />
-      <MouseDownEvents />
+      <MouseDownEvents onRightMouseUp={handleRightMouseUp} />
     </div>
   )
 }

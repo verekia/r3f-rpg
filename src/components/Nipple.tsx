@@ -1,30 +1,31 @@
 import { useEffect, useRef } from 'react'
 
-import { throttleDebounce } from '@v1v2/engine'
 import clsx from 'clsx'
 import NippleJS, { EventData, JoystickManager, JoystickOutputData } from 'nipplejs'
 
-import { setInput } from '#/stores/inputs'
+import { mobileJoystick1 } from '#/stores/inputs'
 
 let nippleManager: JoystickManager
 
 const Nipple = ({ className, ...props }: { className?: string }) => {
   const ref = useRef<HTMLDivElement>(null)
 
-  const handleStart = (_: EventData, { force, angle }: JoystickOutputData) => {
-    setInput('nippleAngle', undefined)
-    setInput('nippleForce', undefined)
+  const handleStart = () => {
+    mobileJoystick1.angle = undefined
+    mobileJoystick1.force = undefined
   }
 
-  const handleEnd = (_: EventData, { force, angle }: JoystickOutputData) => {
-    setInput('nippleAngle', undefined)
-    setInput('nippleForce', undefined)
+  const handleEnd = () => {
+    mobileJoystick1.angle = undefined
+    mobileJoystick1.force = undefined
   }
 
-  const handleMove = throttleDebounce((_: EventData, { force, angle }: JoystickOutputData) => {
-    setInput('nippleAngle', angle.radian)
-    setInput('nippleForce', force)
-  }, 30)
+  const handleMove = (_: EventData, { force, angle }: JoystickOutputData) => {
+    if (mobileJoystick1) {
+      mobileJoystick1.angle = angle.radian
+      mobileJoystick1.force = force
+    }
+  }
 
   useEffect(() => {
     if (window.matchMedia('(hover: none)').matches) {

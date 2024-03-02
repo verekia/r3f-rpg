@@ -3,7 +3,7 @@ import { clamp, getBrowserState, liveBrowserState, pi } from '@v1v2/engine'
 
 import { between } from '#/lib/util'
 import { setControl } from '#/stores/controls'
-import { useInputStore } from '#/stores/inputs'
+import { mobileJoystick1, useInputStore } from '#/stores/inputs'
 import { cameraUTurn } from '#/systems/CameraFollow'
 import { jump, uTurn } from '#/systems/MovementSystem'
 import { inputEvents, markForRemoval } from '#/world'
@@ -11,39 +11,39 @@ import { inputEvents, markForRemoval } from '#/world'
 const MAX_MOVEMENT = 60
 
 const joystickForward = () => {
-  const { inputs } = useInputStore.getState()
-  if (inputs.nippleForce === undefined || inputs.nippleAngle === undefined) return false
-  return inputs.nippleForce > 0.2 && between(inputs.nippleAngle, pi / 4, (3 * pi) / 4)
+  if (mobileJoystick1.angle === undefined || mobileJoystick1.force === undefined) return false
+
+  return mobileJoystick1.force > 0.2 && between(mobileJoystick1.angle, pi / 4, (3 * pi) / 4)
 }
 
 const joystickBackward = () => {
-  const { inputs } = useInputStore.getState()
-  if (inputs.nippleForce === undefined || inputs.nippleAngle === undefined) return false
-  return inputs.nippleForce > 0.2 && between(inputs.nippleAngle, (4 * pi) / 3, (5 * pi) / 3)
+  if (mobileJoystick1.angle === undefined || mobileJoystick1.force === undefined) return false
+
+  return mobileJoystick1.force > 0.2 && between(mobileJoystick1.angle, (4 * pi) / 3, (5 * pi) / 3)
 }
 
 const joystickStrafeLeft = () => {
-  const { inputs } = useInputStore.getState()
-  if (inputs.nippleForce === undefined || inputs.nippleAngle === undefined) return false
-  return inputs.nippleForce > 0.2 && between(inputs.nippleAngle, pi, (7 * pi) / 6)
+  if (mobileJoystick1.angle === undefined || mobileJoystick1.force === undefined) return false
+
+  return mobileJoystick1.force > 0.2 && between(mobileJoystick1.angle, pi, (7 * pi) / 6)
 }
 
 const joystickStrafeRight = () => {
-  const { inputs } = useInputStore.getState()
-  if (inputs.nippleForce === undefined || inputs.nippleAngle === undefined) return false
-  return inputs.nippleForce > 0.2 && between(inputs.nippleAngle, (11 * pi) / 6, 2 * pi)
+  if (mobileJoystick1.angle === undefined || mobileJoystick1.force === undefined) return false
+
+  return mobileJoystick1.force > 0.2 && between(mobileJoystick1.angle, (11 * pi) / 6, 2 * pi)
 }
 
 const joystickBackwardLeft = () => {
-  const { inputs } = useInputStore.getState()
-  if (inputs.nippleForce === undefined || inputs.nippleAngle === undefined) return false
-  return inputs.nippleForce > 0.2 && between(inputs.nippleAngle, (7 * pi) / 6, (4 * pi) / 3)
+  if (mobileJoystick1.angle === undefined || mobileJoystick1.force === undefined) return false
+
+  return mobileJoystick1.force > 0.2 && between(mobileJoystick1.angle, (7 * pi) / 6, (4 * pi) / 3)
 }
 
 const joystickBackwardRight = () => {
-  const { inputs } = useInputStore.getState()
-  if (inputs.nippleForce === undefined || inputs.nippleAngle === undefined) return false
-  return inputs.nippleForce > 0.2 && between(inputs.nippleAngle, (5 * pi) / 3, (11 * pi) / 6)
+  if (mobileJoystick1.angle === undefined || mobileJoystick1.force === undefined) return false
+
+  return mobileJoystick1.force > 0.2 && between(mobileJoystick1.angle, (5 * pi) / 3, (11 * pi) / 6)
 }
 
 const getForward = () => {
@@ -206,9 +206,13 @@ const ControlsSystem = () => {
       if (liveBrowserState.mouseMovementY !== undefined) {
         setControl('manualRotX', -clamp(liveBrowserState.mouseMovementY, MAX_MOVEMENT) / 100)
       }
-    } else if (inputs.nippleAngle && inputs.nippleForce && inputs.nippleForce > 0.2) {
-      if (between(inputs.nippleAngle, 0, pi)) {
-        setControl('manualRotZ', (inputs.nippleAngle - pi / 2) * 0.1)
+    } else if (
+      mobileJoystick1.force !== undefined &&
+      mobileJoystick1.angle !== undefined &&
+      mobileJoystick1.force > 0.2
+    ) {
+      if (between(mobileJoystick1.angle, 0, pi)) {
+        setControl('manualRotZ', (mobileJoystick1.angle - pi / 2) * 0.1)
       } else {
         setControl('manualRotZ', undefined)
       }

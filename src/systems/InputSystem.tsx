@@ -1,7 +1,5 @@
 import { useEffect } from 'react'
 
-import { getBrowserState, unlockPointer } from '@v1v2/engine'
-
 import { inputKeys, setInput, useInputStore } from '#/stores/inputs'
 import { createEvent } from '#/world'
 
@@ -24,22 +22,12 @@ const InputSystem = () => {
       }
     }
 
-    // For some reason, pointer down event doesn't get fired when one mouse button is
-    // already down and another is pressed. Using mouseDown is a workaround.
-    const handleMouseUp = (e: MouseEvent) => {
-      if (getBrowserState().isPointerLocked && e.button === 2) {
-        unlockPointer()
-      }
-    }
-
     window.addEventListener('keydown', handleKeyDown)
     window.addEventListener('keyup', handleKeyUp)
-    document.addEventListener('mouseup', handleMouseUp)
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
-      document.removeEventListener('mouseup', handleMouseUp)
     }
   }, [])
 
