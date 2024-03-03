@@ -1,10 +1,8 @@
-import { ManaPotionState } from 'manapotion'
+// Can also use 'manapotion' namespace instead
+import '@manapotion/react'
 
-declare module 'manapotion' {
-  function mp(): ManaPotionState & {
-    mobileJoystick1: {
-      angle: number | undefined
-      force: number | undefined
-    }
+declare module '@manapotion/react' {
+  interface CustomSlice {
+    mobileJoystick1: { angle?: number; force?: number }
   }
 }
