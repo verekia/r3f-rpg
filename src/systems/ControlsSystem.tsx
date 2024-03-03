@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber'
-import { clamp, engine, pi } from 'manapotion'
+import { clamp, mp, pi } from 'manapotion'
 
 import { between } from '#/lib/util'
 import { setControl } from '#/stores/controls'
@@ -48,7 +48,7 @@ const joystickBackwardRight = () => {
 
 const getForward = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = engine()
+  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = mp()
 
   if (i.KeyQ && i.KeyW && i.KeyE) return true
 
@@ -66,7 +66,7 @@ const getForward = () => {
 
 const getBackward = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = engine()
+  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = mp()
 
   if (i.KeyQ && i.KeyS && i.KeyE) return true
   if (i.KeyQ || i.KeyE) return false
@@ -82,7 +82,7 @@ const getBackward = () => {
 
 const getTurnLeft = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked } = engine()
+  const { isPointerLocked } = mp()
 
   if (isPointerLocked) return false
   if (i.KeyD || i.ArrowRight) return false
@@ -93,7 +93,7 @@ const getTurnLeft = () => {
 
 const getTurnRight = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked } = engine()
+  const { isPointerLocked } = mp()
 
   if (isPointerLocked) return false
   if (i.KeyA || i.ArrowLeft) return false
@@ -104,7 +104,7 @@ const getTurnRight = () => {
 
 const getStrafeLeft = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = engine()
+  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = mp()
 
   if (i.ArrowUp || i.KeyW) return false
   if (i.ArrowDown || i.KeyS) return false
@@ -120,7 +120,7 @@ const getStrafeLeft = () => {
 
 const getStrafeRight = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = engine()
+  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = mp()
 
   if (i.KeyQ) return false
   if (isPointerLocked && (i.KeyA || i.ArrowLeft)) return false
@@ -136,7 +136,7 @@ const getStrafeRight = () => {
 
 const getForwardLeft = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = engine()
+  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = mp()
 
   if (i.KeyQ && i.KeyW) return true
   if (isPointerLocked && ((i.KeyA && i.KeyW) || (i.ArrowUp && i.ArrowLeft))) return true
@@ -148,7 +148,7 @@ const getForwardLeft = () => {
 
 const getForwardRight = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = engine()
+  const { isPointerLocked, isLeftMouseDown, isRightMouseDown } = mp()
 
   if (i.KeyE && i.KeyW) return true
   if (isPointerLocked && ((i.KeyD && i.KeyW) || (i.ArrowUp && i.ArrowRight))) return true
@@ -160,7 +160,7 @@ const getForwardRight = () => {
 
 const getBackwardLeft = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked } = engine()
+  const { isPointerLocked } = mp()
 
   if (i.KeyQ && i.KeyS) return true
   if (isPointerLocked && ((i.KeyA && i.KeyS) || (i.ArrowDown && i.ArrowLeft))) return true
@@ -171,7 +171,7 @@ const getBackwardLeft = () => {
 
 const getBackwardRight = () => {
   const i = useInputStore.getState().inputs
-  const { isPointerLocked } = engine()
+  const { isPointerLocked } = mp()
 
   if (i.KeyE && i.KeyS) return true
   if (isPointerLocked && ((i.KeyD && i.KeyS) || (i.ArrowDown && i.ArrowRight))) return true
@@ -186,7 +186,7 @@ const getBackwardRight = () => {
 const ControlsSystem = () => {
   useFrame(() => {
     const inputs = useInputStore.getState().inputs
-    const { isPointerLocked, mouseMovementX, mouseMovementY } = engine()
+    const { isPointerLocked, mouseMovementX, mouseMovementY } = mp()
 
     setControl('forward', getForward())
     setControl('backward', getBackward())

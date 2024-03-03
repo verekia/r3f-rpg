@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { engine, Listeners, unlockPointer } from 'manapotion'
+import { Listeners, mp, unlockPointer } from 'manapotion'
 
 import Canvas from '#/components/Canvas'
 import ForestScene from '#/components/ForestScene'
@@ -15,7 +15,7 @@ const App = () => {
   const route = useStore(s => s.route)
 
   const handleRightMouseUp = useCallback(() => {
-    if (engine().isPointerLocked) {
+    if (mp().isPointerLocked) {
       unlockPointer()
     }
   }, [])
@@ -31,7 +31,7 @@ const App = () => {
           </>
         )}
       </Canvas>
-      <RendererInfo />
+      {/* <RendererInfo /> */}
       <Listeners onRightMouseUp={handleRightMouseUp} />
     </div>
   )

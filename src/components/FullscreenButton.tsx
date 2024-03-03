@@ -6,13 +6,13 @@ import {
   lockOrientation,
   unlockKeys,
   unlockOrientation,
-  useEngine,
+  useMP,
 } from 'manapotion'
 
 import { EnterFullscreenIcon, ExitFullscreenIcon } from '#/components/icons'
 
 const FullscreenButton = ({ className, ...props }: { className?: string }) => {
-  const isFullscreen = useEngine(s => s.isFullscreen)
+  const isFullscreen = useMP(s => s.isFullscreen)
 
   return (
     <button
