@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber'
-import { engine, lerp, pi } from '@v1v2/engine'
+import { engine, lerp, pi } from 'manapotion'
 
 import { DEFAULT_CAMERA_ROT_X } from '#/lib/constants'
 import { cameras, players } from '#/world'

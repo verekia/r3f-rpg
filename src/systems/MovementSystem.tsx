@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber'
-import { lerp, pi } from '@v1v2/engine'
+import { lerp, pi } from 'manapotion'
 
 import { PLAYER_ROTATION_SPEED, PLAYER_SPEED, PLAYER_SPEED_BACKWARD } from '#/lib/constants'
 import { useControlsStore } from '#/stores/controls'

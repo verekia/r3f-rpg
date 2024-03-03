@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { CanvasEngine, engine, UIEngine, unlockPointer } from '@v1v2/engine'
+import { CanvasEngine, engine, UIEngine, unlockPointer } from 'manapotion'
 
 import Canvas from '#/components/Canvas'
 import ForestScene from '#/components/ForestScene'

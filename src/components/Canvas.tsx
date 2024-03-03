@@ -1,6 +1,6 @@
 import { ReactNode, useRef } from 'react'
 
-import { lockPointer, Canvas as V1V2Canvas } from '@v1v2/engine'
+import { lockPointer, Canvas as V1V2Canvas } from 'manapotion'
 
 const Canvas = ({ children }: { children: ReactNode }) => {
   const longRightClickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)

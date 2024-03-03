@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber'
-import { clamp, engine, pi } from '@v1v2/engine'
+import { clamp, engine, pi } from 'manapotion'
 
 import { between } from '#/lib/util'
 import { setControl } from '#/stores/controls'

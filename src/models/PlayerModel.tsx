@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 
 import { useAnimations, useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import { pi } from '@v1v2/engine'
+import { pi } from 'manapotion'
 // import { Quaternion, Vector3 } from 'three'
 import { GLTF } from 'three-stdlib'
 

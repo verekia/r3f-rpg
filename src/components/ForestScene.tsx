@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { pi } from '@v1v2/engine'
+import { pi } from 'manapotion'
 
 import Camera from '#/components/Camera'
 import Enemy from '#/components/Enemy'
