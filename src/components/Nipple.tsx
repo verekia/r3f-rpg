@@ -1,30 +1,29 @@
 import { useEffect, useRef } from 'react'
 
 import clsx from 'clsx'
+import { mp } from 'manapotion'
 import NippleJS, { EventData, JoystickManager, JoystickOutputData } from 'nipplejs'
 
-import { mobileJoystick1 } from '#/stores/inputs'
-
 let nippleManager: JoystickManager
+
+mp().mobileJoystick1 = { angle: undefined, force: undefined }
 
 const Nipple = ({ className, ...props }: { className?: string }) => {
   const ref = useRef<HTMLDivElement>(null)
 
   const handleStart = () => {
-    mobileJoystick1.angle = undefined
-    mobileJoystick1.force = undefined
+    mp().mobileJoystick1.angle = undefined
+    mp().mobileJoystick1.force = undefined
   }
 
   const handleEnd = () => {
-    mobileJoystick1.angle = undefined
-    mobileJoystick1.force = undefined
+    mp().mobileJoystick1.angle = undefined
+    mp().mobileJoystick1.force = undefined
   }
 
   const handleMove = (_: EventData, { force, angle }: JoystickOutputData) => {
-    if (mobileJoystick1) {
-      mobileJoystick1.angle = angle.radian
-      mobileJoystick1.force = force
-    }
+    mp().mobileJoystick1.angle = angle.radian
+    mp().mobileJoystick1.force = force
   }
 
   useEffect(() => {
