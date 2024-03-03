@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { CanvasEngine, engine, UIEngine, unlockPointer } from 'manapotion'
+import { engine, Listeners, unlockPointer } from 'manapotion'
 
 import Canvas from '#/components/Canvas'
 import ForestScene from '#/components/ForestScene'
@@ -30,10 +30,9 @@ const App = () => {
             {route === FOREST_ROUTE && <ForestScene />}
           </>
         )}
-        <CanvasEngine />
       </Canvas>
       <RendererInfo />
-      <UIEngine onRightMouseUp={handleRightMouseUp} />
+      <Listeners onRightMouseUp={handleRightMouseUp} />
     </div>
   )
 }

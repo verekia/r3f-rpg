@@ -1,12 +1,12 @@
 import { ReactNode, useRef } from 'react'
 
-import { lockPointer, Canvas as V1V2Canvas } from 'manapotion'
+import { lockPointer, Canvas as ManaCanvas } from 'manapotion'
 
 const Canvas = ({ children }: { children: ReactNode }) => {
   const longRightClickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   return (
-    <V1V2Canvas
+    <ManaCanvas
       className="top-0 z-0"
       style={{ position: 'absolute' }}
       onContextMenu={e => e.preventDefault()}
@@ -32,7 +32,7 @@ const Canvas = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-    </V1V2Canvas>
+    </ManaCanvas>
   )
 }
 
