@@ -13,9 +13,9 @@
   "dependencies": {
     "@react-three/drei": "^9.97.6",
     "@react-three/fiber": "^8.15.16",
-    "manapotion": "^0.3.1",
     "clsx": "^2.1.0",
     "detect-collisions": "^9.2.4",
+    "manapotion": "^0.3.1",
     "miniplex": "^2.0.0",
     "miniplex-react": "^2.0.1",
     "nanoid": "5.0.6",

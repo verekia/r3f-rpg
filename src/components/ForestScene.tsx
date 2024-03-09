@@ -8,6 +8,7 @@ import Player from '#/components/Player'
 import ForestModel from '#/models/ForestModel'
 import ForestNavmesh from '#/models/ForestNavmesh'
 import ForestObstacles from '#/models/ForestObstacles'
+import ForestObstaclesVertices from '#/models/ForestObstaclesVertices'
 import {
   cameras,
   createCamera,
@@ -48,6 +49,7 @@ const ForestScene = () => {
       <ForestModel />
       <ForestNavmesh />
       <ForestObstacles />
+      <ForestObstaclesVertices />
     </>
   )
 }
