@@ -4,6 +4,8 @@ import { useAnimations, useGLTF } from '@react-three/drei'
 import { pi } from 'manapotion'
 import { GLTF } from 'three-stdlib'
 
+import { paletteMaterial } from '#/lib/materials'
+
 import type { Group, Mesh } from 'three'
 
 type GLTFResult = GLTF & {
@@ -29,7 +31,7 @@ const PlayerModel = (
   props: JSX.IntrinsicElements['group'] & { action: ActionName; modelRotZ: number },
 ) => {
   const groupRef = useRef<Group>(null)
-  const { nodes, materials, animations } = useGLTF(path) as GLTFResult
+  const { nodes, animations } = useGLTF(path) as GLTFResult
   const { actions } = useAnimations(animations, groupRef)
   const swordRef = useRef<Mesh>(null)
 
@@ -67,7 +69,7 @@ const PlayerModel = (
           <skinnedMesh
             name="Body"
             geometry={nodes.Body.geometry}
-            material={materials.Palette}
+            material={paletteMaterial}
             skeleton={nodes.Body.skeleton}
             rotation={[Math.PI / 2, 0, 0]}
             scale={0.01}
@@ -75,7 +77,7 @@ const PlayerModel = (
           <skinnedMesh
             name="Eye"
             geometry={nodes.Eye.geometry}
-            material={materials.Palette}
+            material={paletteMaterial}
             skeleton={nodes.Eye.skeleton}
             rotation={[Math.PI / 2, 0, 0]}
             scale={0.01}
@@ -84,7 +86,7 @@ const PlayerModel = (
       </group>
       <mesh ref={swordRef} scale={1000}>
         <boxGeometry args={[0.7, 0.05, 0.05]} />
-        <meshBasicMaterial color="red" />
+        <meshLambertMaterial color="red" />
       </mesh>
     </>
   )

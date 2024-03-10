@@ -5,7 +5,8 @@ Files: forest.glb [46.84KB] > /Users/verekia/Local/Code/r3f-rpg/public/models/fo
 */
 
 import { useGLTF } from '@react-three/drei'
-import * as THREE from 'three'
+
+import { paletteMaterial } from '#/lib/materials'
 
 import type { GLTF } from 'three-stdlib'
 
@@ -21,10 +22,11 @@ type GLTFResult = GLTF & {
 const path = '/models/forest/forest-transformed.glb'
 
 const ForestModel = (props: JSX.IntrinsicElements['group']) => {
-  const { nodes, materials } = useGLTF(path) as GLTFResult
+  const { nodes } = useGLTF(path) as GLTFResult
+
   return (
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.Ground.geometry} material={materials.Palette} scale={25} />
+      <mesh geometry={nodes.Ground.geometry} material={paletteMaterial} scale={25}></mesh>
     </group>
   )
 }
