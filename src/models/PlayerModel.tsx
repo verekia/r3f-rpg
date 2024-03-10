@@ -1,12 +1,10 @@
 import { useEffect, useRef } from 'react'
 
 import { useAnimations, useGLTF } from '@react-three/drei'
-import { useFrame } from '@react-three/fiber'
 import { pi } from 'manapotion'
-// import { Quaternion, Vector3 } from 'three'
 import { GLTF } from 'three-stdlib'
 
-// import { useFrame } from '@react-three/fiber'
+import type { Group, Mesh } from 'three'
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -30,13 +28,10 @@ const path = '/models/player/player-transformed.glb'
 const PlayerModel = (
   props: JSX.IntrinsicElements['group'] & { action: ActionName; modelRotZ: number },
 ) => {
-  const group = useRef<THREE.Group>(null)
+  const groupRef = useRef<Group>(null)
   const { nodes, materials, animations } = useGLTF(path) as GLTFResult
-  const { actions } = useAnimations(animations, group)
-  // const helmetRef = useRef(null)
-  const swordRef = useRef(null)
-
-  // Object.keys(actions)
+  const { actions } = useAnimations(animations, groupRef)
+  const swordRef = useRef<Mesh>(null)
 
   useEffect(() => {
     actions[props.action]?.reset().fadeIn(0.12).play()
@@ -45,58 +40,53 @@ const PlayerModel = (
     }
   }, [props.action])
 
-  useFrame(() => {
-    if (!swordRef.current || !group.current /* || !helmetRef.current */) return
+  useEffect(() => {
+    if (groupRef.current && swordRef.current) {
+      const handBone = groupRef.current.getObjectByName('mixamorigRightHand')
+      if (handBone) {
+        handBone.add(swordRef.current)
+        swordRef.current.position.set(250, 150, 0)
+        swordRef.current.rotation.set(0, 0, 0.3)
+      }
 
-    // const handBone = group.current.getObjectByName('mixamorigRightHand')
-    // if (handBone) {
-    //   swordRef.current.position.copy(handBone.getWorldPosition(new Vector3(0, 0, 0)))
-    //   swordRef.current.quaternion.copy(handBone.getWorldQuaternion(new Quaternion()))
-
-    //   const gripAdjustment = new Vector3(0.4, 0.1, 0)
-    //   gripAdjustment.applyQuaternion(swordRef.current.quaternion)
-    //   swordRef.current.position.add(gripAdjustment)
-    // }
-
-    // const headBone = group.current.getObjectByName('mixamorigHead')
-    // if (headBone) {
-    //   helmetRef.current.position.copy(headBone.getWorldPosition(new Vector3()))
-    //   helmetRef.current.quaternion.copy(headBone.getWorldQuaternion(new Quaternion()))
-
-    //   const helmetAdjustment = new Vector3(0, 0.1, 0)
-    //   helmetAdjustment.applyQuaternion(helmetRef.current.quaternion)
-    //   helmetRef.current.position.add(helmetAdjustment)
-    // }
-  })
+      return () => {
+        if (handBone && swordRef.current) {
+          handBone.remove(swordRef.current)
+        }
+      }
+    }
+  }, [])
 
   return (
-    <group ref={group} {...props} dispose={null}>
-      <group name="Scene" rotation-y={props.modelRotZ}>
-        <group name="Player" rotation={[pi / 2, 0, -pi / 2]} scale={0.008}>
-          <primitive object={nodes.mixamorigHips} />
-          {/* <mesh ref={swordRef} scale={1000}>
-            <boxGeometry args={[1, 0.05, 0.05]} />
-            <meshBasicMaterial color="red" />
-          </mesh> */}
+    <>
+      <group ref={groupRef} {...props} dispose={null}>
+        <group name="Scene" rotation-y={props.modelRotZ}>
+          <group name="Player" rotation={[pi / 2, 0, -pi / 2]} scale={0.008}>
+            <primitive object={nodes.mixamorigHips} />
+          </group>
+          <skinnedMesh
+            name="Body"
+            geometry={nodes.Body.geometry}
+            material={materials.Palette}
+            skeleton={nodes.Body.skeleton}
+            rotation={[Math.PI / 2, 0, 0]}
+            scale={0.01}
+          />
+          <skinnedMesh
+            name="Eye"
+            geometry={nodes.Eye.geometry}
+            material={materials.Palette}
+            skeleton={nodes.Eye.skeleton}
+            rotation={[Math.PI / 2, 0, 0]}
+            scale={0.01}
+          />
         </group>
-        <skinnedMesh
-          name="Body"
-          geometry={nodes.Body.geometry}
-          material={materials.Palette}
-          skeleton={nodes.Body.skeleton}
-          rotation={[Math.PI / 2, 0, 0]}
-          scale={0.01}
-        />
-        <skinnedMesh
-          name="Eye"
-          geometry={nodes.Eye.geometry}
-          material={materials.Palette}
-          skeleton={nodes.Eye.skeleton}
-          rotation={[Math.PI / 2, 0, 0]}
-          scale={0.01}
-        />
       </group>
-    </group>
+      <mesh ref={swordRef} scale={1000}>
+        <boxGeometry args={[0.7, 0.05, 0.05]} />
+        <meshBasicMaterial color="red" />
+      </mesh>
+    </>
   )
 }
 
