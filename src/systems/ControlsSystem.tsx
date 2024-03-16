@@ -1,5 +1,4 @@
-import { useFrame } from '@react-three/fiber'
-import { clamp, cos, min, mp, pi } from 'manapotion'
+import { clamp, cos, min, mp, pi, useFrameBefore } from 'manapotion'
 
 import { setControl, useControlsStore } from '#/stores/controls'
 import { jump } from '#/systems/MovementSystem'
@@ -139,7 +138,9 @@ const getBackwardRight = () => {
 // It does not manage whether or not these intents are valid in the world.
 
 const ControlsSystem = () => {
-  useFrame(() => {
+  // Using useFrameBefore instead of useFrame is a lucky workaround. There is an unresolved
+  // underlying issue. Rotation glitches and weird slighly off rotation happen when using useFrame.
+  useFrameBefore(() => {
     const {
       movementMobileJoystick,
       cameraMobileJoystick,
