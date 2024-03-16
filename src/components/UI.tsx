@@ -24,7 +24,7 @@ const UI = () => (
       Jump
     </div>
     <div className="absolute bottom-10 left-10 z-10 rounded-tl-xl px-5  py-2 hover-none:hidden">
-      X: U-Turn, Space: Jump
+      Space: Jump
     </div>
     <div className="absolute bottom-0 right-0 z-10 rounded-tl-xl bg-slate-400 px-5 py-2 text-white">
       Actions
