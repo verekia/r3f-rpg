@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
 
 import clsx from 'clsx'
-import { mp } from 'manapotion'
-import NippleJS, { EventData, JoystickManager, JoystickOutputData } from 'nipplejs'
+import { mp, useMP } from 'manapotion'
+
+import type { EventData, JoystickManager, JoystickOutputData } from 'nipplejs'
 
 let nippleManager: JoystickManager
 
@@ -10,6 +11,7 @@ mp().mobileJoystick1 = { angle: undefined, force: undefined }
 
 const Nipple = ({ className, ...props }: { className?: string }) => {
   const ref = useRef<HTMLDivElement>(null)
+  const canHover = useMP(s => s.canHover)
 
   const handleStart = () => {
     mp().mobileJoystick1.angle = undefined
@@ -27,11 +29,19 @@ const Nipple = ({ className, ...props }: { className?: string }) => {
   }
 
   useEffect(() => {
-    if (window.matchMedia('(hover: none)').matches) {
-      nippleManager = NippleJS.create({ zone: ref.current as HTMLDivElement })
+    const loadNipple = async () => {
+      if (!nippleManager) {
+        nippleManager = (await import('nipplejs')).default.create({
+          zone: ref.current as HTMLDivElement,
+        })
+      }
+
       nippleManager.on('start', handleStart)
       nippleManager.on('end', handleEnd)
       nippleManager.on('move', handleMove)
+    }
+    if (canHover === false) {
+      loadNipple()
     }
 
     return () => {
@@ -40,7 +50,9 @@ const Nipple = ({ className, ...props }: { className?: string }) => {
       nippleManager?.off('move', handleMove)
       nippleManager?.destroy()
     }
-  }, [])
+  }, [canHover])
+
+  if (canHover) return null
 
   return <div ref={ref} className={clsx('hover-hover:hidden', className)} {...props} />
 }

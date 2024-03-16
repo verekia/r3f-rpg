@@ -4,9 +4,8 @@ import { useAnimations, useGLTF } from '@react-three/drei'
 import { pi } from 'manapotion'
 import { GLTF } from 'three-stdlib'
 
-import { paletteMaterial } from '#/lib/materials'
-
 import type { Group, Mesh } from 'three'
+import useStore from '#/store'
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -34,15 +33,18 @@ const PlayerModel = (
   const { nodes, animations } = useGLTF(path) as GLTFResult
   const { actions } = useAnimations(animations, groupRef)
   const swordRef = useRef<Mesh>(null)
+  const paletteMaterial = useStore(s => s.globalMaterials.palette)
 
   useEffect(() => {
     actions[props.action]?.reset().fadeIn(0.12).play()
     return () => {
       actions[props.action]?.fadeOut(0.12)
     }
-  }, [props.action])
+  }, [props.action, actions])
 
   useEffect(() => {
+    const initialSwordRef = swordRef.current
+
     if (groupRef.current && swordRef.current) {
       const handBone = groupRef.current.getObjectByName('mixamorigRightHand')
       if (handBone) {
@@ -52,8 +54,8 @@ const PlayerModel = (
       }
 
       return () => {
-        if (handBone && swordRef.current) {
-          handBone.remove(swordRef.current)
+        if (handBone && initialSwordRef) {
+          handBone.remove(initialSwordRef)
         }
       }
     }

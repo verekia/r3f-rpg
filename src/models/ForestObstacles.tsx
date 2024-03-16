@@ -53,7 +53,7 @@ const ForestObstacles = () => {
       system.clear()
       world.remove(dcZone)
     }
-  }, [])
+  }, [nodes.Obstacles.geometry.attributes.position.array])
 
   return null
   // return (

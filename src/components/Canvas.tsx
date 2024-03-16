@@ -1,11 +1,30 @@
-import { useRef } from 'react'
+import { Suspense, useEffect, useRef } from 'react'
 
 import clsx from 'clsx'
 import { lockPointer, Canvas as ManaCanvas } from 'manapotion'
+import { suspend } from 'suspend-react'
+import { MeshLambertMaterial, SRGBColorSpace, TextureLoader } from 'three'
+
+import useStore from '#/store'
 
 import type { CanvasProps } from '@react-three/fiber'
 
-const Canvas = ({ className, ...props }: CanvasProps) => {
+const GlobalMaterials = () => {
+  console.log('GlobalMaterials')
+
+  suspend(async () => {
+    // TODO: This doesn't do anything, it's not async
+    const texture = new TextureLoader().load('/models/palette.png')
+    texture.flipY = false
+    texture.colorSpace = SRGBColorSpace
+    const paletteMaterial = new MeshLambertMaterial({ map: texture })
+    useStore.getState().setGlobalMaterials({ palette: paletteMaterial })
+  }, [])
+
+  return null
+}
+
+const Canvas = ({ className, children, ...props }: CanvasProps) => {
   const longRightClickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   return (
@@ -35,7 +54,12 @@ const Canvas = ({ className, ...props }: CanvasProps) => {
       }}
       onClick={() => window.getSelection()?.removeAllRanges()}
       {...props}
-    />
+    >
+      <Suspense fallback={null}>
+        {children}
+        <GlobalMaterials />
+      </Suspense>
+    </ManaCanvas>
   )
 }
 

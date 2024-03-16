@@ -43,9 +43,9 @@ const ForestScene = () => {
     <>
       <ambientLight intensity={3} />
       <directionalLight position={[10, 10, 10]} intensity={3} castShadow />
-      <ECS.Entities in={enemies} children={Enemy} />
-      <ECS.Entities in={players} children={Player} />
-      <ECS.Entities in={cameras} children={Camera} />
+      <ECS.Entities in={enemies}>{Enemy}</ECS.Entities>
+      <ECS.Entities in={players}>{Player}</ECS.Entities>
+      <ECS.Entities in={cameras}>{Camera}</ECS.Entities>
       <ForestModel />
       {/* <ForestNavmesh /> */}
       {/* <ForestObstacles /> */}
