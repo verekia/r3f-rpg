@@ -268,7 +268,7 @@ const ControlsSystem = () => {
     ) {
       setControl(
         'manualRotZ',
-        -Math.cos(cameraMobileJoystick.angle) * Math.min(cameraMobileJoystick.forceDiff, 2),
+        Math.cos(cameraMobileJoystick.angle) * Math.min(cameraMobileJoystick.forceDiff, 2),
       )
     } else {
       setControl('manualRotZ', undefined)
