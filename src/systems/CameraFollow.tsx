@@ -81,20 +81,4 @@ const CameraFollowSystem = () => {
   return null
 }
 
-export const cameraUTurn = () => {
-  const [player] = players
-  const [camera] = cameras
-
-  if (!player || !camera) {
-    return
-  }
-
-  // Duplicated from above
-  camera.tra.pos.x = player.tra.pos.x - Math.cos(player.tra.rot.z) * CAMERA_DISTANCE_FROM_PLAYER
-  camera.tra.pos.y = player.tra.pos.y - Math.sin(player.tra.rot.z) * CAMERA_DISTANCE_FROM_PLAYER
-
-  // This needs a tweak to match exactly the normal camera follow
-  camera.tra.rot.z = player.tra.rot.z - pi / 4
-}
-
 export default CameraFollowSystem

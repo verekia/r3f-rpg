@@ -2,12 +2,11 @@ import { KeyState, Listeners, mp, unlockPointer } from 'manapotion'
 
 import Canvas from '#/components/Canvas'
 import ForestScene from '#/components/ForestScene'
-// import RendererInfo from '#/components/RendererInfo'
 import UI from '#/components/UI'
 import Landing from '#/Landing'
 import { FOREST_ROUTE, LANDING_ROUTE } from '#/routes'
 import useStore from '#/store'
-import { pressedSpace, pressedX } from '#/systems/ControlsSystem'
+import { pressedSpace } from '#/systems/ControlsSystem'
 import Systems from '#/systems/Systems'
 
 const IndexPage = () => {
@@ -21,7 +20,6 @@ const IndexPage = () => {
 
   const handleKeyDown = (keyState: KeyState) => {
     keyState.code === 'Space' && pressedSpace()
-    keyState.code === 'KeyX' && pressedX()
   }
 
   return (
@@ -35,7 +33,6 @@ const IndexPage = () => {
           </>
         )}
       </Canvas>
-      {/* <RendererInfo /> */}
       <Listeners onRightMouseUp={handleRightMouseUp} onKeydown={handleKeyDown} />
     </div>
   )

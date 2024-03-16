@@ -40,8 +40,7 @@ type KeyPressEvent = { type: 'keypress'; key: string }
 type InputEvent = { category: 'input' } & KeyPressEvent
 
 type JumpEvent = { type: 'jump' }
-type UTurnEvent = { type: 'uTurn' }
-type MovementEvent = { category: 'movement' } & (JumpEvent | UTurnEvent)
+type MovementEvent = { category: 'movement' } & JumpEvent
 
 type Event = InputEvent | MovementEvent
 

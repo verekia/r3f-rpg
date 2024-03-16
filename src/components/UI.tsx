@@ -2,7 +2,7 @@ import FullscreenButton from '#/components/FullscreenButton'
 import Nipple from '#/components/Nipple'
 import { LANDING_ROUTE } from '#/routes'
 import useStore from '#/store'
-import { pressedJumpButton, pressedUTurnButton } from '#/systems/ControlsSystem'
+import { pressedJumpButton } from '#/systems/ControlsSystem'
 
 const UI = () => (
   <>
@@ -16,12 +16,6 @@ const UI = () => (
     <div className="absolute right-0 top-0 z-10 flex items-center space-x-5 rounded-bl-xl px-5 py-2">
       <FullscreenButton className="bg-black/50 text-white hover:bg-black/60" />
       <button onClick={() => useStore.getState().setRoute(LANDING_ROUTE)}>Menu</button>
-    </div>
-    <div
-      className="absolute bottom-10 left-10 z-10 rounded-md bg-black/50 p-2 text-white hover-hover:hidden"
-      onPointerDown={pressedUTurnButton}
-    >
-      U-turn
     </div>
     <div
       className="absolute bottom-16 right-10 z-10 rounded-md bg-black/50 p-2 text-white hover-hover:hidden"

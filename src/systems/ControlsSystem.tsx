@@ -3,8 +3,7 @@ import { clamp, mp, pi } from 'manapotion'
 
 import { between } from '#/lib/util'
 import { setControl } from '#/stores/controls'
-import { cameraUTurn } from '#/systems/CameraFollow'
-import { jump, uTurn } from '#/systems/MovementSystem'
+import { jump } from '#/systems/MovementSystem'
 
 const MAX_MOVEMENT = 60
 
@@ -264,11 +263,12 @@ const ControlsSystem = () => {
       }
     } else if (
       cameraMobileJoystick.force !== undefined &&
-      cameraMobileJoystick.angle !== undefined
+      cameraMobileJoystick.angle !== undefined &&
+      cameraMobileJoystick.forceDiff !== undefined
     ) {
       setControl(
         'manualRotZ',
-        -Math.cos(cameraMobileJoystick.angle) * 0.1 * Math.min(cameraMobileJoystick.force, 2),
+        -Math.cos(cameraMobileJoystick.angle) * Math.min(cameraMobileJoystick.forceDiff, 2),
       )
     } else {
       setControl('manualRotZ', undefined)
@@ -283,18 +283,8 @@ export const pressedSpace = () => {
   jump()
 }
 
-export const pressedX = () => {
-  uTurn()
-  cameraUTurn()
-}
-
 export const pressedJumpButton = () => {
   jump()
-}
-
-export const pressedUTurnButton = () => {
-  uTurn()
-  cameraUTurn()
 }
 
 export default ControlsSystem

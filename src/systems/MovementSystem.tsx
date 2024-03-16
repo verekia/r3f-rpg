@@ -187,9 +187,4 @@ export const jump = () => {
   }
 }
 
-export const uTurn = () => {
-  const [player] = players
-  player.tra.rot.z = player.tra.rot.z + pi
-}
-
 export default MovementSystem
