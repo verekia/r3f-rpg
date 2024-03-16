@@ -47,6 +47,8 @@ const Nipple = ({ className, ...props }: { className?: string }) => {
       nippleManager = (await import('nipplejs')).default.create({
         zone: ref.current,
         dataOnly: true,
+        multitouch: true,
+        maxNumberOfNipples: 2,
       })
       nippleManager.on('move', handleMove)
       nippleManager.on('end', handleEnd)
