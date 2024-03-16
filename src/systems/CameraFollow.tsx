@@ -27,6 +27,17 @@ const CameraFollowSystem = () => {
       return
     }
 
+    if (!mp().canHover) {
+      camera.tra.pos.x =
+        player.tra.pos.x + Math.cos(camera.tra.rot.z - pi / 2) * CAMERA_DISTANCE_FROM_PLAYER
+      camera.tra.pos.y =
+        player.tra.pos.y + Math.sin(camera.tra.rot.z - pi / 2) * CAMERA_DISTANCE_FROM_PLAYER
+
+      camera.tra.pos.z = Z_OFFSET
+      camera.tra.rot.x = DEFAULT_CAMERA_ROT_X
+      return
+    }
+
     // There is something weird with this lerp and rot Z
     camera.tra.rot.z = lerp(camera.tra.rot.z, player.tra.rot.z, 0.5) - pi / 4
 

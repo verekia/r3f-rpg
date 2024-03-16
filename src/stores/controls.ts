@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 
 const defaultControls = {
+  forwardDirection: undefined as number | undefined,
   forward: false,
   forwardLeft: false,
   forwardRight: false,

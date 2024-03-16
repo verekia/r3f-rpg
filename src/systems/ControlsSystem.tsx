@@ -1,102 +1,11 @@
 import { useFrame } from '@react-three/fiber'
-import { clamp, mp, pi } from 'manapotion'
+import { clamp, mp } from 'manapotion'
 
-import { between } from '#/lib/util'
-import { setControl } from '#/stores/controls'
+import { setControl, useControlsStore } from '#/stores/controls'
 import { jump } from '#/systems/MovementSystem'
+import { cameras } from '#/world'
 
 const MAX_MOVEMENT = 60
-
-const mobileJoystickUp = () => {
-  const { movementMobileJoystick } = mp()
-
-  if (movementMobileJoystick.angle === undefined || movementMobileJoystick.force === undefined)
-    return false
-
-  return (
-    movementMobileJoystick.force > 0.2 &&
-    between(movementMobileJoystick.angle, pi / 4, (3 * pi) / 4)
-  )
-}
-
-const mobileJoystickDown = () => {
-  const { movementMobileJoystick } = mp()
-
-  if (movementMobileJoystick.angle === undefined || movementMobileJoystick.force === undefined)
-    return false
-
-  return (
-    movementMobileJoystick.force > 0.2 &&
-    between(movementMobileJoystick.angle, (4 * pi) / 3, (5 * pi) / 3)
-  )
-}
-
-const mobileJoystickLeft = () => {
-  const { movementMobileJoystick } = mp()
-
-  if (movementMobileJoystick.angle === undefined || movementMobileJoystick.force === undefined)
-    return false
-
-  return (
-    movementMobileJoystick.force > 0.2 && between(movementMobileJoystick.angle, pi, (7 * pi) / 6)
-  )
-}
-
-const mobileJoystickRight = () => {
-  const { movementMobileJoystick } = mp()
-
-  if (movementMobileJoystick.angle === undefined || movementMobileJoystick.force === undefined)
-    return false
-
-  return (
-    movementMobileJoystick.force > 0.2 &&
-    between(movementMobileJoystick.angle, (11 * pi) / 6, 2 * pi)
-  )
-}
-
-const mobileJoystickDownLeft = () => {
-  const { movementMobileJoystick } = mp()
-
-  if (movementMobileJoystick.angle === undefined || movementMobileJoystick.force === undefined)
-    return false
-
-  return (
-    movementMobileJoystick.force > 0.2 &&
-    between(movementMobileJoystick.angle, (7 * pi) / 6, (4 * pi) / 3)
-  )
-}
-
-const mobileJoystickDownRight = () => {
-  const { movementMobileJoystick } = mp()
-
-  if (movementMobileJoystick.angle === undefined || movementMobileJoystick.force === undefined)
-    return false
-
-  return (
-    movementMobileJoystick.force > 0.2 &&
-    between(movementMobileJoystick.angle, (5 * pi) / 3, (11 * pi) / 6)
-  )
-}
-
-const mobileJoystickUpLeft = () => {
-  const { movementMobileJoystick } = mp()
-
-  if (movementMobileJoystick.angle === undefined || movementMobileJoystick.force === undefined)
-    return false
-
-  return (
-    movementMobileJoystick.force > 0.2 && between(movementMobileJoystick.angle, (3 * pi) / 4, pi)
-  )
-}
-
-const mobileJoystickUpRight = () => {
-  const { movementMobileJoystick } = mp()
-
-  if (movementMobileJoystick.angle === undefined || movementMobileJoystick.force === undefined)
-    return false
-
-  return movementMobileJoystick.force > 0.2 && between(movementMobileJoystick.angle, 0, pi / 4)
-}
 
 const getForward = () => {
   const { isPointerLocked, isLeftMouseDown, isRightMouseDown, keys } = mp()
@@ -111,7 +20,6 @@ const getForward = () => {
 
   if (k.KeyW || k.ArrowUp) return true
   if (isLeftMouseDown && isRightMouseDown) return true
-  if (mobileJoystickUp()) return true
 
   return false
 }
@@ -127,7 +35,6 @@ const getBackward = () => {
   if (isPointerLocked && (k.KeyA || k.ArrowLeft)) return false
   if (isPointerLocked && (k.KeyD || k.ArrowRight)) return false
   if (k.KeyS || k.ArrowDown) return true
-  if (mobileJoystickDown()) return true
 
   return false
 }
@@ -165,7 +72,6 @@ const getStrafeLeft = () => {
   if (isLeftMouseDown && isRightMouseDown) return false
   if (k.KeyQ) return true
   if (isPointerLocked && (k.KeyA || k.ArrowLeft)) return true
-  if (mobileJoystickLeft()) return true
 
   return false
 }
@@ -181,7 +87,6 @@ const getStrafeRight = () => {
   if (isLeftMouseDown && isRightMouseDown) return false
   if (k.KeyE) return true
   if (isPointerLocked && (k.KeyD || k.ArrowRight)) return true
-  if (mobileJoystickRight()) return true
 
   return false
 }
@@ -194,7 +99,6 @@ const getForwardLeft = () => {
   if (isPointerLocked && ((k.KeyA && k.KeyW) || (k.ArrowUp && k.ArrowLeft))) return true
   if (isLeftMouseDown && isRightMouseDown && k.KeyQ) return true
   if (isLeftMouseDown && isRightMouseDown && (k.ArrowLeft || k.KeyA)) return true
-  if (mobileJoystickUpLeft()) return true
 
   return false
 }
@@ -207,7 +111,6 @@ const getForwardRight = () => {
   if (isPointerLocked && ((k.KeyD && k.KeyW) || (k.ArrowUp && k.ArrowRight))) return true
   if (isLeftMouseDown && isRightMouseDown && k.KeyE) return true
   if (isLeftMouseDown && isRightMouseDown && (k.ArrowRight || k.KeyD)) return true
-  if (mobileJoystickUpRight()) return true
 
   return false
 }
@@ -218,7 +121,6 @@ const getBackwardLeft = () => {
 
   if (k.KeyQ && k.KeyS) return true
   if (isPointerLocked && ((k.KeyA && k.KeyS) || (k.ArrowDown && k.ArrowLeft))) return true
-  if (mobileJoystickDownLeft()) return true
 
   return false
 }
@@ -229,7 +131,6 @@ const getBackwardRight = () => {
 
   if (k.KeyE && k.KeyS) return true
   if (isPointerLocked && ((k.KeyD && k.KeyS) || (k.ArrowDown && k.ArrowRight))) return true
-  if (mobileJoystickDownRight()) return true
 
   return false
 }
@@ -239,8 +140,9 @@ const getBackwardRight = () => {
 
 const ControlsSystem = () => {
   useFrame(() => {
-    const { cameraMobileJoystick, keys } = mp()
+    const { movementMobileJoystick, cameraMobileJoystick, keys } = mp()
     const { isPointerLocked, mouseMovementX, mouseMovementY } = mp()
+    const [camera] = cameras
 
     setControl('forward', getForward())
     setControl('backward', getBackward())
@@ -254,6 +156,15 @@ const ControlsSystem = () => {
     setControl('turnRight', getTurnRight())
     setControl('jump', Boolean(keys.byCode.Space))
 
+    if (movementMobileJoystick.force !== undefined && movementMobileJoystick.angle !== undefined) {
+      useControlsStore.getState().controls.forwardDirection =
+        movementMobileJoystick.force < 0.2
+          ? undefined
+          : camera.tra.rot.z + movementMobileJoystick.angle
+    } else {
+      useControlsStore.getState().controls.forwardDirection = undefined
+    }
+
     if (isPointerLocked) {
       if (mouseMovementX !== undefined) {
         setControl('manualRotZ', -clamp(mouseMovementX, MAX_MOVEMENT) / 100)
@@ -266,13 +177,8 @@ const ControlsSystem = () => {
       cameraMobileJoystick.angle !== undefined &&
       cameraMobileJoystick.forceDiff !== undefined
     ) {
-      setControl(
-        'manualRotZ',
-        Math.cos(cameraMobileJoystick.angle) * Math.min(cameraMobileJoystick.forceDiff, 2),
-      )
-    } else {
-      setControl('manualRotZ', undefined)
-      setControl('manualRotX', undefined)
+      camera.tra.rot.z +=
+        Math.cos(cameraMobileJoystick.angle) * Math.min(cameraMobileJoystick.forceDiff, 2)
     }
   })
 

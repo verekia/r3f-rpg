@@ -36,6 +36,8 @@ const Nipple = ({ className, ...props }: { className?: string }) => {
         setIsRightHelperShown(false)
       }
     }
+    // The re-render caused by the state change breaks the nipple joystick
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleEnd = (_: EventData, { position }: JoystickOutputData) => {
