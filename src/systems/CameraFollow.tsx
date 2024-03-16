@@ -9,7 +9,7 @@ const RADIUS = 3.8 // from player
 
 const CameraFollowSystem = () => {
   useFrame(() => {
-    const { isPointerLocked, isLeftMouseDown, isRightMouseDown, canHover } = mp()
+    const { isPointerLocked, isRightMouseDown, canHover } = mp()
     const [player] = players
     const [camera] = cameras
 
@@ -17,23 +17,19 @@ const CameraFollowSystem = () => {
       return
     }
 
-    const isLockedBehind = (isPointerLocked && isRightMouseDown) || (!isPointerLocked && canHover)
-    const isFreestyle = (isPointerLocked && isLeftMouseDown && !isRightMouseDown) || !canHover
-
     camera.tra.pos.z = player.tra.pos.z + HEAD + RADIUS * sin(-camera.tra.rot.x)
-    camera.tra.rot.x = DEFAULT_CAMERA_ROT_X
+
+    const isLockedBehind = (isPointerLocked && isRightMouseDown) || (!isPointerLocked && canHover)
 
     if (isLockedBehind) {
       camera.tra.rot.z = player.tra.rot.z - pi / 2
-
-      camera.tra.pos.x =
-        player.tra.pos.x + RADIUS * cos(camera.tra.rot.z - pi / 2) * cos(-camera.tra.rot.x)
-      camera.tra.pos.y =
-        player.tra.pos.y + RADIUS * sin(camera.tra.rot.z - pi / 2) * cos(-camera.tra.rot.x)
-    } else if (isFreestyle) {
-      camera.tra.pos.x = player.tra.pos.x + RADIUS * cos(camera.tra.rot.z - pi / 2)
-      camera.tra.pos.y = player.tra.pos.y + RADIUS * sin(camera.tra.rot.z - pi / 2)
+      // camera.tra.rot.x = DEFAULT_CAMERA_ROT_X
     }
+
+    camera.tra.pos.x =
+      player.tra.pos.x + RADIUS * cos(camera.tra.rot.z - pi / 2) * cos(-camera.tra.rot.x)
+    camera.tra.pos.y =
+      player.tra.pos.y + RADIUS * sin(camera.tra.rot.z - pi / 2) * cos(-camera.tra.rot.x)
   })
 
   return null

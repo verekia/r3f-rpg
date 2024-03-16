@@ -5,6 +5,7 @@ import { pi } from 'manapotion'
 import Camera from '#/components/Camera'
 import Enemy from '#/components/Enemy'
 import Player from '#/components/Player'
+import { DEFAULT_CAMERA_ROT_X } from '#/lib/constants'
 import ForestModel from '#/models/ForestModel'
 import ForestNavmesh from '#/models/ForestNavmesh'
 import ForestObstacles from '#/models/ForestObstacles'
@@ -31,7 +32,11 @@ const ForestScene = () => {
       dcZone.dcZone.system.insert(player.dcBody)
     }
 
-    createCamera({ pos: { x: 0, y: -4, z: 7 }, rot: { x: -pi / 3, y: 0, z: 0 }, sca: {} })
+    createCamera({
+      pos: { x: 0, y: -4, z: 7 },
+      rot: { x: DEFAULT_CAMERA_ROT_X, y: 0, z: 0 },
+      sca: {},
+    })
     createEnemy({ pos: { x: -2, y: 5, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
     createEnemy({ pos: { x: 5, y: -1, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
     createEnemy({ pos: { x: -4, y: -4, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })

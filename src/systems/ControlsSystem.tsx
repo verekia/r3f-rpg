@@ -140,7 +140,13 @@ const getBackwardRight = () => {
 
 const ControlsSystem = () => {
   useFrame(() => {
-    const { movementMobileJoystick, cameraMobileJoystick, keys } = mp()
+    const {
+      movementMobileJoystick,
+      cameraMobileJoystick,
+      keys,
+      isLeftMouseDown,
+      isRightMouseDown,
+    } = mp()
     const { isPointerLocked, mouseMovementX, mouseMovementY } = mp()
     const [camera] = cameras
     const [player] = players
@@ -166,16 +172,20 @@ const ControlsSystem = () => {
       useControlsStore.getState().controls.forwardDirection = undefined
     }
 
-    if (isPointerLocked && mp().isLeftMouseDown && !mp().isRightMouseDown) {
+    // TODO: when turning with left click, then clock both buttons, it runs in the wrong direction
+
+    if (
+      isPointerLocked &&
+      ((mouseMovementY > 0 && camera.tra.rot.x < 0) ||
+        (mouseMovementY < 0 && camera.tra.rot.x > -pi / 3))
+    ) {
+      camera.tra.rot.x += clamp(mouseMovementY, MAX_MOVEMENT) / 1000
+    }
+
+    if (isPointerLocked && isLeftMouseDown && !isRightMouseDown) {
       camera.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.004
-    } else if (isPointerLocked && mp().isRightMouseDown) {
+    } else if (isPointerLocked && isRightMouseDown) {
       player.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.004
-      if (
-        (mouseMovementY > 0 && camera.tra.rot.x < 0) ||
-        (mouseMovementY < 0 && camera.tra.rot.x > -pi / 3)
-      ) {
-        camera.tra.rot.x += clamp(mouseMovementY, MAX_MOVEMENT) / 1000
-      }
     } else if (
       cameraMobileJoystick.force !== undefined &&
       cameraMobileJoystick.angle !== undefined &&
