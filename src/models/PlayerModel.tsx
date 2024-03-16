@@ -4,8 +4,9 @@ import { useAnimations, useGLTF } from '@react-three/drei'
 import { pi } from 'manapotion'
 import { GLTF } from 'three-stdlib'
 
-import type { Group, Mesh } from 'three'
 import useStore from '#/store'
+
+import type { Group, Mesh } from 'three'
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -73,7 +74,7 @@ const PlayerModel = (
             geometry={nodes.Body.geometry}
             material={paletteMaterial}
             skeleton={nodes.Body.skeleton}
-            rotation={[Math.PI / 2, 0, 0]}
+            rotation={[pi / 2, 0, 0]}
             scale={0.01}
           />
           <skinnedMesh
@@ -81,7 +82,7 @@ const PlayerModel = (
             geometry={nodes.Eye.geometry}
             material={paletteMaterial}
             skeleton={nodes.Eye.skeleton}
-            rotation={[Math.PI / 2, 0, 0]}
+            rotation={[pi / 2, 0, 0]}
             scale={0.01}
           />
         </group>

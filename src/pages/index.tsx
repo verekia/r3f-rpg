@@ -12,8 +12,14 @@ import Systems from '#/systems/Systems'
 const IndexPage = () => {
   const route = useStore(s => s.route)
 
+  const handleLeftMouseUp = () => {
+    if (mp().isPointerLocked && !mp().isRightMouseDown) {
+      unlockPointer()
+    }
+  }
+
   const handleRightMouseUp = () => {
-    if (mp().isPointerLocked) {
+    if (mp().isPointerLocked && !mp().isLeftMouseDown) {
       unlockPointer()
     }
   }
@@ -33,7 +39,11 @@ const IndexPage = () => {
           </>
         )}
       </Canvas>
-      <Listeners onRightMouseUp={handleRightMouseUp} onKeydown={handleKeyDown} />
+      <Listeners
+        onRightMouseUp={handleRightMouseUp}
+        onLeftMouseUp={handleLeftMouseUp}
+        onKeydown={handleKeyDown}
+      />
     </div>
   )
 }

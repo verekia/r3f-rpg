@@ -13,8 +13,6 @@ const defaultControls = {
   strafeLeft: false,
   strafeRight: false,
   jump: false,
-  manualRotZ: undefined as number | undefined,
-  manualRotX: undefined as number | undefined,
 }
 
 export type Controls = typeof defaultControls

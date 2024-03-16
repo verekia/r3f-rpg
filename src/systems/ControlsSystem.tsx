@@ -1,9 +1,9 @@
 import { useFrame } from '@react-three/fiber'
-import { clamp, mp } from 'manapotion'
+import { clamp, cos, min, mp, pi } from 'manapotion'
 
 import { setControl, useControlsStore } from '#/stores/controls'
 import { jump } from '#/systems/MovementSystem'
-import { cameras } from '#/world'
+import { cameras, players } from '#/world'
 
 const MAX_MOVEMENT = 60
 
@@ -143,6 +143,7 @@ const ControlsSystem = () => {
     const { movementMobileJoystick, cameraMobileJoystick, keys } = mp()
     const { isPointerLocked, mouseMovementX, mouseMovementY } = mp()
     const [camera] = cameras
+    const [player] = players
 
     setControl('forward', getForward())
     setControl('backward', getBackward())
@@ -165,20 +166,22 @@ const ControlsSystem = () => {
       useControlsStore.getState().controls.forwardDirection = undefined
     }
 
-    if (isPointerLocked) {
-      if (mouseMovementX !== undefined) {
-        setControl('manualRotZ', -clamp(mouseMovementX, MAX_MOVEMENT) / 100)
-      }
-      if (mouseMovementY !== undefined) {
-        setControl('manualRotX', clamp(mouseMovementY, MAX_MOVEMENT) / 100)
+    if (isPointerLocked && mp().isRightMouseDown && !mp().isLeftMouseDown) {
+      player.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.004
+      if (
+        (mouseMovementY > 0 && camera.tra.rot.x < 0) ||
+        (mouseMovementY < 0 && camera.tra.rot.x > -pi / 3)
+      ) {
+        camera.tra.rot.x += clamp(mouseMovementY, MAX_MOVEMENT) / 1000
       }
     } else if (
       cameraMobileJoystick.force !== undefined &&
       cameraMobileJoystick.angle !== undefined &&
       cameraMobileJoystick.forceDiff !== undefined
     ) {
-      camera.tra.rot.z +=
-        Math.cos(cameraMobileJoystick.angle) * Math.min(cameraMobileJoystick.forceDiff, 2)
+      camera.tra.rot.z += cos(cameraMobileJoystick.angle) * min(cameraMobileJoystick.forceDiff, 2)
+    } else if (isPointerLocked && mp().isLeftMouseDown && !mp().isRightMouseDown) {
+      camera.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.004
     }
   })
 

@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useRef } from 'react'
 
 import clsx from 'clsx'
-import { lockPointer, Canvas as ManaCanvas } from 'manapotion'
+import { lockPointer, Canvas as ManaCanvas, mp } from 'manapotion'
 import { suspend } from 'suspend-react'
 import { MeshLambertMaterial, SRGBColorSpace, TextureLoader } from 'three'
 
@@ -25,6 +25,7 @@ const GlobalMaterials = () => {
 }
 
 const Canvas = ({ className, children, ...props }: CanvasProps) => {
+  const longLeftClickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const longRightClickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   return (
@@ -35,20 +36,33 @@ const Canvas = ({ className, children, ...props }: CanvasProps) => {
       shadows
       onMouseMove={e => {
         // Note: This can cause many exceptions if the fullscreen is not allowed
-        if (e.buttons === 2) {
+        if (e.buttons === 1 || e.buttons === 2 || e.buttons === 3) {
           lockPointer()
+          longLeftClickTimeoutRef.current && clearTimeout(longLeftClickTimeoutRef.current)
           longRightClickTimeoutRef.current && clearTimeout(longRightClickTimeoutRef.current)
         }
       }}
       onMouseUp={e => {
+        if (e.button === 0) {
+          longLeftClickTimeoutRef.current && clearTimeout(longLeftClickTimeoutRef.current)
+        }
         if (e.button === 2) {
           longRightClickTimeoutRef.current && clearTimeout(longRightClickTimeoutRef.current)
         }
       }}
       onMouseDown={e => {
+        if (e.button === 0) {
+          longLeftClickTimeoutRef.current = setTimeout(() => {
+            if (mp().isLeftMouseDown) {
+              lockPointer()
+            }
+          }, 300)
+        }
         if (e.button === 2) {
           longRightClickTimeoutRef.current = setTimeout(() => {
-            lockPointer()
+            if (mp().isRightMouseDown) {
+              lockPointer()
+            }
           }, 300)
         }
       }}

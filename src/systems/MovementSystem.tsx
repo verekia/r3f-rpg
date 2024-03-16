@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber'
-import { lerp, pi } from 'manapotion'
+import { cos, lerp, pi, sin } from 'manapotion'
 
 import { PLAYER_ROTATION_SPEED, PLAYER_SPEED, PLAYER_SPEED_BACKWARD } from '#/lib/constants'
 import { useControlsStore } from '#/stores/controls'
@@ -26,14 +26,14 @@ const MovementSystem = () => {
         return
       }
       player.tra.rot.z = controls.forwardDirection
-      player.tra.pos.velX = Math.cos(controls.forwardDirection) * PLAYER_SPEED
-      player.tra.pos.velY = Math.sin(controls.forwardDirection) * PLAYER_SPEED
+      player.tra.pos.velX = cos(controls.forwardDirection) * PLAYER_SPEED
+      player.tra.pos.velY = sin(controls.forwardDirection) * PLAYER_SPEED
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Running')
     }
 
     const forward = () => {
-      player.tra.pos.velX = Math.cos(player.tra.rot.z) * PLAYER_SPEED
-      player.tra.pos.velY = Math.sin(player.tra.rot.z) * PLAYER_SPEED
+      player.tra.pos.velX = cos(player.tra.rot.z) * PLAYER_SPEED
+      player.tra.pos.velY = sin(player.tra.rot.z) * PLAYER_SPEED
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Running')
       player.player.usePlayerStore.getState().modelRotZ = lerp(
         player.player.usePlayerStore.getState().modelRotZ,
@@ -43,8 +43,8 @@ const MovementSystem = () => {
     }
 
     const backward = () => {
-      player.tra.pos.velX = -Math.cos(player.tra.rot.z) * PLAYER_SPEED_BACKWARD
-      player.tra.pos.velY = -Math.sin(player.tra.rot.z) * PLAYER_SPEED_BACKWARD
+      player.tra.pos.velX = -cos(player.tra.rot.z) * PLAYER_SPEED_BACKWARD
+      player.tra.pos.velY = -sin(player.tra.rot.z) * PLAYER_SPEED_BACKWARD
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Walking Backward')
       player.player.usePlayerStore.getState().modelRotZ = lerp(
         player.player.usePlayerStore.getState().modelRotZ,
@@ -54,8 +54,8 @@ const MovementSystem = () => {
     }
 
     const strafeLeft = () => {
-      player.tra.pos.velX = Math.cos(player.tra.rot.z + pi / 2) * PLAYER_SPEED
-      player.tra.pos.velY = Math.sin(player.tra.rot.z + pi / 2) * PLAYER_SPEED
+      player.tra.pos.velX = cos(player.tra.rot.z + pi / 2) * PLAYER_SPEED
+      player.tra.pos.velY = sin(player.tra.rot.z + pi / 2) * PLAYER_SPEED
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Strafe Left')
       player.player.usePlayerStore.getState().modelRotZ = lerp(
         player.player.usePlayerStore.getState().modelRotZ,
@@ -65,8 +65,8 @@ const MovementSystem = () => {
     }
 
     const strafeRight = () => {
-      player.tra.pos.velX = -Math.cos(player.tra.rot.z + pi / 2) * PLAYER_SPEED
-      player.tra.pos.velY = -Math.sin(player.tra.rot.z + pi / 2) * PLAYER_SPEED
+      player.tra.pos.velX = -cos(player.tra.rot.z + pi / 2) * PLAYER_SPEED
+      player.tra.pos.velY = -sin(player.tra.rot.z + pi / 2) * PLAYER_SPEED
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Strafe Right')
       player.player.usePlayerStore.getState().modelRotZ = lerp(
         player.player.usePlayerStore.getState().modelRotZ,
@@ -76,8 +76,8 @@ const MovementSystem = () => {
     }
 
     const forwardLeft = () => {
-      player.tra.pos.velX = Math.cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED
-      player.tra.pos.velY = Math.sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED
+      player.tra.pos.velX = cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED
+      player.tra.pos.velY = sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Running')
       player.player.usePlayerStore.getState().modelRotZ = lerp(
         player.player.usePlayerStore.getState().modelRotZ,
@@ -87,8 +87,8 @@ const MovementSystem = () => {
     }
 
     const forwardRight = () => {
-      player.tra.pos.velX = Math.cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED
-      player.tra.pos.velY = Math.sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED
+      player.tra.pos.velX = cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED
+      player.tra.pos.velY = sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Running')
       player.player.usePlayerStore.getState().modelRotZ = lerp(
         player.player.usePlayerStore.getState().modelRotZ,
@@ -98,8 +98,8 @@ const MovementSystem = () => {
     }
 
     const backwardLeft = () => {
-      player.tra.pos.velX = -Math.cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED_BACKWARD
-      player.tra.pos.velY = -Math.sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED_BACKWARD
+      player.tra.pos.velX = -cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED_BACKWARD
+      player.tra.pos.velY = -sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED_BACKWARD
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Walking Backward')
       player.player.usePlayerStore.getState().modelRotZ = lerp(
         player.player.usePlayerStore.getState().modelRotZ,
@@ -109,8 +109,8 @@ const MovementSystem = () => {
     }
 
     const backwardRight = () => {
-      player.tra.pos.velX = -Math.cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED_BACKWARD
-      player.tra.pos.velY = -Math.sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED_BACKWARD
+      player.tra.pos.velX = -cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED_BACKWARD
+      player.tra.pos.velY = -sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED_BACKWARD
       isGrounded && player.player.usePlayerStore.getState().setAnimation('Walking Backward')
       player.player.usePlayerStore.getState().modelRotZ = lerp(
         player.player.usePlayerStore.getState().modelRotZ,
@@ -147,14 +147,12 @@ const MovementSystem = () => {
       idle()
     }
 
-    if (controls.turnLeft && controls.manualRotZ === undefined) {
+    if (controls.turnLeft) {
       player.tra.rot.velZ = PLAYER_ROTATION_SPEED
-    } else if (controls.turnRight && controls.manualRotZ === undefined) {
+    } else if (controls.turnRight) {
       player.tra.rot.velZ = -PLAYER_ROTATION_SPEED
-    } else if (player.tra.rot.velZ && controls.manualRotZ !== undefined) {
+    } else if (player.tra.rot.velZ) {
       player.tra.rot.velZ = 0
-    } else if (controls.manualRotZ !== undefined) {
-      player.tra.rot.z += controls.manualRotZ! * 0.5
     } else {
       player.tra.rot.velZ = 0
     }
