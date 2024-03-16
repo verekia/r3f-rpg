@@ -1,13 +1,16 @@
-import { ReactNode, useRef } from 'react'
+import { useRef } from 'react'
 
+import clsx from 'clsx'
 import { lockPointer, Canvas as ManaCanvas } from 'manapotion'
 
-const Canvas = ({ children }: { children: ReactNode }) => {
+import type { CanvasProps } from '@react-three/fiber'
+
+const Canvas = ({ className, ...props }: CanvasProps) => {
   const longRightClickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   return (
     <ManaCanvas
-      className="top-0 z-0"
+      className={clsx('top-0 z-0', className)}
       style={{ position: 'absolute' }}
       onContextMenu={e => e.preventDefault()}
       shadows
@@ -30,9 +33,9 @@ const Canvas = ({ children }: { children: ReactNode }) => {
           }, 300)
         }
       }}
-    >
-      {children}
-    </ManaCanvas>
+      onClick={() => window.getSelection()?.removeAllRanges()}
+      {...props}
+    />
   )
 }
 

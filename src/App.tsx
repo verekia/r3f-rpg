@@ -28,9 +28,9 @@ const App = () => {
   }, [])
 
   return (
-    <div className="relative h-full select-none">
+    <div className="relative h-full">
       {route === LANDING_ROUTE ? <Landing /> : <UI />}
-      <Canvas>
+      <Canvas className="select-none">
         {route === LANDING_ROUTE ? null : (
           <>
             <Systems />
