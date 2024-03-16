@@ -7,47 +7,55 @@ import type { EventData, JoystickManager, JoystickOutputData } from 'nipplejs'
 
 let nippleManager: JoystickManager
 
-mp().mobileJoystick1 = { angle: undefined, force: undefined }
+mp().movementMobileJoystick = { angle: undefined, force: undefined }
+mp().cameraMobileJoystick = { angle: undefined, force: undefined }
 
 const Nipple = ({ className, ...props }: { className?: string }) => {
   const ref = useRef<HTMLDivElement>(null)
   const canHover = useMP(s => s.canHover)
 
-  const handleStart = () => {
-    mp().mobileJoystick1.angle = undefined
-    mp().mobileJoystick1.force = undefined
+  const handleMove = (_: EventData, { force, angle, instance }: JoystickOutputData) => {
+    const width = ref.current.getBoundingClientRect().width
+
+    if (instance.position.x < width / 2) {
+      mp().movementMobileJoystick.angle = angle.radian
+      mp().movementMobileJoystick.force = force
+    }
+
+    if (instance.position.x > width / 2) {
+      mp().cameraMobileJoystick.angle = angle.radian
+      mp().cameraMobileJoystick.force = force
+    }
   }
 
-  const handleEnd = () => {
-    mp().mobileJoystick1.angle = undefined
-    mp().mobileJoystick1.force = undefined
-  }
+  const handleEnd = (_: EventData, { position }: JoystickOutputData) => {
+    const width = ref.current.getBoundingClientRect().width
 
-  const handleMove = (_: EventData, { force, angle }: JoystickOutputData) => {
-    mp().mobileJoystick1.angle = angle.radian
-    mp().mobileJoystick1.force = force
+    if (position.x < width / 2) {
+      mp().movementMobileJoystick.angle = undefined
+      mp().movementMobileJoystick.force = undefined
+    }
+
+    if (position.x > width / 2) {
+      mp().cameraMobileJoystick.angle = undefined
+      mp().cameraMobileJoystick.force = undefined
+    }
   }
 
   useEffect(() => {
     const loadNipple = async () => {
-      if (!nippleManager) {
-        nippleManager = (await import('nipplejs')).default.create({
-          zone: ref.current as HTMLDivElement,
-        })
-      }
-
-      nippleManager.on('start', handleStart)
-      nippleManager.on('end', handleEnd)
+      nippleManager = (await import('nipplejs')).default.create({ zone: ref.current })
       nippleManager.on('move', handleMove)
+      nippleManager.on('end', handleEnd)
     }
+
     if (canHover === false) {
       loadNipple()
     }
 
     return () => {
-      nippleManager?.off('start', handleStart)
-      nippleManager?.off('end', handleEnd)
       nippleManager?.off('move', handleMove)
+      nippleManager?.off('end', handleEnd)
       nippleManager?.destroy()
     }
   }, [canHover])

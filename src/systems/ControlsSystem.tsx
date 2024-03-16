@@ -9,51 +9,51 @@ import { jump, uTurn } from '#/systems/MovementSystem'
 const MAX_MOVEMENT = 60
 
 const joystickForward = () => {
-  const { mobileJoystick1 } = mp()
+  const { movementMobileJoystick } = mp()
 
-  if (mobileJoystick1.angle === undefined || mobileJoystick1.force === undefined) return false
+  if (movementMobileJoystick.angle === undefined || movementMobileJoystick.force === undefined) return false
 
-  return mobileJoystick1.force > 0.2 && between(mobileJoystick1.angle, pi / 4, (3 * pi) / 4)
+  return movementMobileJoystick.force > 0.2 && between(movementMobileJoystick.angle, pi / 4, (3 * pi) / 4)
 }
 
 const joystickBackward = () => {
-  const { mobileJoystick1 } = mp()
+  const { movementMobileJoystick } = mp()
 
-  if (mobileJoystick1.angle === undefined || mobileJoystick1.force === undefined) return false
+  if (movementMobileJoystick.angle === undefined || movementMobileJoystick.force === undefined) return false
 
-  return mobileJoystick1.force > 0.2 && between(mobileJoystick1.angle, (4 * pi) / 3, (5 * pi) / 3)
+  return movementMobileJoystick.force > 0.2 && between(movementMobileJoystick.angle, (4 * pi) / 3, (5 * pi) / 3)
 }
 
 const joystickStrafeLeft = () => {
-  const { mobileJoystick1 } = mp()
+  const { movementMobileJoystick } = mp()
 
-  if (mobileJoystick1.angle === undefined || mobileJoystick1.force === undefined) return false
+  if (movementMobileJoystick.angle === undefined || movementMobileJoystick.force === undefined) return false
 
-  return mobileJoystick1.force > 0.2 && between(mobileJoystick1.angle, pi, (7 * pi) / 6)
+  return movementMobileJoystick.force > 0.2 && between(movementMobileJoystick.angle, pi, (7 * pi) / 6)
 }
 
 const joystickStrafeRight = () => {
-  const { mobileJoystick1 } = mp()
+  const { movementMobileJoystick } = mp()
 
-  if (mobileJoystick1.angle === undefined || mobileJoystick1.force === undefined) return false
+  if (movementMobileJoystick.angle === undefined || movementMobileJoystick.force === undefined) return false
 
-  return mobileJoystick1.force > 0.2 && between(mobileJoystick1.angle, (11 * pi) / 6, 2 * pi)
+  return movementMobileJoystick.force > 0.2 && between(movementMobileJoystick.angle, (11 * pi) / 6, 2 * pi)
 }
 
 const joystickBackwardLeft = () => {
-  const { mobileJoystick1 } = mp()
+  const { movementMobileJoystick } = mp()
 
-  if (mobileJoystick1.angle === undefined || mobileJoystick1.force === undefined) return false
+  if (movementMobileJoystick.angle === undefined || movementMobileJoystick.force === undefined) return false
 
-  return mobileJoystick1.force > 0.2 && between(mobileJoystick1.angle, (7 * pi) / 6, (4 * pi) / 3)
+  return movementMobileJoystick.force > 0.2 && between(movementMobileJoystick.angle, (7 * pi) / 6, (4 * pi) / 3)
 }
 
 const joystickBackwardRight = () => {
-  const { mobileJoystick1 } = mp()
+  const { movementMobileJoystick } = mp()
 
-  if (mobileJoystick1.angle === undefined || mobileJoystick1.force === undefined) return false
+  if (movementMobileJoystick.angle === undefined || movementMobileJoystick.force === undefined) return false
 
-  return mobileJoystick1.force > 0.2 && between(mobileJoystick1.angle, (5 * pi) / 3, (11 * pi) / 6)
+  return movementMobileJoystick.force > 0.2 && between(movementMobileJoystick.angle, (5 * pi) / 3, (11 * pi) / 6)
 }
 
 const getForward = () => {
@@ -195,7 +195,7 @@ const getBackwardRight = () => {
 
 const ControlsSystem = () => {
   useFrame(() => {
-    const { mobileJoystick1, keys } = mp()
+    const { movementMobileJoystick, keys } = mp()
     const { isPointerLocked, mouseMovementX, mouseMovementY } = mp()
 
     setControl('forward', getForward())
@@ -218,12 +218,12 @@ const ControlsSystem = () => {
         setControl('manualRotX', clamp(mouseMovementY, MAX_MOVEMENT) / 100)
       }
     } else if (
-      mobileJoystick1.force !== undefined &&
-      mobileJoystick1.angle !== undefined &&
-      mobileJoystick1.force > 0.2
+      movementMobileJoystick.force !== undefined &&
+      movementMobileJoystick.angle !== undefined &&
+      movementMobileJoystick.force > 0.2
     ) {
-      if (between(mobileJoystick1.angle, 0, pi)) {
-        setControl('manualRotZ', (mobileJoystick1.angle - pi / 2) * 0.1)
+      if (between(movementMobileJoystick.angle, 0, pi)) {
+        setControl('manualRotZ', (movementMobileJoystick.angle - pi / 2) * 0.1)
       } else {
         setControl('manualRotZ', undefined)
       }
