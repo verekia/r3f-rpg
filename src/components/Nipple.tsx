@@ -44,7 +44,10 @@ const Nipple = ({ className, ...props }: { className?: string }) => {
 
   useEffect(() => {
     const loadNipple = async () => {
-      nippleManager = (await import('nipplejs')).default.create({ zone: ref.current })
+      nippleManager = (await import('nipplejs')).default.create({
+        zone: ref.current,
+        dataOnly: true,
+      })
       nippleManager.on('move', handleMove)
       nippleManager.on('end', handleEnd)
     }
