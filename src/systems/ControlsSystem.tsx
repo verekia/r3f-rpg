@@ -40,10 +40,10 @@ const getBackward = () => {
 }
 
 const getTurnLeft = () => {
-  const { isPointerLocked, keys } = mp()
+  const { isPointerLocked, isRightMouseDown, keys } = mp()
   const k = keys.byCode
 
-  if (isPointerLocked) return false
+  if (isPointerLocked && isRightMouseDown) return false
   if (k.KeyD || k.ArrowRight) return false
   if (k.KeyA || k.ArrowLeft) return true
 
@@ -51,10 +51,10 @@ const getTurnLeft = () => {
 }
 
 const getTurnRight = () => {
-  const { isPointerLocked, keys } = mp()
+  const { isPointerLocked, isRightMouseDown, keys } = mp()
   const k = keys.byCode
 
-  if (isPointerLocked) return false
+  if (isPointerLocked && isRightMouseDown) return false
   if (k.KeyA || k.ArrowLeft) return false
   if (k.KeyD || k.ArrowRight) return true
 
@@ -71,7 +71,7 @@ const getStrafeLeft = () => {
   if (isPointerLocked && (k.KeyD || k.ArrowRight)) return false
   if (isLeftMouseDown && isRightMouseDown) return false
   if (k.KeyQ) return true
-  if (isPointerLocked && (k.KeyA || k.ArrowLeft)) return true
+  if (isPointerLocked && isRightMouseDown && (k.KeyA || k.ArrowLeft)) return true
 
   return false
 }
@@ -86,7 +86,7 @@ const getStrafeRight = () => {
   if (k.KeyS || k.ArrowDown) return false
   if (isLeftMouseDown && isRightMouseDown) return false
   if (k.KeyE) return true
-  if (isPointerLocked && (k.KeyD || k.ArrowRight)) return true
+  if (isPointerLocked && isRightMouseDown && (k.KeyD || k.ArrowRight)) return true
 
   return false
 }
@@ -166,7 +166,9 @@ const ControlsSystem = () => {
       useControlsStore.getState().controls.forwardDirection = undefined
     }
 
-    if (isPointerLocked && mp().isRightMouseDown && !mp().isLeftMouseDown) {
+    if (isPointerLocked && mp().isLeftMouseDown && !mp().isRightMouseDown) {
+      camera.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.004
+    } else if (isPointerLocked && mp().isRightMouseDown) {
       player.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.004
       if (
         (mouseMovementY > 0 && camera.tra.rot.x < 0) ||
@@ -180,8 +182,6 @@ const ControlsSystem = () => {
       cameraMobileJoystick.forceDiff !== undefined
     ) {
       camera.tra.rot.z += cos(cameraMobileJoystick.angle) * min(cameraMobileJoystick.forceDiff, 2)
-    } else if (isPointerLocked && mp().isLeftMouseDown && !mp().isRightMouseDown) {
-      camera.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.004
     }
   })
 
