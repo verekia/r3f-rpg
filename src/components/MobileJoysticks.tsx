@@ -243,7 +243,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
     <>
       <div
         ref={ref}
-        className={clsx('desktop:hidden bg-white/50', className)}
+        className={clsx('desktop:hidden', className)}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}

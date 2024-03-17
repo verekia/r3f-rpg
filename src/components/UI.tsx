@@ -19,7 +19,10 @@ const UI = () => (
     </div>
     <div
       className="desktop:hidden absolute bottom-16 right-10 z-10 select-none rounded-md bg-black/50 p-2 text-white"
-      onPointerDown={pressedJumpButton}
+      onPointerDown={e => {
+        e.stopPropagation()
+        pressedJumpButton()
+      }}
     >
       Jump
     </div>
