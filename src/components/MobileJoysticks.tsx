@@ -249,7 +249,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
         onTouchEnd={handleTouchEnd}
         {...props}
       >
-        <div
+        {/* <div
           ref={leftJoystickViewerRef}
           className="pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-white/50 transition-opacity"
         />
@@ -262,7 +262,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
           <div className="pointer-events-none absolute right-0 flex h-full w-1/2 select-none items-center justify-center">
             Drag to rotate the camera
           </div>
-        )}
+        )} */}
       </div>
     </>
   )
