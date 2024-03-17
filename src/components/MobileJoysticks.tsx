@@ -25,7 +25,7 @@ mp().cameraMobileJoystick = {
 
 const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   const ref = useRef<HTMLDivElement>(null)
-  const leftJoystickViewerRef = useRef<HTMLDivElement>(null)
+  // const leftJoystickViewerRef = useRef<HTMLDivElement>(null)
   const [isLeftHelperShown, setIsLeftHelperShown] = useState(true)
   const [isRightHelperShown, setIsRightHelperShown] = useState(true)
   const canHover = useMP(s => s.canHover)
@@ -229,13 +229,13 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
     }
   }
 
-  useFrameBefore(() => {
-    if (!leftJoystickViewerRef.current) {
-      return
-    }
-    leftJoystickViewerRef.current.style.transform = `translate(${leftJoystickRef.current?.followX}px, ${window.innerHeight - leftJoystickRef.current?.followY}px)`
-    leftJoystickViewerRef.current.style.opacity = leftJoystickRef.current ? '1' : '0'
-  })
+  // useFrameBefore(() => {
+  //   if (!leftJoystickViewerRef.current) {
+  //     return
+  //   }
+  //   leftJoystickViewerRef.current.style.transform = `translate(${leftJoystickRef.current?.followX}px, ${window.innerHeight - leftJoystickRef.current?.followY}px)`
+  //   leftJoystickViewerRef.current.style.opacity = leftJoystickRef.current ? '1' : '0'
+  // })
 
   if (canHover) return null
 
@@ -252,7 +252,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
         {/* <div
           ref={leftJoystickViewerRef}
           className="pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-white/50 transition-opacity"
-        />
+        /> */}
         {isLeftHelperShown && (
           <div className="pointer-events-none absolute left-0 flex h-full w-1/2 select-none items-center justify-center">
             Drag to move
@@ -262,7 +262,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
           <div className="pointer-events-none absolute right-0 flex h-full w-1/2 select-none items-center justify-center">
             Drag to rotate the camera
           </div>
-        )} */}
+        )}
       </div>
     </>
   )
