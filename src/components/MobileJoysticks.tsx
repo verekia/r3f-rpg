@@ -3,8 +3,6 @@ import { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import { atan2, cos, mp, pi, pow, sin, sqrt, useMP } from 'manapotion'
 
-import type { TouchEvent } from 'react'
-
 mp().movementMobileJoystick = {
   angle: undefined,
   angleDiff: undefined,
@@ -64,7 +62,6 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
 
   const handleTouchStart = (e: TouchEvent) => {
     e.preventDefault()
-    // e.stopPropagation()
 
     for (let i = 0; i < e.changedTouches.length; i++) {
       const touch = e.changedTouches.item(i)
@@ -116,7 +113,6 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
 
   const handleTouchMove = (e: TouchEvent) => {
     e.preventDefault()
-    // e.stopPropagation()
 
     for (let i = 0; i < e.changedTouches.length; i++) {
       const touch = e.changedTouches.item(i)
@@ -212,7 +208,6 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
 
   const handleTouchEnd = (e: TouchEvent) => {
     e.preventDefault()
-    // e.stopPropagation()
 
     for (let i = 0; i < e.changedTouches.length; i++) {
       const touch = e.changedTouches.item(i)
@@ -238,14 +233,6 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
     }
   }
 
-  // useFrameBefore(() => {
-  //   if (!leftJoystickViewerRef.current) {
-  //     return
-  //   }
-  //   leftJoystickViewerRef.current.style.transform = `translate(${leftJoystickRef.current?.followX}px, ${window.innerHeight - leftJoystickRef.current?.followY}px)`
-  //   leftJoystickViewerRef.current.style.opacity = leftJoystickRef.current ? '1' : '0'
-  // })
-
   useEffect(() => {
     if (canHover) return
 
@@ -253,20 +240,14 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
 
     // https://stackoverflow.com/questions/63663025/react-onwheel-handler-cant-preventdefault-because-its-a-passive-event-listenev
 
-    // @ts-expect-error
-    element.addEventListener('touchstart', handleTouchStart, { passive: false })
-    // @ts-expect-error
-    element.addEventListener('touchmove', handleTouchMove, { passive: false })
-    // @ts-expect-error
-    element.addEventListener('touchend', handleTouchEnd, { passive: false })
+    element.addEventListener('touchstart', handleTouchStart /*, { passive: false }*/)
+    element.addEventListener('touchmove', handleTouchMove /*, { passive: false }*/)
+    element.addEventListener('touchend', handleTouchEnd /*, { passive: false }*/)
 
     return () => {
-      // @ts-expect-error
-      element.removeEventListener('touchstart', handleTouchStart, { passive: false })
-      // @ts-expect-error
-      element.removeEventListener('touchmove', handleTouchMove, { passive: false })
-      // @ts-expect-error
-      element.removeEventListener('touchend', handleTouchEnd, { passive: false })
+      element.removeEventListener('touchstart', handleTouchStart)
+      element.removeEventListener('touchmove', handleTouchMove)
+      element.removeEventListener('touchend', handleTouchEnd)
     }
   }, [canHover])
 
