@@ -7,28 +7,21 @@ import type { EventData, JoystickManager, JoystickOutputData } from 'nipplejs'
 
 let nippleManager: JoystickManager
 
-const resetMovementMobileJoystick = () => {
-  mp().movementMobileJoystick = {
-    angle: undefined,
-    force: undefined,
-    forceDiff: undefined,
-    vector: { x: undefined, y: undefined },
-    vectorDiff: { x: undefined, y: undefined },
-  }
+mp().movementMobileJoystick = {
+  angle: undefined,
+  force: undefined,
+  forceDiff: undefined,
+  vector: { x: undefined, y: undefined },
+  vectorDiff: { x: undefined, y: undefined },
 }
 
-const resetCameraMobileJoystick = () => {
-  mp().cameraMobileJoystick = {
-    angle: undefined,
-    force: undefined,
-    forceDiff: undefined,
-    vector: { x: undefined, y: undefined },
-    vectorDiff: { x: undefined, y: undefined },
-  }
+mp().cameraMobileJoystick = {
+  angle: undefined,
+  force: undefined,
+  forceDiff: undefined,
+  vector: { x: undefined, y: undefined },
+  vectorDiff: { x: undefined, y: undefined },
 }
-
-resetMovementMobileJoystick()
-resetCameraMobileJoystick()
 
 const Nipple = ({ className, ...props }: { className?: string }) => {
   const ref = useRef<HTMLDivElement>(null)
@@ -72,7 +65,11 @@ const Nipple = ({ className, ...props }: { className?: string }) => {
         mp().cameraMobileJoystick.vectorDiff.y =
           (mp().cameraMobileJoystick.vector.y ?? vector.y) - vector.y
 
-        resetRightMovementTimeoutRef.current = setTimeout(resetCameraMobileJoystick, 70)
+        resetRightMovementTimeoutRef.current = setTimeout(() => {
+          mp().cameraMobileJoystick.forceDiff = 0
+          mp().cameraMobileJoystick.vectorDiff.x = 0
+          mp().cameraMobileJoystick.vectorDiff.y = 0
+        }, 70)
 
         if (isRightHelperShown) {
           setIsRightHelperShown(false)
