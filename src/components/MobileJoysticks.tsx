@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 
 import clsx from 'clsx'
-import { atan2, cos, mp, pi, pow, sin, sqrt, useFrameBefore, useMP } from 'manapotion'
+import { atan2, cos, mp, pi, pow, sin, sqrt, useMP } from 'manapotion'
 
 import type { TouchEvent } from 'react'
 
@@ -63,6 +63,9 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   } | null>(null)
 
   const handleTouchStart = (e: TouchEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
     for (let i = 0; i < e.changedTouches.length; i++) {
       const touch = e.changedTouches.item(i)
       const currentX = touch.clientX
@@ -112,6 +115,9 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   }
 
   const handleTouchMove = (e: TouchEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
     for (let i = 0; i < e.changedTouches.length; i++) {
       const touch = e.changedTouches.item(i)
       const currentX = touch.clientX
@@ -205,6 +211,9 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   }
 
   const handleTouchEnd = (e: TouchEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
     for (let i = 0; i < e.changedTouches.length; i++) {
       const touch = e.changedTouches.item(i)
 
