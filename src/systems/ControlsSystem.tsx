@@ -164,6 +164,8 @@ const ControlsSystem = () => {
     setControl('turnRight', getTurnRight())
     setControl('jump', Boolean(keys.byCode.Space))
 
+    console.log(movementMobileJoystick.angle)
+
     if (movementMobileJoystick.force !== undefined && movementMobileJoystick.angle !== undefined) {
       useControlsStore.getState().controls.forwardDirection =
         movementMobileJoystick.force < 0.2
@@ -172,8 +174,6 @@ const ControlsSystem = () => {
     } else {
       useControlsStore.getState().controls.forwardDirection = undefined
     }
-
-    // TODO: when turning with left click, then clock both buttons, it runs in the wrong direction
 
     if (
       isPointerLocked &&
@@ -189,20 +189,16 @@ const ControlsSystem = () => {
       player.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.003
     }
 
-    // vectorDiff is limited by the joystick range
-    if (cameraMobileJoystick.angle !== undefined && cameraMobileJoystick.force !== undefined) {
-      const mobileCameraMovementX =
-        cameraMobileJoystick.force * cos(cameraMobileJoystick.angle) * 0.01
-      camera.tra.rot.z -= clamp(mobileCameraMovementX, MAX_MOVEMENT)
+    if (cameraMobileJoystick.vectorDiff.x !== undefined) {
+      camera.tra.rot.z -= clamp(cameraMobileJoystick.vectorDiff.x * 0.005, MAX_MOVEMENT)
+    }
 
-      const mobileCameraMovementY =
-        cameraMobileJoystick.force * sin(cameraMobileJoystick.angle) * 0.01
-      if (
-        (mobileCameraMovementY > 0 && camera.tra.rot.x < 0) ||
-        (mobileCameraMovementY < 0 && camera.tra.rot.x > -pi / 3)
-      ) {
-        camera.tra.rot.x += clamp(mobileCameraMovementY, MAX_MOVEMENT)
-      }
+    if (
+      cameraMobileJoystick.vectorDiff.y !== undefined &&
+      ((cameraMobileJoystick.vectorDiff.y > 0 && camera.tra.rot.x < 0) ||
+        (cameraMobileJoystick.vectorDiff.y < 0 && camera.tra.rot.x > -pi / 3))
+    ) {
+      camera.tra.rot.x += clamp(cameraMobileJoystick.vectorDiff.y * 0.005, MAX_MOVEMENT)
     }
   })
 
