@@ -165,7 +165,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
     <>
       <div
         ref={ref}
-        className={clsx('hover-hover:hidden', className)}
+        className={clsx('desktop:hidden', className)}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}

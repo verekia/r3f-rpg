@@ -1,14 +1,16 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+const config = {
   content: ['./index.html', './src/**/*.tsx'],
   theme: {
     extend: {
       screens: {
-        'hover-hover': { raw: '(hover: hover)' },
-        'hover-none': { raw: '(hover: none)' },
+        desktop: { raw: '(hover: hover)' },
+        mobile: { raw: '(hover: none)' },
       },
     },
   },
   plugins: [],
   future: { hoverOnlyWhenSupported: true },
 }
+
+export default config
