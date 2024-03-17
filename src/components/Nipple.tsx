@@ -38,12 +38,12 @@ const Nipple = ({ className, ...props }: { className?: string }) => {
         mp().movementMobileJoystick.angle = angle.radian
         mp().movementMobileJoystick.forceDiff = (mp().movementMobileJoystick.force ?? force) - force
         mp().movementMobileJoystick.force = force
-        mp().movementMobileJoystick.vector.x = vector.x
-        mp().movementMobileJoystick.vector.y = vector.y
         mp().movementMobileJoystick.vectorDiff.x =
           (mp().movementMobileJoystick.vector.x ?? vector.x) - vector.x
         mp().movementMobileJoystick.vectorDiff.y =
           (mp().movementMobileJoystick.vector.y ?? vector.y) - vector.y
+        mp().movementMobileJoystick.vector.x = vector.x
+        mp().movementMobileJoystick.vector.y = vector.y
 
         if (isLeftHelperShown) {
           setIsLeftHelperShown(false)
@@ -58,12 +58,12 @@ const Nipple = ({ className, ...props }: { className?: string }) => {
         mp().cameraMobileJoystick.angle = angle.radian
         mp().cameraMobileJoystick.forceDiff = (mp().cameraMobileJoystick.force ?? force) - force
         mp().cameraMobileJoystick.force = force
-        mp().cameraMobileJoystick.vector.x = vector.x
-        mp().cameraMobileJoystick.vector.y = vector.y
         mp().cameraMobileJoystick.vectorDiff.x =
           (mp().cameraMobileJoystick.vector.x ?? vector.x) - vector.x
         mp().cameraMobileJoystick.vectorDiff.y =
           (mp().cameraMobileJoystick.vector.y ?? vector.y) - vector.y
+        mp().cameraMobileJoystick.vector.x = vector.x
+        mp().cameraMobileJoystick.vector.y = vector.y
 
         resetRightMovementTimeoutRef.current = setTimeout(() => {
           mp().cameraMobileJoystick.forceDiff = 0

@@ -1,4 +1,4 @@
-import { clamp, cos, min, mp, pi, useFrameBefore } from 'manapotion'
+import { clamp, cos, min, mp, pi, sin, useFrameBefore } from 'manapotion'
 
 import { setControl, useControlsStore } from '#/stores/controls'
 import { jump } from '#/systems/MovementSystem'
@@ -187,19 +187,22 @@ const ControlsSystem = () => {
       camera.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.003
     } else if (isPointerLocked && isRightMouseDown) {
       player.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.003
-    } else if (
-      cameraMobileJoystick.force !== undefined &&
-      cameraMobileJoystick.angle !== undefined &&
-      cameraMobileJoystick.forceDiff !== undefined
-    ) {
-      camera.tra.rot.z += cos(cameraMobileJoystick.angle) * min(cameraMobileJoystick.forceDiff, 2)
-      // console.log(cameraMobileJoystick.vectorDiff.y)
-      // if (
-      //   (cameraMobileJoystick.vectorDiff.y > 0 && camera.tra.rot.x < 0) ||
-      //   (cameraMobileJoystick.vectorDiff.y < 0 && camera.tra.rot.x > -pi / 3)
-      // ) {
-      //   camera.tra.rot.x += clamp(cameraMobileJoystick.vectorDiff.y, MAX_MOVEMENT) / 10
-      // }
+    }
+
+    // vectorDiff is limited by the joystick range
+    if (cameraMobileJoystick.angle !== undefined && cameraMobileJoystick.force !== undefined) {
+      const mobileCameraMovementX =
+        cameraMobileJoystick.force * cos(cameraMobileJoystick.angle) * 0.01
+      camera.tra.rot.z -= clamp(mobileCameraMovementX, MAX_MOVEMENT)
+
+      const mobileCameraMovementY =
+        cameraMobileJoystick.force * sin(cameraMobileJoystick.angle) * 0.01
+      if (
+        (mobileCameraMovementY > 0 && camera.tra.rot.x < 0) ||
+        (mobileCameraMovementY < 0 && camera.tra.rot.x > -pi / 3)
+      ) {
+        camera.tra.rot.x += clamp(mobileCameraMovementY, MAX_MOVEMENT)
+      }
     }
   })
 
