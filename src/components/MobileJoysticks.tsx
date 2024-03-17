@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 
 import clsx from 'clsx'
-import { atan2, mp, pi, pow, sqrt, useMP } from 'manapotion'
+import { atan2, cos, mp, pi, pow, sin, sqrt, useFrameBefore, useMP } from 'manapotion'
 
 import type { TouchEvent } from 'react'
 
@@ -25,6 +25,7 @@ mp().cameraMobileJoystick = {
 
 const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   const ref = useRef<HTMLDivElement>(null)
+  const leftJoystickViewerRef = useRef<HTMLDivElement>(null)
   const [isLeftHelperShown, setIsLeftHelperShown] = useState(true)
   const [isRightHelperShown, setIsRightHelperShown] = useState(true)
   const canHover = useMP(s => s.canHover)
@@ -34,10 +35,14 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
     identifier: number
     originX: number
     originY: number
+    originAngle: number
+    originDistance: number
+    followX: number
+    followY: number
+    followAngle: number
+    followDistance: number
     currentX: number
     currentY: number
-    distance: number
-    angle: number
     movementX: number
     movementY: number
   } | null>(null)
@@ -45,10 +50,14 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
     identifier: number
     originX: number
     originY: number
+    originAngle: number
+    originDistance: number
+    followX: number
+    followY: number
+    followAngle
+    followDistance: number
     currentX: number
     currentY: number
-    distance: number
-    angle: number
     movementX: number
     movementY: number
   } | null>(null)
@@ -64,10 +73,14 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
           identifier: touch.identifier,
           originX: currentX,
           originY: currentY,
+          originAngle: 0,
+          originDistance: 0,
+          followX: currentX,
+          followY: currentY,
+          followAngle: 0,
+          followDistance: 0,
           currentX,
           currentY,
-          distance: 0,
-          angle: 0,
           movementX: 0,
           movementY: 0,
         }
@@ -79,10 +92,14 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
           identifier: touch.identifier,
           originX: currentX,
           originY: currentY,
+          originAngle: 0,
+          originDistance: 0,
+          followX: currentX,
+          followY: currentY,
+          followAngle: 0,
+          followDistance: 0,
           currentX,
           currentY,
-          distance: 0,
-          angle: 0,
           movementX: 0,
           movementY: 0,
         }
@@ -105,20 +122,38 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
         leftJoystickRef.current.movementY = currentY - leftJoystickRef.current.currentY
         leftJoystickRef.current.currentX = currentX
         leftJoystickRef.current.currentY = currentY
-        leftJoystickRef.current.distance = sqrt(
+        leftJoystickRef.current.originDistance = sqrt(
           pow(currentX - leftJoystickRef.current.originX, 2) +
             pow(currentY - leftJoystickRef.current.originY, 2),
         )
-        leftJoystickRef.current.angle =
+        leftJoystickRef.current.followDistance = sqrt(
+          pow(currentX - leftJoystickRef.current.followX, 2) +
+            pow(currentY - leftJoystickRef.current.followY, 2),
+        )
+        leftJoystickRef.current.originAngle =
           (atan2(
             currentY - leftJoystickRef.current.originY,
             currentX - leftJoystickRef.current.originX,
           ) +
             2 * pi) %
           (2 * pi)
+        leftJoystickRef.current.followAngle =
+          (atan2(
+            currentY - leftJoystickRef.current.followY,
+            currentX - leftJoystickRef.current.followX,
+          ) +
+            2 * pi) %
+          (2 * pi)
         // Update Mp
-        mp().movementMobileJoystick.angle = leftJoystickRef.current.angle
-        mp().movementMobileJoystick.force = leftJoystickRef.current.distance
+        mp().movementMobileJoystick.angle = leftJoystickRef.current.followAngle
+        mp().movementMobileJoystick.force = leftJoystickRef.current.followDistance
+
+        const followDistance = 50
+
+        if (leftJoystickRef.current.followDistance > followDistance) {
+          leftJoystickRef.current.followX += leftJoystickRef.current.movementX
+          leftJoystickRef.current.followY += leftJoystickRef.current.movementY
+        }
       } else if (rightJoystickRef.current?.identifier === touch.identifier) {
         rightJoystickRef.current.movementX = currentX - rightJoystickRef.current.currentX
         rightJoystickRef.current.movementY = currentY - rightJoystickRef.current.currentY
@@ -128,14 +163,28 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
 
         rightJoystickRef.current.currentX = currentX
         rightJoystickRef.current.currentY = currentY
-        rightJoystickRef.current.distance = sqrt(
+        rightJoystickRef.current.originDistance = sqrt(
           pow(currentX - rightJoystickRef.current.originX, 2) +
             pow(currentY - rightJoystickRef.current.originY, 2),
         )
-        rightJoystickRef.current.angle = atan2(
-          currentX - rightJoystickRef.current.originY,
-          currentY - rightJoystickRef.current.originX,
+        rightJoystickRef.current.followDistance = sqrt(
+          pow(currentX - rightJoystickRef.current.followX, 2) +
+            pow(currentY - rightJoystickRef.current.followY, 2),
         )
+        rightJoystickRef.current.originAngle =
+          (atan2(
+            currentY - rightJoystickRef.current.originY,
+            currentX - rightJoystickRef.current.originX,
+          ) +
+            2 * pi) %
+          (2 * pi)
+        rightJoystickRef.current.followAngle =
+          (atan2(
+            currentY - rightJoystickRef.current.followY,
+            currentX - rightJoystickRef.current.followX,
+          ) +
+            2 * pi) %
+          (2 * pi)
 
         clearTimeout(resetRightMovementTimeoutRef.current)
         resetRightMovementTimeoutRef.current = setTimeout(() => {
@@ -176,6 +225,10 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
     }
   }
 
+  useFrameBefore(() => {
+    leftJoystickViewerRef.current.style.transform = `translate(${leftJoystickRef.current?.followX}px, ${window.innerHeight - leftJoystickRef.current?.followY}px)`
+  })
+
   if (canHover) return null
 
   return (
@@ -188,6 +241,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
         onTouchEnd={handleTouchEnd}
         {...props}
       >
+        <div ref={leftJoystickViewerRef} className="size-8 rounded-full bg-white/50" />
         {isLeftHelperShown && (
           <div className="pointer-events-none absolute left-0 flex h-full w-1/2 select-none items-center justify-center">
             Drag to move
