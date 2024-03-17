@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import clsx from 'clsx'
 import { atan2, cos, mp, pi, pow, sin, sqrt, useMP } from 'manapotion'
@@ -64,7 +64,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
 
   const handleTouchStart = (e: TouchEvent) => {
     e.preventDefault()
-    // e.stopPropagation()
+    e.stopPropagation()
 
     for (let i = 0; i < e.changedTouches.length; i++) {
       const touch = e.changedTouches.item(i)
@@ -116,7 +116,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
 
   const handleTouchMove = (e: TouchEvent) => {
     e.preventDefault()
-    // e.stopPropagation()
+    e.stopPropagation()
 
     for (let i = 0; i < e.changedTouches.length; i++) {
       const touch = e.changedTouches.item(i)
@@ -212,7 +212,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
 
   const handleTouchEnd = (e: TouchEvent) => {
     e.preventDefault()
-    // e.stopPropagation()
+    e.stopPropagation()
 
     for (let i = 0; i < e.changedTouches.length; i++) {
       const touch = e.changedTouches.item(i)
@@ -246,6 +246,28 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   //   leftJoystickViewerRef.current.style.opacity = leftJoystickRef.current ? '1' : '0'
   // })
 
+  useEffect(() => {
+    if (canHover) return
+
+    const element = ref.current
+
+    // @ts-expect-error
+    element.addEventListener('touchstart', handleTouchStart, { passive: false })
+    // @ts-expect-error
+    element.addEventListener('touchmove', handleTouchMove, { passive: false })
+    // @ts-expect-error
+    element.addEventListener('touchend', handleTouchEnd, { passive: false })
+
+    return () => {
+      // @ts-expect-error
+      element.removeEventListener('touchstart', handleTouchStart, { passive: false })
+      // @ts-expect-error
+      element.removeEventListener('touchmove', handleTouchMove, { passive: false })
+      // @ts-expect-error
+      element.removeEventListener('touchend', handleTouchEnd, { passive: false })
+    }
+  }, [canHover])
+
   if (canHover) return null
 
   return (
@@ -253,9 +275,9 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
       <div
         ref={ref}
         className={clsx('desktop:hidden', className)}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        // onTouchStart={handleTouchStart}
+        // onTouchMove={handleTouchMove}
+        // onTouchEnd={handleTouchEnd}
         {...props}
       >
         {/* <div
