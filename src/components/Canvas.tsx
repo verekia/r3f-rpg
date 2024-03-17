@@ -1,27 +1,29 @@
-import { Suspense, useEffect, useRef } from 'react'
+import { Suspense, useRef } from 'react'
 
+import { Html, useProgress, useTexture } from '@react-three/drei'
 import clsx from 'clsx'
-import { lockPointer, Canvas as ManaCanvas, mp } from 'manapotion'
-import { suspend } from 'suspend-react'
-import { MeshLambertMaterial, SRGBColorSpace, TextureLoader } from 'three'
+import { lockPointer, Canvas as ManaCanvas, mp, round } from 'manapotion'
+import { MeshLambertMaterial, SRGBColorSpace } from 'three'
 
 import useStore from '#/store'
 
 import type { CanvasProps } from '@react-three/fiber'
 
 const GlobalMaterials = () => {
-  console.log('GlobalMaterials')
-
-  suspend(async () => {
-    // TODO: This doesn't do anything, it's not async
-    const texture = new TextureLoader().load('/models/palette.png')
+  useTexture('/models/palette.png', texture => {
     texture.flipY = false
     texture.colorSpace = SRGBColorSpace
     const paletteMaterial = new MeshLambertMaterial({ map: texture })
     useStore.getState().setGlobalMaterials({ palette: paletteMaterial })
-  }, [])
+  })
 
   return null
+}
+
+const Loader = () => {
+  const { progress } = useProgress()
+
+  return <Html center>{round(progress)} % loaded</Html>
 }
 
 const Canvas = ({ className, children, ...props }: CanvasProps) => {
@@ -69,7 +71,7 @@ const Canvas = ({ className, children, ...props }: CanvasProps) => {
       onClick={() => window.getSelection()?.removeAllRanges()}
       {...props}
     >
-      <Suspense fallback={null}>
+      <Suspense fallback={<Loader />}>
         {children}
         <GlobalMaterials />
       </Suspense>

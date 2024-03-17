@@ -1,4 +1,5 @@
 import { KeyState, Listeners, mp, unlockPointer } from 'manapotion'
+import Head from 'next/head'
 
 import Canvas from '#/components/Canvas'
 import ForestScene from '#/components/ForestScene'
@@ -41,24 +42,34 @@ const IndexPage = () => {
   }
 
   return (
-    <div className="relative h-full">
-      {route === LANDING_ROUTE ? <Landing /> : <UI />}
-      <Canvas className="select-none">
-        {route === LANDING_ROUTE ? null : (
-          <>
-            <Systems />
-            {route === FOREST_ROUTE && <ForestScene />}
-          </>
-        )}
-      </Canvas>
-      <Listeners
-        onRightMouseUp={handleRightMouseUp}
-        onLeftMouseUp={handleLeftMouseUp}
-        onKeydown={handleKeyDown}
-        onLeftMouseDown={handleLeftMouseDown}
-        onRightMouseDown={handleRightMouseDown}
-      />
-    </div>
+    <>
+      <Head>
+        <title>Mana Playground</title>
+        <meta
+          property="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          key="viewport"
+        />
+      </Head>
+      <div className="relative h-full">
+        {route === LANDING_ROUTE ? <Landing /> : <UI />}
+        <Canvas className="select-none">
+          {route === LANDING_ROUTE ? null : (
+            <>
+              <Systems />
+              {route === FOREST_ROUTE && <ForestScene />}
+            </>
+          )}
+        </Canvas>
+        <Listeners
+          onRightMouseUp={handleRightMouseUp}
+          onLeftMouseUp={handleLeftMouseUp}
+          onKeydown={handleKeyDown}
+          onLeftMouseDown={handleLeftMouseDown}
+          onRightMouseDown={handleRightMouseDown}
+        />
+      </div>
+    </>
   )
 }
 
