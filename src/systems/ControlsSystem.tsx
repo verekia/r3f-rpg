@@ -1,10 +1,10 @@
-import { clamp, cos, min, mp, pi, sin, useFrameBefore } from 'manapotion'
+import { clamp, mp, pi, useFrameBefore } from 'manapotion'
 
 import { setControl, useControlsStore } from '#/stores/controls'
 import { jump } from '#/systems/MovementSystem'
 import { cameras, players } from '#/world'
 
-const MAX_MOVEMENT = 60
+const MAX_MOVEMENT = 600
 
 const getForward = () => {
   const { isPointerLocked, isLeftMouseDown, isRightMouseDown, keys } = mp()
@@ -164,11 +164,9 @@ const ControlsSystem = () => {
     setControl('turnRight', getTurnRight())
     setControl('jump', Boolean(keys.byCode.Space))
 
-    console.log(movementMobileJoystick.angle)
-
     if (movementMobileJoystick.force !== undefined && movementMobileJoystick.angle !== undefined) {
       useControlsStore.getState().controls.forwardDirection =
-        movementMobileJoystick.force < 0.2
+        movementMobileJoystick.force < 30
           ? undefined
           : camera.tra.rot.z + movementMobileJoystick.angle
     } else {
@@ -190,7 +188,7 @@ const ControlsSystem = () => {
     }
 
     if (cameraMobileJoystick.vectorDiff.x !== undefined) {
-      camera.tra.rot.z -= clamp(cameraMobileJoystick.vectorDiff.x * 0.005, MAX_MOVEMENT)
+      camera.tra.rot.z -= cameraMobileJoystick.vectorDiff.x * 0.015
     }
 
     if (
@@ -198,7 +196,7 @@ const ControlsSystem = () => {
       ((cameraMobileJoystick.vectorDiff.y > 0 && camera.tra.rot.x < 0) ||
         (cameraMobileJoystick.vectorDiff.y < 0 && camera.tra.rot.x > -pi / 3))
     ) {
-      camera.tra.rot.x += clamp(cameraMobileJoystick.vectorDiff.y * 0.005, MAX_MOVEMENT)
+      camera.tra.rot.x += cameraMobileJoystick.vectorDiff.y * 0.015
     }
   })
 
