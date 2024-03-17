@@ -63,8 +63,8 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   } | null>(null)
 
   const handleTouchStart = (e: TouchEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
+    // e.preventDefault()
+    // e.stopPropagation()
 
     for (let i = 0; i < e.changedTouches.length; i++) {
       const touch = e.changedTouches.item(i)
@@ -115,8 +115,8 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   }
 
   const handleTouchMove = (e: TouchEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
+    // e.preventDefault()
+    // e.stopPropagation()
 
     for (let i = 0; i < e.changedTouches.length; i++) {
       const touch = e.changedTouches.item(i)
@@ -211,8 +211,8 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   }
 
   const handleTouchEnd = (e: TouchEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
+    // e.preventDefault()
+    // e.stopPropagation()
 
     for (let i = 0; i < e.changedTouches.length; i++) {
       const touch = e.changedTouches.item(i)
@@ -250,6 +250,8 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
     if (canHover) return
 
     const element = ref.current
+
+    // https://stackoverflow.com/questions/63663025/react-onwheel-handler-cant-preventdefault-because-its-a-passive-event-listenev
 
     // @ts-expect-error
     element.addEventListener('touchstart', handleTouchStart, { passive: false })
