@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 
 import clsx from 'clsx'
-import { atan2, mp, pi, pow, sqrt, useFrameBefore, useMP } from 'manapotion'
+import { atan2, mp, pi, pow, sqrt, useMP } from 'manapotion'
 
 import type { TouchEvent } from 'react'
 
@@ -53,13 +53,6 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
     movementY: number
   } | null>(null)
 
-  useFrameBefore(() => {
-    mp().cameraMobileJoystick.vectorDiff.x = rightJoystickRef.current?.movementX
-    mp().cameraMobileJoystick.vectorDiff.y = rightJoystickRef.current?.movementY
-    mp().movementMobileJoystick.angle = leftJoystickRef.current?.angle
-    mp().movementMobileJoystick.force = leftJoystickRef.current?.distance
-  })
-
   const handleTouchStart = (e: TouchEvent) => {
     for (let i = 0; i < e.changedTouches.length; i++) {
       const touch = e.changedTouches.item(i)
@@ -78,6 +71,8 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
           movementX: 0,
           movementY: 0,
         }
+        mp().movementMobileJoystick.angle = 0
+        mp().movementMobileJoystick.force = 0
         setIsLeftHelperShown(false)
       } else if (touch.clientX > window.innerWidth / 2) {
         rightJoystickRef.current = {
@@ -91,6 +86,9 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
           movementX: 0,
           movementY: 0,
         }
+        // Update MP
+        mp().cameraMobileJoystick.vectorDiff.x = 0
+        mp().cameraMobileJoystick.vectorDiff.y = 0
         setIsRightHelperShown(false)
       }
     }
@@ -118,9 +116,16 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
           ) +
             2 * pi) %
           (2 * pi)
+        // Update Mp
+        mp().movementMobileJoystick.angle = leftJoystickRef.current.angle
+        mp().movementMobileJoystick.force = leftJoystickRef.current.distance
       } else if (rightJoystickRef.current?.identifier === touch.identifier) {
         rightJoystickRef.current.movementX = currentX - rightJoystickRef.current.currentX
         rightJoystickRef.current.movementY = currentY - rightJoystickRef.current.currentY
+        // Update MP
+        mp().cameraMobileJoystick.vectorDiff.x = rightJoystickRef.current.movementX
+        mp().cameraMobileJoystick.vectorDiff.y = rightJoystickRef.current.movementY
+
         rightJoystickRef.current.currentX = currentX
         rightJoystickRef.current.currentY = currentY
         rightJoystickRef.current.distance = sqrt(
@@ -137,6 +142,9 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
           if (rightJoystickRef.current) {
             rightJoystickRef.current.movementX = 0
             rightJoystickRef.current.movementY = 0
+            // Update MP
+            mp().cameraMobileJoystick.vectorDiff.x = 0
+            mp().cameraMobileJoystick.vectorDiff.y = 0
           }
         }, 70)
       }
@@ -150,10 +158,19 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
       if (leftJoystickRef.current?.identifier === touch.identifier) {
         leftJoystickRef.current.movementX = 0
         leftJoystickRef.current.movementY = 0
-        setTimeout(() => (leftJoystickRef.current = null), 50)
+        setTimeout(() => {
+          leftJoystickRef.current = null
+          // Update MP
+          mp().movementMobileJoystick.angle = 0
+          mp().movementMobileJoystick.force = 0
+        }, 50)
       } else if (rightJoystickRef.current?.identifier === touch.identifier) {
         rightJoystickRef.current.movementX = 0
         rightJoystickRef.current.movementY = 0
+        // Update MP
+        mp().cameraMobileJoystick.vectorDiff.x = 0
+        mp().cameraMobileJoystick.vectorDiff.y = 0
+
         setTimeout(() => (rightJoystickRef.current = null), 50)
       }
     }
