@@ -4,9 +4,11 @@
 
 html {
   height: 100dvh;
+  overflow: hidden;
 }
 
-body, #__next {
+body,
+#__next {
   height: 100%;
   margin: 0;
   padding: 0;

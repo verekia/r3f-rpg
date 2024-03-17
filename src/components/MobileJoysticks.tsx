@@ -172,12 +172,12 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
         {...props}
       >
         {isLeftHelperShown && (
-          <div className="pointer-events-none absolute left-0 flex h-full w-1/2 items-center justify-center">
+          <div className="pointer-events-none absolute left-0 flex h-full w-1/2 select-none items-center justify-center">
             Drag to move
           </div>
         )}
         {isRightHelperShown && (
-          <div className="pointer-events-none absolute right-0 flex h-full w-1/2 items-center justify-center">
+          <div className="pointer-events-none absolute right-0 flex h-full w-1/2 select-none items-center justify-center">
             Drag to rotate the camera
           </div>
         )}
