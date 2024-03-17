@@ -230,6 +230,9 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   }
 
   useFrameBefore(() => {
+    if (!leftJoystickViewerRef.current) {
+      return
+    }
     leftJoystickViewerRef.current.style.transform = `translate(${leftJoystickRef.current?.followX}px, ${window.innerHeight - leftJoystickRef.current?.followY}px)`
     leftJoystickViewerRef.current.style.opacity = leftJoystickRef.current ? '1' : '0'
   })
@@ -240,7 +243,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
     <>
       <div
         ref={ref}
-        className={clsx('desktop:hidden', className)}
+        className={clsx('desktop:hidden bg-white/50', className)}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
