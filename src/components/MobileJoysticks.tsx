@@ -238,7 +238,13 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
 
     const element = ref.current
 
+    // My UI was no longer clickable while joysticks were moving.
+
     // https://stackoverflow.com/questions/63663025/react-onwheel-handler-cant-preventdefault-because-its-a-passive-event-listenev
+
+    // If I use onTouchMove={handleTouchMove} instead, I cannot call e.preventDefault()
+    // because it's a passive event listener. Binding the event listener manually
+    // works. { passive: false } worked, but it doesn't seem necessary.
 
     element.addEventListener('touchstart', handleTouchStart /*, { passive: false }*/)
     element.addEventListener('touchmove', handleTouchMove /*, { passive: false }*/)
