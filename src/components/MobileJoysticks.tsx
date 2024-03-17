@@ -63,7 +63,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   } | null>(null)
 
   const handleTouchStart = (e: TouchEvent) => {
-    // e.preventDefault()
+    e.preventDefault()
     // e.stopPropagation()
 
     for (let i = 0; i < e.changedTouches.length; i++) {
@@ -115,7 +115,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   }
 
   const handleTouchMove = (e: TouchEvent) => {
-    // e.preventDefault()
+    e.preventDefault()
     // e.stopPropagation()
 
     for (let i = 0; i < e.changedTouches.length; i++) {
@@ -211,7 +211,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   }
 
   const handleTouchEnd = (e: TouchEvent) => {
-    // e.preventDefault()
+    e.preventDefault()
     // e.stopPropagation()
 
     for (let i = 0; i < e.changedTouches.length; i++) {
