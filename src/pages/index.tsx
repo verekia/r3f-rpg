@@ -6,7 +6,7 @@ import UI from '#/components/UI'
 import Landing from '#/Landing'
 import { FOREST_ROUTE, LANDING_ROUTE } from '#/routes'
 import useStore from '#/store'
-import { pressedSpace } from '#/systems/ControlsSystem'
+import { pressedBothMouseButtons, pressedSpace } from '#/systems/ControlsSystem'
 import Systems from '#/systems/Systems'
 
 const IndexPage = () => {
@@ -21,6 +21,18 @@ const IndexPage = () => {
   const handleRightMouseUp = () => {
     if (mp().isPointerLocked && !mp().isLeftMouseDown) {
       unlockPointer()
+    }
+  }
+
+  const handleLeftMouseDown = () => {
+    if (mp().isRightMouseDown) {
+      pressedBothMouseButtons()
+    }
+  }
+
+  const handleRightMouseDown = () => {
+    if (mp().isLeftMouseDown) {
+      pressedBothMouseButtons()
     }
   }
 
@@ -43,6 +55,8 @@ const IndexPage = () => {
         onRightMouseUp={handleRightMouseUp}
         onLeftMouseUp={handleLeftMouseUp}
         onKeydown={handleKeyDown}
+        onLeftMouseDown={handleLeftMouseDown}
+        onRightMouseDown={handleRightMouseDown}
       />
     </div>
   )

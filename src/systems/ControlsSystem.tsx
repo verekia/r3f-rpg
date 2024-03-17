@@ -207,4 +207,15 @@ export const pressedJumpButton = () => {
   jump()
 }
 
+export const pressedBothMouseButtons = () => {
+  const [camera] = cameras
+  const [player] = players
+
+  if (!player || !camera) {
+    return
+  }
+
+  player.tra.rot.z = camera.tra.rot.z + pi / 2
+}
+
 export default ControlsSystem
