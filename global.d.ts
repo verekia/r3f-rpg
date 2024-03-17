@@ -3,7 +3,19 @@ import '@manapotion/react'
 
 declare module '@manapotion/react' {
   interface CustomSlice {
-    movementMobileJoystick: { angle?: number; force?: number; forceDiff?: number }
-    cameraMobileJoystick: { angle?: number; force?: number; forceDiff?: number }
+    movementMobileJoystick: {
+      angle?: number
+      force?: number
+      forceDiff?: number
+      vector: { x?: number; y?: number }
+      vectorDiff?: { x?: number; y?: number }
+    }
+    cameraMobileJoystick: {
+      angle?: number
+      force?: number
+      forceDiff?: number
+      vector: { x?: number; y?: number }
+      vectorDiff?: { x?: number; y?: number }
+    }
   }
 }

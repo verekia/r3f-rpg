@@ -184,15 +184,22 @@ const ControlsSystem = () => {
     }
 
     if (isPointerLocked && isLeftMouseDown && !isRightMouseDown) {
-      camera.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.004
+      camera.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.003
     } else if (isPointerLocked && isRightMouseDown) {
-      player.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.004
+      player.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.003
     } else if (
       cameraMobileJoystick.force !== undefined &&
       cameraMobileJoystick.angle !== undefined &&
       cameraMobileJoystick.forceDiff !== undefined
     ) {
       camera.tra.rot.z += cos(cameraMobileJoystick.angle) * min(cameraMobileJoystick.forceDiff, 2)
+      // console.log(cameraMobileJoystick.vectorDiff.y)
+      // if (
+      //   (cameraMobileJoystick.vectorDiff.y > 0 && camera.tra.rot.x < 0) ||
+      //   (cameraMobileJoystick.vectorDiff.y < 0 && camera.tra.rot.x > -pi / 3)
+      // ) {
+      //   camera.tra.rot.x += clamp(cameraMobileJoystick.vectorDiff.y, MAX_MOVEMENT) / 10
+      // }
     }
   })
 
