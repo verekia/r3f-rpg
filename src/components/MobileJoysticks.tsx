@@ -54,7 +54,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
     originDistance: number
     followX: number
     followY: number
-    followAngle
+    followAngle: number
     followDistance: number
     currentX: number
     currentY: number
@@ -151,8 +151,12 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
         const followDistance = 50
 
         if (leftJoystickRef.current.followDistance > followDistance) {
-          leftJoystickRef.current.followX += leftJoystickRef.current.movementX
-          leftJoystickRef.current.followY += leftJoystickRef.current.movementY
+          const oppositeFollowAngle = Math.atan2(
+            leftJoystickRef.current.followY - currentY,
+            leftJoystickRef.current.followX - currentX,
+          )
+          leftJoystickRef.current.followX = currentX + followDistance * cos(oppositeFollowAngle)
+          leftJoystickRef.current.followY = currentY + followDistance * sin(oppositeFollowAngle)
         }
       } else if (rightJoystickRef.current?.identifier === touch.identifier) {
         rightJoystickRef.current.movementX = currentX - rightJoystickRef.current.currentX
@@ -227,6 +231,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
 
   useFrameBefore(() => {
     leftJoystickViewerRef.current.style.transform = `translate(${leftJoystickRef.current?.followX}px, ${window.innerHeight - leftJoystickRef.current?.followY}px)`
+    leftJoystickViewerRef.current.style.opacity = leftJoystickRef.current ? '1' : '0'
   })
 
   if (canHover) return null
@@ -241,7 +246,10 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
         onTouchEnd={handleTouchEnd}
         {...props}
       >
-        <div ref={leftJoystickViewerRef} className="size-8 rounded-full bg-white/50" />
+        <div
+          ref={leftJoystickViewerRef}
+          className="pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-white/50 transition-opacity"
+        />
         {isLeftHelperShown && (
           <div className="pointer-events-none absolute left-0 flex h-full w-1/2 select-none items-center justify-center">
             Drag to move
