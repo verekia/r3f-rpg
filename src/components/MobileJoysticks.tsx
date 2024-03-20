@@ -26,7 +26,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   // const leftJoystickViewerRef = useRef<HTMLDivElement>(null)
   const [isLeftHelperShown, setIsLeftHelperShown] = useState(true)
   const [isRightHelperShown, setIsRightHelperShown] = useState(true)
-  const canHover = useMP(s => s.canHover)
+  const isMobile = useMP(s => s.isMobile)
   const resetRightMovementTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const leftJoystickRef = useRef<{
@@ -234,7 +234,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   }
 
   useEffect(() => {
-    if (canHover) return
+    if (!isMobile) return
 
     const element = ref.current
 
@@ -255,9 +255,9 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
       element.removeEventListener('touchmove', handleTouchMove)
       element.removeEventListener('touchend', handleTouchEnd)
     }
-  }, [canHover])
+  }, [isMobile])
 
-  if (canHover) return null
+  if (!isMobile) return null
 
   return (
     <>
