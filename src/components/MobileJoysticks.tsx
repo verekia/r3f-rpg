@@ -187,7 +187,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
       />
       <div
         className={clsx(
-          'pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-blue-500 desktop:hidden',
+          'pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-blue-500 transition-opacity desktop:hidden',
           movementMobileJoystick.isActive ? 'opacity-100' : 'opacity-0',
         )}
         style={{
@@ -196,7 +196,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
       />
       <div
         className={clsx(
-          'pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-green-500 desktop:hidden',
+          'pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-green-500 transition-opacity desktop:hidden',
           movementMobileJoystick.isActive ? 'opacity-100' : 'opacity-0',
         )}
         style={{
