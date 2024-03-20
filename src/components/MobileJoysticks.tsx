@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import clsx from 'clsx'
-import { atan2, cos, mp, pi, pow, sin, sqrt, useMP } from 'manapotion'
+import { atan2, cos, mp, pi, pow, sin, sqrt } from 'manapotion'
 
 mp().movementMobileJoystick = {
   angle: undefined,
@@ -23,10 +23,9 @@ mp().cameraMobileJoystick = {
 
 const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   const ref = useRef<HTMLDivElement>(null)
-  // const leftJoystickViewerRef = useRef<HTMLDivElement>(null)
+  const leftJoystickViewerRef = useRef<HTMLDivElement>(null)
   const [isLeftHelperShown, setIsLeftHelperShown] = useState(true)
   const [isRightHelperShown, setIsRightHelperShown] = useState(true)
-  const isMobile = useMP(s => s.isMobile)
   const resetRightMovementTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const leftJoystickRef = useRef<{
@@ -234,8 +233,6 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   }
 
   useEffect(() => {
-    if (!isMobile) return
-
     const element = ref.current
 
     // My UI was no longer clickable while joysticks were moving.
@@ -255,24 +252,15 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
       element.removeEventListener('touchmove', handleTouchMove)
       element.removeEventListener('touchend', handleTouchEnd)
     }
-  }, [isMobile])
-
-  if (!isMobile) return null
+  }, [])
 
   return (
     <>
-      <div
-        ref={ref}
-        className={clsx('desktop:hidden', className)}
-        // onTouchStart={handleTouchStart}
-        // onTouchMove={handleTouchMove}
-        // onTouchEnd={handleTouchEnd}
-        {...props}
-      >
-        {/* <div
+      <div ref={ref} className={clsx('desktop:hidden', className)} {...props}>
+        <div
           ref={leftJoystickViewerRef}
           className="pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-white/50 transition-opacity"
-        /> */}
+        />
         {isLeftHelperShown && (
           <div className="pointer-events-none absolute left-0 flex h-full w-1/2 select-none items-center justify-center">
             Drag to move
