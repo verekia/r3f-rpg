@@ -58,7 +58,6 @@ type JoystickAreaProps = {
   onStart?: (joystick: JoystickData) => void
   onMove?: (joystick: JoystickData) => void
   onEnd?: (joystick: JoystickData) => void
-  // reactiveMoveThrottleDelay?: number
 } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
 // react-merge-refs v2.1.1
@@ -85,7 +84,6 @@ const JoystickAreaBase = (
     onStart,
     onMove,
     onEnd,
-    // reactiveMoveThrottleDelay,
     ...props
   }: JoystickAreaProps,
   ref: MutableRefObject<HTMLDivElement>,
@@ -127,7 +125,7 @@ const JoystickAreaBase = (
       }
 
       const touch = e.changedTouches.item(0)
-      const target = event.target as HTMLDivElement
+      const target = e.target as HTMLDivElement
       const currentX = touch.clientX
       const currentY = target.offsetHeight - touch.clientY
 
@@ -149,7 +147,6 @@ const JoystickAreaBase = (
       joystick.movementY = 0
 
       onStart?.(joystick)
-      mp().setCustom(name, { ...joystick })
     }
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -166,7 +163,7 @@ const JoystickAreaBase = (
           continue
         }
 
-        const target = event.target as HTMLDivElement
+        const target = e.target as HTMLDivElement
 
         const fingerPositionX = touch.clientX
         const fingerPositionY = target.offsetHeight - touch.clientY
@@ -235,7 +232,6 @@ const JoystickAreaBase = (
         }
 
         onMove?.(joystick)
-        mp().setCustom(name, { ...joystick })
 
         clearTimeout(resetMovementTimeoutRef.current)
         resetMovementTimeoutRef.current = setTimeout(() => {
@@ -244,7 +240,6 @@ const JoystickAreaBase = (
             joystick.movementY = 0
 
             onMove?.(joystick)
-            mp().setCustom(name, { ...joystick })
           }
         }, 70)
       }
@@ -272,7 +267,6 @@ const JoystickAreaBase = (
         endResetTimeoutRef.current = setTimeout(() => {
           resetJoystick()
           onEnd?.(joystick)
-          mp().setCustom(name, { ...joystick })
         }, 50)
       }
     }
