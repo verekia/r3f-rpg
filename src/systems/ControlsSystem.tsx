@@ -164,11 +164,14 @@ const ControlsSystem = () => {
     setControl('turnRight', getTurnRight())
     setControl('jump', Boolean(keys.byCode.Space))
 
-    if (movementMobileJoystick.force !== undefined && movementMobileJoystick.angle !== undefined) {
+    if (
+      movementMobileJoystick.followDistance !== undefined &&
+      movementMobileJoystick.followAngle !== undefined
+    ) {
       useControlsStore.getState().controls.forwardDirection =
-        movementMobileJoystick.force < 30
+        movementMobileJoystick.followDistance < 30
           ? undefined
-          : camera.tra.rot.z + movementMobileJoystick.angle
+          : camera.tra.rot.z + movementMobileJoystick.followAngle
     } else {
       useControlsStore.getState().controls.forwardDirection = undefined
     }
@@ -187,16 +190,13 @@ const ControlsSystem = () => {
       player.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.003
     }
 
-    if (cameraMobileJoystick.vectorDiff.x !== undefined) {
-      camera.tra.rot.z -= cameraMobileJoystick.vectorDiff.x * 0.015
-    }
+    camera.tra.rot.z -= cameraMobileJoystick.movementX * 0.015
 
     if (
-      cameraMobileJoystick.vectorDiff.y !== undefined &&
-      ((cameraMobileJoystick.vectorDiff.y > 0 && camera.tra.rot.x < 0) ||
-        (cameraMobileJoystick.vectorDiff.y < 0 && camera.tra.rot.x > -pi / 3))
+      (cameraMobileJoystick.movementY > 0 && camera.tra.rot.x < 0) ||
+      (cameraMobileJoystick.movementY < 0 && camera.tra.rot.x > -pi / 3)
     ) {
-      camera.tra.rot.x += cameraMobileJoystick.vectorDiff.y * 0.015
+      camera.tra.rot.x += cameraMobileJoystick.movementY * 0.015
     }
   })
 
