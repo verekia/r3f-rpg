@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 
-import { mp, useFrameBefore } from 'manapotion'
+import { mp, useFrameEffect } from 'manapotion'
 
 import { createJoystick, JoystickArea } from './JoystickArea'
 
@@ -19,7 +19,7 @@ mp().cameraMobileJoystick = createJoystick()
 //   const leftJoystickRef = useRef<JoystickData>(createJoystick())
 //   const rightJoystickRef = useRef<JoystickData>(createJoystick())
 
-//   useFrameBefore(() => {
+//   useFrameEffect(() => {
 //     mp().movementMobileJoystick.angle = leftJoystickRef.current.followAngle
 //     mp().movementMobileJoystick.force = leftJoystickRef.current.followDistance
 //     mp().cameraMobileJoystick.vectorDiff.x = rightJoystickRef.current.movementX
@@ -87,7 +87,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   const [isLeftHelperShown, setIsLeftHelperShown] = useState(true)
   const [isRightHelperShown, setIsRightHelperShown] = useState(true)
 
-  useFrameBefore(() => {
+  useFrameEffect(() => {
     const { movementMobileJoystick } = mp()
     leftJoystickCurrentRef.current.style.opacity = movementMobileJoystick.isActive ? '1' : '0'
     leftJoystickFollowRef.current.style.opacity = movementMobileJoystick.isActive ? '1' : '0'

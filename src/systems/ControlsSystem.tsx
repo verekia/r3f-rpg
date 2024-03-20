@@ -1,4 +1,4 @@
-import { clamp, mp, pi, useFrameBefore } from 'manapotion'
+import { clamp, mp, pi, useFrameEffect } from 'manapotion'
 
 import { setControl, useControlsStore } from '#/stores/controls'
 import { jump } from '#/systems/MovementSystem'
@@ -138,9 +138,9 @@ const getBackwardRight = () => {
 // It does not manage whether or not these intents are valid in the world.
 
 const ControlsSystem = () => {
-  // Using useFrameBefore instead of useFrame is a lucky workaround. There is an unresolved
+  // Using useFrameEffect instead of useFrame is a lucky workaround. There is an unresolved
   // underlying issue. Rotation glitches and weird slighly off rotation happen when using useFrame.
-  useFrameBefore(() => {
+  useFrameEffect(() => {
     const {
       movementMobileJoystick,
       cameraMobileJoystick,
