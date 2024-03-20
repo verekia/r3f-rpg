@@ -6,7 +6,7 @@ import { pressedJumpButton } from '#/systems/ControlsSystem'
 
 const UI = () => (
   <>
-    <MobileJoysticks className="absolute inset-0 z-10 h-full" />
+    <MobileJoysticks className="absolute inset-0 z-10 h-full desktop:hidden" />
     <div className="absolute left-0 top-0 z-10 select-none rounded-br-xl bg-slate-400 px-5 py-2 text-white">
       Health
     </div>
@@ -18,7 +18,7 @@ const UI = () => (
       <button onClick={() => useStore.getState().setRoute(LANDING_ROUTE)}>Menu</button>
     </div>
     <div
-      className="desktop:hidden absolute bottom-16 right-10 z-10 select-none rounded-md bg-black/50 p-2 text-white"
+      className="absolute bottom-16 right-10 z-10 select-none rounded-md bg-black/50 p-2 text-white desktop:hidden"
       onPointerDown={pressedJumpButton}
     >
       Jump
