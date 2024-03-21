@@ -4,7 +4,7 @@ import { setControl, useControlsStore } from '#/stores/controls'
 import { jump } from '#/systems/MovementSystem'
 import { cameras, players } from '#/world'
 
-const MAX_MOVEMENT = 600
+const MAX_MOVEMENT = 300
 
 const getForward = () => {
   const { isPointerLocked, isLeftMouseDown, isRightMouseDown, keys } = mp()
@@ -175,13 +175,13 @@ const ControlsSystem = () => {
       ((mouseMovementY > 0 && camera.tra.rot.x < 0) ||
         (mouseMovementY < 0 && camera.tra.rot.x > -pi / 3))
     ) {
-      camera.tra.rot.x += clamp(mouseMovementY, MAX_MOVEMENT) / 1000
+      camera.tra.rot.x += clamp(mouseMovementY, -MAX_MOVEMENT, MAX_MOVEMENT) / 1000
     }
 
     if (isPointerLocked && isLeftMouseDown && !isRightMouseDown) {
-      camera.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.003
+      camera.tra.rot.z -= clamp(mouseMovementX, -MAX_MOVEMENT, MAX_MOVEMENT) * 0.003
     } else if (isPointerLocked && isRightMouseDown) {
-      player.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.003
+      player.tra.rot.z -= clamp(mouseMovementX, -MAX_MOVEMENT, MAX_MOVEMENT) * 0.003
     }
 
     camera.tra.rot.z -= cameraJoystick.movementX * 0.015
