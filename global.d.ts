@@ -1,7 +1,7 @@
-import { Joystick } from '@manapotion/react'
+import { Joystick, ManaPotionState } from '@manapotion/react'
 
 declare module '@manapotion/react' {
-  interface CustomSlice {
+  interface ManaPotionState {
     movementJoystick: Joystick
     cameraJoystick: Joystick
   }
