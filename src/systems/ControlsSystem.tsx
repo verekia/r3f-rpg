@@ -141,13 +141,7 @@ const ControlsSystem = () => {
   // Using useFrameEffect instead of useFrame is a lucky workaround. There is an unresolved
   // underlying issue. Rotation glitches and weird slighly off rotation happen when using useFrame.
   useFrameEffect(() => {
-    const {
-      movementMobileJoystick,
-      cameraMobileJoystick,
-      keys,
-      isLeftMouseDown,
-      isRightMouseDown,
-    } = mp()
+    const { movementJoystick, cameraJoystick, keys, isLeftMouseDown, isRightMouseDown } = mp()
     const { isPointerLocked, mouseMovementX, mouseMovementY } = mp()
     const [camera] = cameras
     const [player] = players
@@ -165,13 +159,13 @@ const ControlsSystem = () => {
     setControl('jump', Boolean(keys.byCode.Space))
 
     if (
-      movementMobileJoystick.followDistance !== undefined &&
-      movementMobileJoystick.followAngle !== undefined
+      movementJoystick.followDistance !== undefined &&
+      movementJoystick.followAngle !== undefined
     ) {
       useControlsStore.getState().controls.forwardDirection =
-        movementMobileJoystick.followDistance < 30
+        movementJoystick.followDistance < 30
           ? undefined
-          : camera.tra.rot.z + movementMobileJoystick.followAngle
+          : camera.tra.rot.z + movementJoystick.followAngle
     } else {
       useControlsStore.getState().controls.forwardDirection = undefined
     }
@@ -190,13 +184,13 @@ const ControlsSystem = () => {
       player.tra.rot.z -= clamp(mouseMovementX, MAX_MOVEMENT) * 0.003
     }
 
-    camera.tra.rot.z -= cameraMobileJoystick.movementX * 0.015
+    camera.tra.rot.z -= cameraJoystick.movementX * 0.015
 
     if (
-      (cameraMobileJoystick.movementY > 0 && camera.tra.rot.x < 0) ||
-      (cameraMobileJoystick.movementY < 0 && camera.tra.rot.x > -pi / 3)
+      (cameraJoystick.movementY > 0 && camera.tra.rot.x < 0) ||
+      (cameraJoystick.movementY < 0 && camera.tra.rot.x > -pi / 3)
     ) {
-      camera.tra.rot.x += cameraMobileJoystick.movementY * 0.015
+      camera.tra.rot.x += cameraJoystick.movementY * 0.015
     }
   })
 

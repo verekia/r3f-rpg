@@ -1,110 +1,39 @@
 import { useRef, useState } from 'react'
 
-import { mp, useFrameEffect } from 'manapotion'
+import { createJoystick, JoystickArea, mp, useFrameEffect } from 'manapotion'
 
-import { createJoystick, JoystickArea } from './JoystickArea'
-
-mp().movementMobileJoystick = createJoystick()
-mp().cameraMobileJoystick = createJoystick()
-
-// const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
-//   const leftAreaRef = useRef<HTMLDivElement>(null)
-//   const rightAreaRef = useRef<HTMLDivElement>(null)
-//   const leftJoystickCurrentRef = useRef<HTMLDivElement>(null)
-//   const leftJoystickOriginRef = useRef<HTMLDivElement>(null)
-//   const leftJoystickFollowRef = useRef<HTMLDivElement>(null)
-//   const [isLeftHelperShown, setIsLeftHelperShown] = useState(true)
-//   const [isRightHelperShown, setIsRightHelperShown] = useState(true)
-
-//   const leftJoystickRef = useRef<JoystickData>(createJoystick())
-//   const rightJoystickRef = useRef<JoystickData>(createJoystick())
-
-//   useFrameEffect(() => {
-//     mp().movementMobileJoystick.angle = leftJoystickRef.current.followAngle
-//     mp().movementMobileJoystick.force = leftJoystickRef.current.followDistance
-//     mp().cameraMobileJoystick.vectorDiff.x = rightJoystickRef.current.movementX
-//     mp().cameraMobileJoystick.vectorDiff.y = rightJoystickRef.current.movementY
-
-//     leftJoystickCurrentRef.current.style.opacity = leftJoystickRef.current.isActive ? '1' : '0'
-//     leftJoystickFollowRef.current.style.opacity = leftJoystickRef.current.isActive ? '1' : '0'
-//     leftJoystickOriginRef.current.style.opacity = leftJoystickRef.current.isActive ? '1' : '0'
-
-//     leftJoystickCurrentRef.current.style.transform = `translate(${leftJoystickRef.current.currentX}px, ${leftAreaRef.current.clientHeight - leftJoystickRef.current.currentY}px)`
-
-//     leftJoystickOriginRef.current.style.transform = `translate(${leftJoystickRef.current.originX}px, ${leftAreaRef.current.clientHeight - leftJoystickRef.current.originY}px)`
-
-//     leftJoystickFollowRef.current.style.transform = `translate(${leftJoystickRef.current.followX}px, ${leftAreaRef.current.clientHeight - leftJoystickRef.current.followY}px)`
-//   })
-
-//   return (
-//     <div className={className} {...props}>
-//       <JoystickArea
-//         ref={leftAreaRef}
-//         object={leftJoystickRef.current}
-//         className="absolute left-0 top-0 z-10 h-full w-1/2 desktop:hidden"
-//         onMove={() => setIsLeftHelperShown(false)}
-//       >
-//         {isLeftHelperShown && (
-//           <div className="pointer-events-none absolute flex size-full select-none items-center justify-center">
-//             Drag to move
-//           </div>
-//         )}
-//       </JoystickArea>
-//       <JoystickArea
-//         ref={rightAreaRef}
-//         object={rightJoystickRef.current}
-//         className="absolute right-0 top-0 z-10 h-full w-1/2 desktop:hidden"
-//         onMove={() => setIsRightHelperShown(false)}
-//       >
-//         {isRightHelperShown && (
-//           <div className="pointer-events-none absolute flex size-full select-none items-center justify-center">
-//             Drag to rotate the camera
-//           </div>
-//         )}
-//       </JoystickArea>
-//       <div
-//         ref={leftJoystickCurrentRef}
-//         className="pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-red-500 transition-opacity desktop:hidden"
-//       />
-//       <div
-//         ref={leftJoystickOriginRef}
-//         className="pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-blue-500 desktop:hidden"
-//       />
-//       <div
-//         ref={leftJoystickFollowRef}
-//         className="pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-green-500 desktop:hidden"
-//       />
-//     </div>
-//   )
-// }
+mp().movementJoystick = createJoystick()
+mp().cameraJoystick = createJoystick()
 
 const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   const leftAreaRef = useRef<HTMLDivElement>(null)
   const rightAreaRef = useRef<HTMLDivElement>(null)
   const leftJoystickCurrentRef = useRef<HTMLDivElement>(null)
-  const leftJoystickOriginRef = useRef<HTMLDivElement>(null)
   const leftJoystickFollowRef = useRef<HTMLDivElement>(null)
   const [isLeftHelperShown, setIsLeftHelperShown] = useState(true)
   const [isRightHelperShown, setIsRightHelperShown] = useState(true)
 
   useFrameEffect(() => {
-    const { movementMobileJoystick } = mp()
-    leftJoystickCurrentRef.current.style.opacity = movementMobileJoystick.isActive ? '1' : '0'
-    leftJoystickFollowRef.current.style.opacity = movementMobileJoystick.isActive ? '1' : '0'
-    leftJoystickOriginRef.current.style.opacity = movementMobileJoystick.isActive ? '1' : '0'
+    const { movementJoystick } = mp()
 
-    leftJoystickCurrentRef.current.style.transform = `translate(${movementMobileJoystick.currentX}px, ${leftAreaRef.current.clientHeight - movementMobileJoystick.currentY}px)`
+    if (!leftJoystickCurrentRef.current || !leftJoystickFollowRef.current) {
+      return
+    }
 
-    leftJoystickOriginRef.current.style.transform = `translate(${movementMobileJoystick.originX}px, ${leftAreaRef.current.clientHeight - movementMobileJoystick.originY}px)`
+    leftJoystickCurrentRef.current.style.opacity = movementJoystick.isActive ? '1' : '0'
+    leftJoystickFollowRef.current.style.opacity = movementJoystick.isActive ? '1' : '0'
 
-    leftJoystickFollowRef.current.style.transform = `translate(${movementMobileJoystick.followX}px, ${leftAreaRef.current.clientHeight - movementMobileJoystick.followY}px)`
+    leftJoystickCurrentRef.current.style.transform = `translate(${movementJoystick.currentX}px, ${-movementJoystick.currentY}px)`
+
+    leftJoystickFollowRef.current.style.transform = `translate(${movementJoystick.followX}px, ${-movementJoystick.followY}px)`
   })
 
   return (
     <div className={className} {...props}>
       <JoystickArea
         ref={leftAreaRef}
-        name="movementMobileJoystick"
+        joystick={mp().movementJoystick}
+        maxFollowDistance={50}
         className="absolute left-0 top-0 z-10 h-full w-1/2 desktop:hidden"
         onMove={() => setIsLeftHelperShown(false)}
       >
@@ -113,10 +42,19 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
             Drag to move
           </div>
         )}
+        <div
+          ref={leftJoystickCurrentRef}
+          className="pointer-events-none absolute -bottom-6 -left-6 size-12 rounded-full bg-red-500 transition-opacity desktop:hidden"
+        />
+        <div
+          ref={leftJoystickFollowRef}
+          className="pointer-events-none absolute -bottom-6 -left-6 size-12 rounded-full bg-green-500 transition-opacity desktop:hidden"
+        />
       </JoystickArea>
       <JoystickArea
         ref={rightAreaRef}
-        name="cameraMobileJoystick"
+        joystick={mp().cameraJoystick}
+        maxFollowDistance={50}
         className="absolute right-0 top-0 z-10 h-full w-1/2 desktop:hidden"
         onMove={() => setIsRightHelperShown(false)}
       >
@@ -126,99 +64,8 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
           </div>
         )}
       </JoystickArea>
-      <div
-        ref={leftJoystickCurrentRef}
-        className="pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-red-500 transition-opacity desktop:hidden"
-      />
-      <div
-        ref={leftJoystickOriginRef}
-        className="pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-blue-500 transition-opacity desktop:hidden"
-      />
-      <div
-        ref={leftJoystickFollowRef}
-        className="pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-green-500 transition-opacity desktop:hidden"
-      />
     </div>
   )
 }
-
-// const JoystickMarkers = ({ leftAreaHeight }: { leftAreaHeight: number }) => {
-//   const movementMobileJoystick = useMP(s => s.movementMobileJoystick)
-
-//   return (
-//     <>
-//       <div
-//         className={clsx(
-//           'pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-red-500 transition-opacity desktop:hidden',
-//           movementMobileJoystick.isActive ? 'opacity-100' : 'opacity-0',
-//         )}
-//         style={{
-//           transform: `translate(${movementMobileJoystick.currentX}px, ${leftAreaHeight - movementMobileJoystick.currentY}px)`,
-//         }}
-//       />
-//       <div
-//         className={clsx(
-//           'pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-blue-500 transition-opacity desktop:hidden',
-//           movementMobileJoystick.isActive ? 'opacity-100' : 'opacity-0',
-//         )}
-//         style={{
-//           transform: `translate(${movementMobileJoystick.originX}px, ${leftAreaHeight - movementMobileJoystick.originY}px)`,
-//         }}
-//       />
-//       <div
-//         className={clsx(
-//           'pointer-events-none absolute -ml-4 -mt-4 size-8 rounded-full bg-green-500 transition-opacity desktop:hidden',
-//           movementMobileJoystick.isActive ? 'opacity-100' : 'opacity-0',
-//         )}
-//         style={{
-//           transform: `translate(${movementMobileJoystick.followX}px, ${leftAreaHeight - movementMobileJoystick.followY}px)`,
-//         }}
-//       />
-//     </>
-//   )
-// }
-
-// const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
-//   const [leftAreaHeight, setLeftAreaHeight] = useState(0)
-
-//   const [isLeftHelperShown, setIsLeftHelperShown] = useState(true)
-//   const [isRightHelperShown, setIsRightHelperShown] = useState(true)
-
-//   const leftAreaRef = useCallback(node => {
-//     if (node !== null) {
-//       setLeftAreaHeight(node.getBoundingClientRect().height)
-//     }
-//   }, [])
-
-//   return (
-//     <div className={className} {...props}>
-//       <JoystickArea
-//         ref={leftAreaRef}
-//         name="movementMobileJoystick"
-//         className="absolute left-0 top-0 z-10 h-full w-1/2 desktop:hidden"
-//         onMove={() => setIsLeftHelperShown(false)}
-//         reactiveThrottleDelay={200}
-//       >
-//         {isLeftHelperShown && (
-//           <div className="pointer-events-none absolute flex size-full select-none items-center justify-center">
-//             Drag to move
-//           </div>
-//         )}
-//       </JoystickArea>
-//       <JoystickArea
-//         name="cameraMobileJoystick"
-//         className="absolute right-0 top-0 z-10 h-full w-1/2 desktop:hidden"
-//         onMove={() => setIsRightHelperShown(false)}
-//       >
-//         {isRightHelperShown && (
-//           <div className="pointer-events-none absolute flex size-full select-none items-center justify-center">
-//             Drag to rotate the camera
-//           </div>
-//         )}
-//       </JoystickArea>
-//       <JoystickMarkers leftAreaHeight={leftAreaHeight} />
-//     </div>
-//   )
-// }
 
 export default MobileJoysticks

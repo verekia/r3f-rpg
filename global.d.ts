@@ -1,11 +1,8 @@
-// Can also use 'manapotion' namespace instead
-import { JoystickData } from '#/components/JoystickArea'
-
-import '@manapotion/react'
+import { Joystick } from '@manapotion/react'
 
 declare module '@manapotion/react' {
   interface CustomSlice {
-    movementMobileJoystick: JoystickData
-    cameraMobileJoystick: JoystickData
+    movementJoystick: Joystick
+    cameraJoystick: Joystick
   }
 }
