@@ -1,4 +1,4 @@
-import { clamp, mp, pi, useFrameEffect } from 'manapotion'
+import { clamp, mp, pi, useFrameEffect } from '@manapotion/r3f'
 
 import { setControl, useControlsStore } from '#/stores/controls'
 import { jump } from '#/systems/MovementSystem'

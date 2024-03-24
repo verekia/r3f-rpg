@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
+import { pi } from '@manapotion/r3f'
 import { MeshProps } from '@react-three/fiber'
-import { pi } from 'manapotion'
 import { Shape } from 'three'
 
 import contour from './forest-contour.json'

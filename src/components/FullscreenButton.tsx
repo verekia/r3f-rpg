@@ -1,4 +1,3 @@
-import { clsx } from 'clsx'
 import {
   enterFullscreen,
   exitFullscreen,
@@ -7,7 +6,8 @@ import {
   unlockKeys,
   unlockOrientation,
   useMP,
-} from 'manapotion'
+} from '@manapotion/r3f'
+import { clsx } from 'clsx'
 
 import { EnterFullscreenIcon, ExitFullscreenIcon } from '#/components/icons'
 

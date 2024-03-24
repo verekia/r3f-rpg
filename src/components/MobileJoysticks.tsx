@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 
-import { createJoystick, JoystickArea, mp, useFrameEffect } from 'manapotion'
+import { createJoystick, JoystickArea, mp, useFrameEffect } from '@manapotion/r3f'
 
 mp().movementJoystick = createJoystick()
 mp().cameraJoystick = createJoystick()

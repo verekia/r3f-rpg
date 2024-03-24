@@ -1,5 +1,5 @@
+import { cos, mp, pi, sin } from '@manapotion/r3f'
 import { useFrame } from '@react-three/fiber'
-import { cos, mp, pi, sin } from 'manapotion'
 
 import { cameras, players } from '#/world'
 

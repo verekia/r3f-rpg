@@ -1,4 +1,4 @@
-import { KeyState, Listeners, mp, unlockPointer } from 'manapotion'
+import { KeyState, Listeners, mp, unlockPointer } from '@manapotion/r3f'
 import Head from 'next/head'
 
 import Canvas from '#/components/Canvas'

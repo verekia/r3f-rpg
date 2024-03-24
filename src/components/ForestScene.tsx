@@ -1,15 +1,10 @@
 import { useEffect } from 'react'
 
-import { pi } from 'manapotion'
-
 import Camera from '#/components/Camera'
 import Enemy from '#/components/Enemy'
 import Player from '#/components/Player'
 import { DEFAULT_CAMERA_ROT_X } from '#/lib/constants'
 import ForestModel from '#/models/ForestModel'
-import ForestNavmesh from '#/models/ForestNavmesh'
-import ForestObstacles from '#/models/ForestObstacles'
-import ForestObstaclesVertices from '#/models/ForestObstaclesVertices'
 import {
   cameras,
   createCamera,

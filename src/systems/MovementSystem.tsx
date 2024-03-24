@@ -1,5 +1,5 @@
+import { cos, lerp, pi, sin } from '@manapotion/r3f'
 import { useFrame } from '@react-three/fiber'
-import { cos, lerp, pi, sin } from 'manapotion'
 
 import { PLAYER_ROTATION_SPEED, PLAYER_SPEED, PLAYER_SPEED_BACKWARD } from '#/lib/constants'
 import { useControlsStore } from '#/stores/controls'

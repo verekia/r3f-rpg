@@ -1,8 +1,8 @@
 import { Suspense, useRef } from 'react'
 
+import { lockPointer, Canvas as ManaCanvas, mp, round } from '@manapotion/r3f'
 import { Html, useProgress, useTexture } from '@react-three/drei'
 import clsx from 'clsx'
-import { lockPointer, Canvas as ManaCanvas, mp, round } from 'manapotion'
 import { MeshLambertMaterial, SRGBColorSpace } from 'three'
 
 import useStore from '#/store'
