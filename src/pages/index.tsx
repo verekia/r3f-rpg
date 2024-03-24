@@ -64,7 +64,7 @@ const IndexPage = () => {
         <Listeners
           onRightMouseUp={handleRightMouseUp}
           onLeftMouseUp={handleLeftMouseUp}
-          onKeydown={handleKeyDown}
+          onKeyDown={handleKeyDown}
           onLeftMouseDown={handleLeftMouseDown}
           onRightMouseDown={handleRightMouseDown}
         />
