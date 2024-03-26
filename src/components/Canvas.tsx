@@ -1,13 +1,16 @@
 import { Suspense, useRef } from 'react'
 
-import { lockPointer, Canvas as ManaCanvas, mp, round } from '@manapotion/r3f'
+import { lockPointer, mp } from '@manapotion/r3f'
 import { Html, useProgress, useTexture } from '@react-three/drei'
 import clsx from 'clsx'
 import { MeshLambertMaterial, SRGBColorSpace } from 'three'
 
+import { WebGPUCanvas } from '#/components/WebGPUCanvas'
 import useStore from '#/store'
 
 import type { CanvasProps } from '@react-three/fiber'
+
+const { round } = Math
 
 const GlobalMaterials = () => {
   useTexture('/models/palette.png', texture => {
@@ -31,7 +34,7 @@ const Canvas = ({ className, children, ...props }: CanvasProps) => {
   const longRightClickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   return (
-    <ManaCanvas
+    <WebGPUCanvas
       className={clsx('top-0 z-0', className)}
       style={{ position: 'absolute' }}
       onContextMenu={e => e.preventDefault()}
@@ -75,7 +78,7 @@ const Canvas = ({ className, children, ...props }: CanvasProps) => {
         {children}
         <GlobalMaterials />
       </Suspense>
-    </ManaCanvas>
+    </WebGPUCanvas>
   )
 }
 

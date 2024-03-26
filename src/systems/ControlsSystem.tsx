@@ -1,8 +1,10 @@
-import { clamp, mp, pi, useFrameEffect } from '@manapotion/r3f'
+import { clamp, mp, useFrameEffect } from '@manapotion/r3f'
 
 import { setControl, useControlsStore } from '#/stores/controls'
 import { jump } from '#/systems/MovementSystem'
 import { cameras, players } from '#/world'
+
+const { PI: pi } = Math
 
 const MAX_MOVEMENT = 300
 

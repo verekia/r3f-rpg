@@ -1,9 +1,11 @@
-import { cos, lerp, pi, sin } from '@manapotion/r3f'
+import { lerp } from '@manapotion/r3f'
 import { useFrame } from '@react-three/fiber'
 
 import { PLAYER_ROTATION_SPEED, PLAYER_SPEED, PLAYER_SPEED_BACKWARD } from '#/lib/constants'
 import { useControlsStore } from '#/stores/controls'
 import { cameras, players } from '#/world'
+
+const { PI: pi, cos, sin } = Math
 
 const GRAVITY = -9.8 // Adjust gravity force as needed
 const JUMP_VELOCITY = 4.5 // Adjust for desired jump strength

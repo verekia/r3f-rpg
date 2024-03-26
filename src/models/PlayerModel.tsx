@@ -1,12 +1,13 @@
 import { useEffect, useRef } from 'react'
 
-import { pi } from '@manapotion/r3f'
 import { useAnimations, useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 
 import useStore from '#/store'
 
 import type { Group, Mesh } from 'three'
+
+const { PI: pi } = Math
 
 type GLTFResult = GLTF & {
   nodes: {

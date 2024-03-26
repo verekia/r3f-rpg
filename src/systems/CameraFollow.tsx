@@ -1,7 +1,9 @@
-import { cos, mp, pi, sin } from '@manapotion/r3f'
+import { mp } from '@manapotion/r3f'
 import { useFrame } from '@react-three/fiber'
 
 import { cameras, players } from '#/world'
+
+const { PI: pi, cos, sin } = Math
 
 const HEAD = 1.6
 const RADIUS = 3.8 // from player
