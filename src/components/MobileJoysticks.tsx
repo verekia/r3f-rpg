@@ -1,9 +1,6 @@
 import { useRef, useState } from 'react'
 
-import { createJoystick, JoystickArea, mp, useFrameEffect } from '@manapotion/r3f'
-
-mp().movementJoystick = createJoystick()
-mp().cameraJoystick = createJoystick()
+import { getJoysticks, JoystickArea, useFrameEffect } from '@manapotion/r3f'
 
 const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   const leftAreaRef = useRef<HTMLDivElement>(null)
@@ -14,7 +11,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   const [isRightHelperShown, setIsRightHelperShown] = useState(true)
 
   useFrameEffect(() => {
-    const { movementJoystick } = mp()
+    const movementJoystick = getJoysticks().movement
 
     if (!leftJoystickCurrentRef.current || !leftJoystickFollowRef.current) {
       return
@@ -23,16 +20,16 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
     leftJoystickCurrentRef.current.style.opacity = movementJoystick.isActive ? '1' : '0'
     leftJoystickFollowRef.current.style.opacity = movementJoystick.isActive ? '1' : '0'
 
-    leftJoystickCurrentRef.current.style.transform = `translate(${movementJoystick.currentX}px, ${-movementJoystick.currentY}px)`
+    leftJoystickCurrentRef.current.style.transform = `translate(${movementJoystick.current.x}px, ${-movementJoystick.current.y}px)`
 
-    leftJoystickFollowRef.current.style.transform = `translate(${movementJoystick.followX}px, ${-movementJoystick.followY}px)`
+    leftJoystickFollowRef.current.style.transform = `translate(${movementJoystick.follow.x}px, ${-movementJoystick.follow.y}px)`
   })
 
   return (
     <div className={className} {...props}>
       <JoystickArea
         ref={leftAreaRef}
-        joystick={mp().movementJoystick}
+        joystick={getJoysticks().movement}
         maxFollowDistance={50}
         className="absolute left-0 top-0 z-10 h-full w-1/2 desktop:hidden"
         onMove={() => setIsLeftHelperShown(false)}
@@ -53,7 +50,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
       </JoystickArea>
       <JoystickArea
         ref={rightAreaRef}
-        joystick={mp().cameraJoystick}
+        joystick={getJoysticks().rotation}
         maxFollowDistance={50}
         className="absolute right-0 top-0 z-10 h-full w-1/2 desktop:hidden"
         onMove={() => setIsRightHelperShown(false)}

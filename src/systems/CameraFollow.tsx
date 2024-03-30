@@ -1,4 +1,4 @@
-import { mp } from '@manapotion/r3f'
+import { getBrowser, getMouse } from '@manapotion/r3f'
 import { useFrame } from '@react-three/fiber'
 
 import { cameras, players } from '#/world'
@@ -10,10 +10,8 @@ const RADIUS = 3.8 // from player
 
 const CameraFollowSystem = () => {
   useFrame(() => {
-    const {
-      mouse,
-      browser: { isDesktop },
-    } = mp()
+    const mouse = getMouse()
+    const { isDesktop } = getBrowser()
 
     const [player] = players
     const [camera] = cameras

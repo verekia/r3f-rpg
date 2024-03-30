@@ -1,4 +1,4 @@
-import { KeyState, Listeners, mp, unlockPointer } from '@manapotion/r3f'
+import { getMouse, KeyState, Listeners, unlockPointer } from '@manapotion/r3f'
 import Head from 'next/head'
 
 import Canvas from '#/components/Canvas'
@@ -14,25 +14,25 @@ const IndexPage = () => {
   const route = useStore(s => s.route)
 
   const handleLeftMouseUp = () => {
-    if (mp().mouse.locked && !mp().mouse.buttons.right) {
+    if (getMouse().locked && !getMouse().buttons.right) {
       unlockPointer()
     }
   }
 
   const handleRightMouseUp = () => {
-    if (mp().mouse.locked && !mp().mouse.buttons.left) {
+    if (getMouse().locked && !getMouse().buttons.left) {
       unlockPointer()
     }
   }
 
   const handleLeftMouseDown = () => {
-    if (mp().mouse.buttons.right) {
+    if (getMouse().buttons.right) {
       pressedBothMouseButtons()
     }
   }
 
   const handleRightMouseDown = () => {
-    if (mp().mouse.buttons.left) {
+    if (getMouse().buttons.left) {
       pressedBothMouseButtons()
     }
   }

@@ -1,6 +1,6 @@
 import { Suspense, useRef } from 'react'
 
-import { lockPointer, mp } from '@manapotion/r3f'
+import { getMouse, lockPointer } from '@manapotion/r3f'
 import { Html, useProgress, useTexture } from '@react-three/drei'
 import clsx from 'clsx'
 import { MeshLambertMaterial, SRGBColorSpace } from 'three'
@@ -56,7 +56,7 @@ const Canvas = ({ className, children, ...props }: CanvasProps) => {
         }
       }}
       onMouseDown={e => {
-        const { left, right } = mp().mouse.buttons
+        const { left, right } = getMouse().buttons
         if (e.button === 0) {
           longLeftClickTimeoutRef.current = setTimeout(() => {
             if (left) {

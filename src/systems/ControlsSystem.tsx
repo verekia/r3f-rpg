@@ -1,4 +1,4 @@
-import { clamp, mp, useFrameEffect } from '@manapotion/r3f'
+import { clamp, getJoysticks, getKeyboard, getMouse, useFrameEffect } from '@manapotion/r3f'
 
 import { setControl, useControlsStore } from '#/stores/controls'
 import { jump } from '#/systems/MovementSystem'
@@ -9,8 +9,8 @@ const { PI: pi } = Math
 const MAX_MOVEMENT = 300
 
 const getForward = () => {
-  const { mouse, keyboard } = mp()
-  const k = keyboard.byCode
+  const mouse = getMouse()
+  const k = getKeyboard().byCode
 
   if (k.KeyQ && k.KeyW && k.KeyE) return true
 
@@ -26,8 +26,8 @@ const getForward = () => {
 }
 
 const getBackward = () => {
-  const { mouse, keyboard } = mp()
-  const k = keyboard.byCode
+  const mouse = getMouse()
+  const k = getKeyboard().byCode
 
   if (k.KeyQ && k.KeyS && k.KeyE) return true
   if (k.KeyQ || k.KeyE) return false
@@ -41,8 +41,8 @@ const getBackward = () => {
 }
 
 const getTurnLeft = () => {
-  const { mouse, keyboard } = mp()
-  const k = keyboard.byCode
+  const mouse = getMouse()
+  const k = getKeyboard().byCode
 
   if (mouse.locked && mouse.buttons.right) return false
   if (k.KeyD || k.ArrowRight) return false
@@ -52,8 +52,8 @@ const getTurnLeft = () => {
 }
 
 const getTurnRight = () => {
-  const { mouse, keyboard } = mp()
-  const k = keyboard.byCode
+  const mouse = getMouse()
+  const k = getKeyboard().byCode
 
   if (mouse.locked && mouse.buttons.right) return false
   if (k.KeyA || k.ArrowLeft) return false
@@ -63,8 +63,8 @@ const getTurnRight = () => {
 }
 
 const getStrafeLeft = () => {
-  const { mouse, keyboard } = mp()
-  const k = keyboard.byCode
+  const mouse = getMouse()
+  const k = getKeyboard().byCode
 
   if (k.ArrowUp || k.KeyW) return false
   if (k.ArrowDown || k.KeyS) return false
@@ -78,8 +78,8 @@ const getStrafeLeft = () => {
 }
 
 const getStrafeRight = () => {
-  const { mouse, keyboard } = mp()
-  const k = keyboard.byCode
+  const mouse = getMouse()
+  const k = getKeyboard().byCode
 
   if (k.KeyQ) return false
   if (mouse.locked && (k.KeyA || k.ArrowLeft)) return false
@@ -93,8 +93,8 @@ const getStrafeRight = () => {
 }
 
 const getForwardLeft = () => {
-  const { mouse, keyboard } = mp()
-  const k = keyboard.byCode
+  const mouse = getMouse()
+  const k = getKeyboard().byCode
 
   if (k.KeyQ && k.KeyW) return true
   if (mouse.locked && ((k.KeyA && k.KeyW) || (k.ArrowUp && k.ArrowLeft))) return true
@@ -105,8 +105,8 @@ const getForwardLeft = () => {
 }
 
 const getForwardRight = () => {
-  const { mouse, keyboard } = mp()
-  const k = keyboard.byCode
+  const mouse = getMouse()
+  const k = getKeyboard().byCode
 
   if (k.KeyE && k.KeyW) return true
   if (mouse.locked && ((k.KeyD && k.KeyW) || (k.ArrowUp && k.ArrowRight))) return true
@@ -117,8 +117,8 @@ const getForwardRight = () => {
 }
 
 const getBackwardLeft = () => {
-  const { mouse, keyboard } = mp()
-  const k = keyboard.byCode
+  const mouse = getMouse()
+  const k = getKeyboard().byCode
 
   if (k.KeyQ && k.KeyS) return true
   if (mouse.locked && ((k.KeyA && k.KeyS) || (k.ArrowDown && k.ArrowLeft))) return true
@@ -127,8 +127,8 @@ const getBackwardLeft = () => {
 }
 
 const getBackwardRight = () => {
-  const { mouse, keyboard } = mp()
-  const k = keyboard.byCode
+  const mouse = getMouse()
+  const k = getKeyboard().byCode
 
   if (k.KeyE && k.KeyS) return true
   if (mouse.locked && ((k.KeyD && k.KeyS) || (k.ArrowDown && k.ArrowRight))) return true
@@ -143,7 +143,10 @@ const ControlsSystem = () => {
   // Using useFrameEffect instead of useFrame is a lucky workaround. There is an unresolved
   // underlying issue. Rotation glitches and weird slighly off rotation happen when using useFrame.
   useFrameEffect(() => {
-    const { movementJoystick, cameraJoystick, mouse, keyboard } = mp()
+    const movementJoystick = getJoysticks().movement
+    const cameraJoystick = getJoysticks().rotation
+    const mouse = getMouse()
+
     const [camera] = cameras
     const [player] = players
 
@@ -157,16 +160,16 @@ const ControlsSystem = () => {
     setControl('backwardRight', getBackwardRight())
     setControl('turnLeft', getTurnLeft())
     setControl('turnRight', getTurnRight())
-    setControl('jump', Boolean(keyboard.byCode.Space))
+    setControl('jump', Boolean(getKeyboard().byCode.Space))
 
     if (
-      movementJoystick.followDistance !== undefined &&
-      movementJoystick.followAngle !== undefined
+      movementJoystick.follow.distance !== undefined &&
+      movementJoystick.follow.angle !== undefined
     ) {
       useControlsStore.getState().controls.forwardDirection =
-        movementJoystick.followDistance < 30
+        movementJoystick.follow.distance < 30
           ? undefined
-          : camera.tra.rot.z + movementJoystick.followAngle
+          : camera.tra.rot.z + movementJoystick.follow.angle
     } else {
       useControlsStore.getState().controls.forwardDirection = undefined
     }
@@ -185,13 +188,13 @@ const ControlsSystem = () => {
       player.tra.rot.z -= clamp(mouse.movement.x, -MAX_MOVEMENT, MAX_MOVEMENT) * 0.003
     }
 
-    camera.tra.rot.z -= cameraJoystick.movementX * 0.015
+    camera.tra.rot.z -= cameraJoystick.movement.x * 0.015
 
     if (
-      (cameraJoystick.movementY > 0 && camera.tra.rot.x < 0) ||
-      (cameraJoystick.movementY < 0 && camera.tra.rot.x > -pi / 3)
+      (cameraJoystick.movement.y > 0 && camera.tra.rot.x < 0) ||
+      (cameraJoystick.movement.y < 0 && camera.tra.rot.x > -pi / 3)
     ) {
-      camera.tra.rot.x += cameraJoystick.movementY * 0.015
+      camera.tra.rot.x += cameraJoystick.movement.y * 0.015
     }
   })
 
