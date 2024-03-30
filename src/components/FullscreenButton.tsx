@@ -5,14 +5,14 @@ import {
   lockOrientation,
   unlockKeys,
   unlockOrientation,
-  useMP,
+  useIsFullscreen,
 } from '@manapotion/r3f'
 import { clsx } from 'clsx'
 
 import { EnterFullscreenIcon, ExitFullscreenIcon } from '#/components/icons'
 
 const FullscreenButton = ({ className, ...props }: { className?: string }) => {
-  const isFullscreen = useMP(s => s.isFullscreen)
+  const isFullscreen = useIsFullscreen()
 
   return (
     <button

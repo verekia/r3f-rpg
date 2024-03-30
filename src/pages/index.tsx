@@ -14,25 +14,25 @@ const IndexPage = () => {
   const route = useStore(s => s.route)
 
   const handleLeftMouseUp = () => {
-    if (mp().isPointerLocked && !mp().isRightMouseDown) {
+    if (mp().mouse.locked && !mp().mouse.buttons.right) {
       unlockPointer()
     }
   }
 
   const handleRightMouseUp = () => {
-    if (mp().isPointerLocked && !mp().isLeftMouseDown) {
+    if (mp().mouse.locked && !mp().mouse.buttons.left) {
       unlockPointer()
     }
   }
 
   const handleLeftMouseDown = () => {
-    if (mp().isRightMouseDown) {
+    if (mp().mouse.buttons.right) {
       pressedBothMouseButtons()
     }
   }
 
   const handleRightMouseDown = () => {
-    if (mp().isLeftMouseDown) {
+    if (mp().mouse.buttons.left) {
       pressedBothMouseButtons()
     }
   }
@@ -62,11 +62,11 @@ const IndexPage = () => {
           )}
         </Canvas>
         <Listeners
-          onRightMouseUp={handleRightMouseUp}
-          onLeftMouseUp={handleLeftMouseUp}
+          onRightMouseButtonUp={handleRightMouseUp}
+          onLeftMouseButtonUp={handleLeftMouseUp}
           onKeyDown={handleKeyDown}
-          onLeftMouseDown={handleLeftMouseDown}
-          onRightMouseDown={handleRightMouseDown}
+          onLeftMouseButtonDown={handleLeftMouseDown}
+          onRightMouseButtonDown={handleRightMouseDown}
         />
       </div>
     </>

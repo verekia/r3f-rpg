@@ -10,7 +10,11 @@ const RADIUS = 3.8 // from player
 
 const CameraFollowSystem = () => {
   useFrame(() => {
-    const { isPointerLocked, isRightMouseDown, isDesktop } = mp()
+    const {
+      mouse,
+      browser: { isDesktop },
+    } = mp()
+
     const [player] = players
     const [camera] = cameras
 
@@ -20,7 +24,7 @@ const CameraFollowSystem = () => {
 
     camera.tra.pos.z = player.tra.pos.z + HEAD + RADIUS * sin(-camera.tra.rot.x)
 
-    const isLockedBehind = (isPointerLocked && isRightMouseDown) || (!isPointerLocked && isDesktop)
+    const isLockedBehind = (mouse.locked && mouse.buttons.right) || (!mouse.locked && isDesktop)
 
     if (isLockedBehind) {
       camera.tra.rot.z = player.tra.rot.z - pi / 2

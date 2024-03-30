@@ -56,16 +56,17 @@ const Canvas = ({ className, children, ...props }: CanvasProps) => {
         }
       }}
       onMouseDown={e => {
+        const { left, right } = mp().mouse.buttons
         if (e.button === 0) {
           longLeftClickTimeoutRef.current = setTimeout(() => {
-            if (mp().isLeftMouseDown) {
+            if (left) {
               lockPointer()
             }
           }, 300)
         }
         if (e.button === 2) {
           longRightClickTimeoutRef.current = setTimeout(() => {
-            if (mp().isRightMouseDown) {
+            if (right) {
               lockPointer()
             }
           }, 300)
