@@ -10,7 +10,7 @@ const MAX_MOVEMENT = 300
 
 const getForward = () => {
   const mouse = getMouse()
-  const k = getKeyboard().byCode
+  const k = getKeyboard().codes
 
   if (k.KeyQ && k.KeyW && k.KeyE) return true
 
@@ -27,7 +27,7 @@ const getForward = () => {
 
 const getBackward = () => {
   const mouse = getMouse()
-  const k = getKeyboard().byCode
+  const k = getKeyboard().codes
 
   if (k.KeyQ && k.KeyS && k.KeyE) return true
   if (k.KeyQ || k.KeyE) return false
@@ -42,7 +42,7 @@ const getBackward = () => {
 
 const getTurnLeft = () => {
   const mouse = getMouse()
-  const k = getKeyboard().byCode
+  const k = getKeyboard().codes
 
   if (mouse.locked && mouse.buttons.right) return false
   if (k.KeyD || k.ArrowRight) return false
@@ -53,7 +53,7 @@ const getTurnLeft = () => {
 
 const getTurnRight = () => {
   const mouse = getMouse()
-  const k = getKeyboard().byCode
+  const k = getKeyboard().codes
 
   if (mouse.locked && mouse.buttons.right) return false
   if (k.KeyA || k.ArrowLeft) return false
@@ -64,7 +64,7 @@ const getTurnRight = () => {
 
 const getStrafeLeft = () => {
   const mouse = getMouse()
-  const k = getKeyboard().byCode
+  const k = getKeyboard().codes
 
   if (k.ArrowUp || k.KeyW) return false
   if (k.ArrowDown || k.KeyS) return false
@@ -79,7 +79,7 @@ const getStrafeLeft = () => {
 
 const getStrafeRight = () => {
   const mouse = getMouse()
-  const k = getKeyboard().byCode
+  const k = getKeyboard().codes
 
   if (k.KeyQ) return false
   if (mouse.locked && (k.KeyA || k.ArrowLeft)) return false
@@ -94,7 +94,7 @@ const getStrafeRight = () => {
 
 const getForwardLeft = () => {
   const mouse = getMouse()
-  const k = getKeyboard().byCode
+  const k = getKeyboard().codes
 
   if (k.KeyQ && k.KeyW) return true
   if (mouse.locked && ((k.KeyA && k.KeyW) || (k.ArrowUp && k.ArrowLeft))) return true
@@ -106,7 +106,7 @@ const getForwardLeft = () => {
 
 const getForwardRight = () => {
   const mouse = getMouse()
-  const k = getKeyboard().byCode
+  const k = getKeyboard().codes
 
   if (k.KeyE && k.KeyW) return true
   if (mouse.locked && ((k.KeyD && k.KeyW) || (k.ArrowUp && k.ArrowRight))) return true
@@ -118,7 +118,7 @@ const getForwardRight = () => {
 
 const getBackwardLeft = () => {
   const mouse = getMouse()
-  const k = getKeyboard().byCode
+  const k = getKeyboard().codes
 
   if (k.KeyQ && k.KeyS) return true
   if (mouse.locked && ((k.KeyA && k.KeyS) || (k.ArrowDown && k.ArrowLeft))) return true
@@ -128,7 +128,7 @@ const getBackwardLeft = () => {
 
 const getBackwardRight = () => {
   const mouse = getMouse()
-  const k = getKeyboard().byCode
+  const k = getKeyboard().codes
 
   if (k.KeyE && k.KeyS) return true
   if (mouse.locked && ((k.KeyD && k.KeyS) || (k.ArrowDown && k.ArrowRight))) return true
@@ -160,7 +160,7 @@ const ControlsSystem = () => {
     setControl('backwardRight', getBackwardRight())
     setControl('turnLeft', getTurnLeft())
     setControl('turnRight', getTurnRight())
-    setControl('jump', Boolean(getKeyboard().byCode.Space))
+    setControl('jump', Boolean(getKeyboard().codes.Space))
 
     if (
       movementJoystick.follow.distance !== undefined &&

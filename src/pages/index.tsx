@@ -1,4 +1,4 @@
-import { getMouse, KeyState, Listeners, unlockPointer } from '@manapotion/r3f'
+import { getMouse, KeyDownPayload, Listeners, unlockPointer } from '@manapotion/r3f'
 import Head from 'next/head'
 
 import Canvas from '#/components/Canvas'
@@ -37,8 +37,8 @@ const IndexPage = () => {
     }
   }
 
-  const handleKeyDown = (keyState: KeyState) => {
-    keyState.code === 'Space' && pressedSpace()
+  const handleKeyDown = ({ code }: KeyDownPayload) => {
+    code === 'Space' && pressedSpace()
   }
 
   return (

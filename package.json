@@ -11,7 +11,7 @@
     "bridge": "ngrok http http://localhost:3000"
   },
   "dependencies": {
-    "@manapotion/r3f": "^0.22.2",
+    "@manapotion/r3f": "^0.23.0",
     "@manapotion/tailwind": "^0.21.1",
     "@react-three/drei": "^9.102.3",
     "@react-three/fiber": "^8.15.16",
