@@ -1,4 +1,4 @@
-import { getJoysticks, getKeyboard, getMouse, useAnimationFrame } from '@manapotion/react'
+import { getJoysticks, getKeyboard, getMouse, useMainLoop } from '@manapotion/react'
 import { clamp } from 'three/src/math/MathUtils'
 
 import { STAGE_CONTROLS } from '#/lib/stages'
@@ -144,7 +144,7 @@ const getBackwardRight = () => {
 const ControlsSystem = () => {
   // Using useFrameEffect instead of useFrame is a lucky workaround. There is an unresolved
   // underlying issue. Rotation glitches and weird slighly off rotation happen when using useFrame.
-  useAnimationFrame(
+  useMainLoop(
     () => {
       const movementJoystick = getJoysticks().movement
       const cameraJoystick = getJoysticks().rotation

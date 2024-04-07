@@ -1,4 +1,4 @@
-import { useAnimationFrame } from '@manapotion/react'
+import { useMainLoop } from '@manapotion/react'
 import { lerp } from 'three/src/math/MathUtils'
 
 import { PLAYER_ROTATION_SPEED, PLAYER_SPEED, PLAYER_SPEED_BACKWARD } from '#/lib/constants'
@@ -14,7 +14,7 @@ const Z_OFFSET = 0
 const MODEL_ROT_LERP_FACTOR = 0.4
 
 const MovementSystem = () => {
-  useAnimationFrame(
+  useMainLoop(
     ({ delta }) => {
       const [player] = players
 

@@ -43,6 +43,7 @@ export const WebGPUCanvas = ({
 
   return (
     <R3FCanvas
+      frameloop="never"
       dpr={[1, 1.5]}
       {...(isWebGPU &&
         !forceWebGL && {

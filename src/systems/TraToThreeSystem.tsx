@@ -1,11 +1,11 @@
-import { useAnimationFrame } from '@manapotion/react'
+import { useMainLoop } from '@manapotion/react'
 
 import { STAGE_RENDER } from '#/lib/stages'
 import { exists } from '#/lib/util'
 import { world } from '#/world'
 
 const TraToThreeSystem = () => {
-  useAnimationFrame(
+  useMainLoop(
     () => {
       for (const e of world.with('tra', 'three')) {
         e.three.position.x = e.tra.pos.x

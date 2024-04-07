@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 
-import { getJoysticks, JoystickArea, useAnimationFrame } from '@manapotion/react'
+import { getJoysticks, JoystickArea, useMainLoop } from '@manapotion/react'
 
 import { STAGE_UI } from '#/lib/stages'
 
@@ -12,7 +12,7 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   const [isLeftHelperShown, setIsLeftHelperShown] = useState(true)
   const [isRightHelperShown, setIsRightHelperShown] = useState(true)
 
-  useAnimationFrame(
+  useMainLoop(
     () => {
       const movementJoystick = getJoysticks().movement
 

@@ -1,4 +1,4 @@
-import { getBrowser, getMouse, useAnimationFrame } from '@manapotion/react'
+import { getBrowser, getMouse, useMainLoop } from '@manapotion/react'
 
 import { STAGE_CAMERA } from '#/lib/stages'
 import { cameras, players } from '#/world'
@@ -9,7 +9,7 @@ const HEAD = 1.6
 const RADIUS = 3.8 // from player
 
 const CameraFollowSystem = () => {
-  useAnimationFrame(
+  useMainLoop(
     () => {
       const mouse = getMouse()
       const { isDesktop } = getBrowser()

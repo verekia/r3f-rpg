@@ -1,10 +1,10 @@
-import { useAnimationFrame } from '@manapotion/react'
+import { useMainLoop } from '@manapotion/react'
 
 import { STAGE_CLEANUP } from '#/lib/stages'
 import { markForRemoval, world } from '#/world'
 
 const RemovalSystem = () => {
-  useAnimationFrame(
+  useMainLoop(
     ({ delta }) => {
       for (const e of world.with('removalTimer')) {
         e.removalTimer -= delta

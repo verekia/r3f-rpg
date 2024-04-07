@@ -1,11 +1,11 @@
-import { useAnimationFrame } from '@manapotion/react'
+import { useMainLoop } from '@manapotion/react'
 
 import { STAGE_PHYSICS } from '#/lib/stages'
 import { exists } from '#/lib/util'
 import { world } from '#/world'
 
 const VelocitySystem = () => {
-  useAnimationFrame(
+  useMainLoop(
     ({ delta: dt }) => {
       for (const e of world.with('tra')) {
         exists(e.tra.pos.velX) && (e.tra.pos.x += e.tra.pos.velX! * dt)

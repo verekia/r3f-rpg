@@ -1,11 +1,13 @@
 import { Suspense, useRef } from 'react'
 
-import { getMouse, lockPointer } from '@manapotion/react'
+import { getMouse, lockPointer, useMainLoop } from '@manapotion/react'
 import { Html, useProgress, useTexture } from '@react-three/drei'
+import { useThree } from '@react-three/fiber'
 import clsx from 'clsx'
 import { MeshLambertMaterial, SRGBColorSpace } from 'three'
 
 import { WebGPUCanvas } from '#/components/WebGPUCanvas'
+import { STAGE_RENDER } from '#/lib/stages'
 import useStore from '#/store'
 
 import type { CanvasProps } from '@react-three/fiber'
@@ -19,6 +21,14 @@ const GlobalMaterials = () => {
     const paletteMaterial = new MeshLambertMaterial({ map: texture })
     useStore.getState().setGlobalMaterials({ palette: paletteMaterial })
   })
+
+  return null
+}
+
+const SyncMainLoop = () => {
+  const advance = useThree(s => s.advance)
+
+  useMainLoop(({ elapsed }) => advance(elapsed), { stage: STAGE_RENDER })
 
   return null
 }
@@ -78,6 +88,7 @@ const Canvas = ({ className, children, ...props }: CanvasProps) => {
       <Suspense fallback={<Loader />}>
         {children}
         <GlobalMaterials />
+        <SyncMainLoop />
       </Suspense>
     </WebGPUCanvas>
   )

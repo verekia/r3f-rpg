@@ -1,4 +1,14 @@
-import { getMouse, KeyDownPayload, Listeners, unlockPointer } from '@manapotion/react'
+import {
+  getMouse,
+  KeyDownPayload,
+  Listeners,
+  pauseMainLoop,
+  resetJoysticks,
+  resetKeyboard,
+  resetMouse,
+  resumeMainLoop,
+  unlockPointer,
+} from '@manapotion/react'
 import Head from 'next/head'
 
 import Canvas from '#/components/Canvas'
@@ -67,6 +77,16 @@ const IndexPage = () => {
           onKeyDown={handleKeyDown}
           onLeftMouseButtonDown={handleLeftMouseDown}
           onRightMouseButtonDown={handleRightMouseDown}
+          onPageFocusChange={({ isPageFocused }) => {
+            if (isPageFocused) {
+              resumeMainLoop()
+            } else {
+              pauseMainLoop()
+              resetKeyboard()
+              resetMouse()
+              resetJoysticks()
+            }
+          }}
         />
       </div>
     </>
