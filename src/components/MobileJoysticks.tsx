@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react'
 
-import { getJoysticks, JoystickArea, useFrameEffect } from '@manapotion/r3f'
+import { getJoysticks, JoystickArea, useAnimationFrame } from '@manapotion/r3f'
+
+import { STAGE_UI } from '#/lib/stages'
 
 const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   const leftAreaRef = useRef<HTMLDivElement>(null)
@@ -10,20 +12,23 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
   const [isLeftHelperShown, setIsLeftHelperShown] = useState(true)
   const [isRightHelperShown, setIsRightHelperShown] = useState(true)
 
-  useFrameEffect(() => {
-    const movementJoystick = getJoysticks().movement
+  useAnimationFrame(
+    () => {
+      const movementJoystick = getJoysticks().movement
 
-    if (!leftJoystickCurrentRef.current || !leftJoystickFollowRef.current) {
-      return
-    }
+      if (!leftJoystickCurrentRef.current || !leftJoystickFollowRef.current) {
+        return
+      }
 
-    leftJoystickCurrentRef.current.style.opacity = movementJoystick.isActive ? '1' : '0'
-    leftJoystickFollowRef.current.style.opacity = movementJoystick.isActive ? '1' : '0'
+      leftJoystickCurrentRef.current.style.opacity = movementJoystick.isActive ? '1' : '0'
+      leftJoystickFollowRef.current.style.opacity = movementJoystick.isActive ? '1' : '0'
 
-    leftJoystickCurrentRef.current.style.transform = `translate(${movementJoystick.current.x}px, ${-movementJoystick.current.y}px)`
+      leftJoystickCurrentRef.current.style.transform = `translate(${movementJoystick.current.x}px, ${-movementJoystick.current.y}px)`
 
-    leftJoystickFollowRef.current.style.transform = `translate(${movementJoystick.follow.x}px, ${-movementJoystick.follow.y}px)`
-  })
+      leftJoystickFollowRef.current.style.transform = `translate(${movementJoystick.follow.x}px, ${-movementJoystick.follow.y}px)`
+    },
+    { stage: STAGE_UI },
+  )
 
   return (
     <div className={className} {...props}>
@@ -31,7 +36,9 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
         ref={leftAreaRef}
         joystick={getJoysticks().movement}
         maxFollowDistance={50}
-        className="absolute left-0 top-0 z-10 h-full w-1/2 desktop:hidden"
+        containerProps={{
+          className: 'absolute left-0 top-0 z-10 h-full w-1/2 desktop:hidden',
+        }}
         onMove={() => setIsLeftHelperShown(false)}
       >
         {isLeftHelperShown && (
@@ -52,7 +59,9 @@ const MobileJoysticks = ({ className, ...props }: { className?: string }) => {
         ref={rightAreaRef}
         joystick={getJoysticks().rotation}
         maxFollowDistance={50}
-        className="absolute right-0 top-0 z-10 h-full w-1/2 desktop:hidden"
+        containerProps={{
+          className: 'absolute right-0 top-0 z-10 h-full w-1/2 desktop:hidden',
+        }}
         onMove={() => setIsRightHelperShown(false)}
       >
         {isRightHelperShown && (

@@ -1,5 +1,7 @@
-import { clamp, getJoysticks, getKeyboard, getMouse, useFrameEffect } from '@manapotion/r3f'
+import { getJoysticks, getKeyboard, getMouse, useAnimationFrame } from '@manapotion/r3f'
+import { clamp } from 'three/src/math/MathUtils'
 
+import { STAGE_CONTROLS } from '#/lib/stages'
 import { setControl, useControlsStore } from '#/stores/controls'
 import { jump } from '#/systems/MovementSystem'
 import { cameras, players } from '#/world'
@@ -142,61 +144,64 @@ const getBackwardRight = () => {
 const ControlsSystem = () => {
   // Using useFrameEffect instead of useFrame is a lucky workaround. There is an unresolved
   // underlying issue. Rotation glitches and weird slighly off rotation happen when using useFrame.
-  useFrameEffect(() => {
-    const movementJoystick = getJoysticks().movement
-    const cameraJoystick = getJoysticks().rotation
-    const mouse = getMouse()
+  useAnimationFrame(
+    () => {
+      const movementJoystick = getJoysticks().movement
+      const cameraJoystick = getJoysticks().rotation
+      const mouse = getMouse()
 
-    const [camera] = cameras
-    const [player] = players
+      const [camera] = cameras
+      const [player] = players
 
-    setControl('forward', getForward())
-    setControl('backward', getBackward())
-    setControl('strafeLeft', getStrafeLeft())
-    setControl('strafeRight', getStrafeRight())
-    setControl('forwardLeft', getForwardLeft())
-    setControl('forwardRight', getForwardRight())
-    setControl('backwardLeft', getBackwardLeft())
-    setControl('backwardRight', getBackwardRight())
-    setControl('turnLeft', getTurnLeft())
-    setControl('turnRight', getTurnRight())
-    setControl('jump', Boolean(getKeyboard().codes.Space))
+      setControl('forward', getForward())
+      setControl('backward', getBackward())
+      setControl('strafeLeft', getStrafeLeft())
+      setControl('strafeRight', getStrafeRight())
+      setControl('forwardLeft', getForwardLeft())
+      setControl('forwardRight', getForwardRight())
+      setControl('backwardLeft', getBackwardLeft())
+      setControl('backwardRight', getBackwardRight())
+      setControl('turnLeft', getTurnLeft())
+      setControl('turnRight', getTurnRight())
+      setControl('jump', Boolean(getKeyboard().codes.Space))
 
-    if (
-      movementJoystick.follow.distance !== undefined &&
-      movementJoystick.follow.angle !== undefined
-    ) {
-      useControlsStore.getState().controls.forwardDirection =
-        movementJoystick.follow.distance < 30
-          ? undefined
-          : camera.tra.rot.z + movementJoystick.follow.angle
-    } else {
-      useControlsStore.getState().controls.forwardDirection = undefined
-    }
+      if (
+        movementJoystick.follow.distance !== undefined &&
+        movementJoystick.follow.angle !== undefined
+      ) {
+        useControlsStore.getState().controls.forwardDirection =
+          movementJoystick.follow.distance < 30
+            ? undefined
+            : camera.tra.rot.z + movementJoystick.follow.angle
+      } else {
+        useControlsStore.getState().controls.forwardDirection = undefined
+      }
 
-    if (
-      mouse.locked &&
-      ((mouse.movement.y > 0 && camera.tra.rot.x < 0) ||
-        (mouse.movement.y < 0 && camera.tra.rot.x > -pi / 3))
-    ) {
-      camera.tra.rot.x += clamp(mouse.movement.y, -MAX_MOVEMENT, MAX_MOVEMENT) / 1000
-    }
+      if (
+        mouse.locked &&
+        ((mouse.movement.y > 0 && camera.tra.rot.x < 0) ||
+          (mouse.movement.y < 0 && camera.tra.rot.x > -pi / 3))
+      ) {
+        camera.tra.rot.x += clamp(mouse.movement.y, -MAX_MOVEMENT, MAX_MOVEMENT) / 1000
+      }
 
-    if (mouse.locked && mouse.buttons.left && !mouse.buttons.right) {
-      camera.tra.rot.z -= clamp(mouse.movement.x, -MAX_MOVEMENT, MAX_MOVEMENT) * 0.003
-    } else if (mouse.locked && mouse.buttons.right) {
-      player.tra.rot.z -= clamp(mouse.movement.x, -MAX_MOVEMENT, MAX_MOVEMENT) * 0.003
-    }
+      if (mouse.locked && mouse.buttons.left && !mouse.buttons.right) {
+        camera.tra.rot.z -= clamp(mouse.movement.x, -MAX_MOVEMENT, MAX_MOVEMENT) * 0.003
+      } else if (mouse.locked && mouse.buttons.right) {
+        player.tra.rot.z -= clamp(mouse.movement.x, -MAX_MOVEMENT, MAX_MOVEMENT) * 0.003
+      }
 
-    camera.tra.rot.z -= cameraJoystick.movement.x * 0.015
+      camera.tra.rot.z -= cameraJoystick.movement.x * 0.015
 
-    if (
-      (cameraJoystick.movement.y > 0 && camera.tra.rot.x < 0) ||
-      (cameraJoystick.movement.y < 0 && camera.tra.rot.x > -pi / 3)
-    ) {
-      camera.tra.rot.x += cameraJoystick.movement.y * 0.015
-    }
-  })
+      if (
+        (cameraJoystick.movement.y > 0 && camera.tra.rot.x < 0) ||
+        (cameraJoystick.movement.y < 0 && camera.tra.rot.x > -pi / 3)
+      ) {
+        camera.tra.rot.x += cameraJoystick.movement.y * 0.015
+      }
+    },
+    { stage: STAGE_CONTROLS },
+  )
 
   return null
 }
