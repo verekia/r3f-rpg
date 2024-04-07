@@ -1,4 +1,4 @@
-import { getJoysticks, getKeyboard, getMouse, useAnimationFrame } from '@manapotion/r3f'
+import { getJoysticks, getKeyboard, getMouse, useAnimationFrame } from '@manapotion/react'
 import { clamp } from 'three/src/math/MathUtils'
 
 import { STAGE_CONTROLS } from '#/lib/stages'

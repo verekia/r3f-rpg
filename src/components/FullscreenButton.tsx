@@ -6,7 +6,7 @@ import {
   unlockKeys,
   unlockOrientation,
   useBrowser,
-} from '@manapotion/r3f'
+} from '@manapotion/react'
 import { clsx } from 'clsx'
 
 import { EnterFullscreenIcon, ExitFullscreenIcon } from '#/components/icons'

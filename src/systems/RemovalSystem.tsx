@@ -1,4 +1,4 @@
-import { useAnimationFrame } from '@manapotion/r3f'
+import { useAnimationFrame } from '@manapotion/react'
 
 import { STAGE_CLEANUP } from '#/lib/stages'
 import { markForRemoval, world } from '#/world'

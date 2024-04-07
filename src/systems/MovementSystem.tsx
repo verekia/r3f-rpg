@@ -1,4 +1,4 @@
-import { useAnimationFrame } from '@manapotion/r3f'
+import { useAnimationFrame } from '@manapotion/react'
 import { lerp } from 'three/src/math/MathUtils'
 
 import { PLAYER_ROTATION_SPEED, PLAYER_SPEED, PLAYER_SPEED_BACKWARD } from '#/lib/constants'

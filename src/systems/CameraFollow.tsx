@@ -1,4 +1,4 @@
-import { getBrowser, getMouse, useAnimationFrame } from '@manapotion/r3f'
+import { getBrowser, getMouse, useAnimationFrame } from '@manapotion/react'
 
 import { STAGE_CAMERA } from '#/lib/stages'
 import { cameras, players } from '#/world'

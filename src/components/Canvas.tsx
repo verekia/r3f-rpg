@@ -1,6 +1,6 @@
 import { Suspense, useRef } from 'react'
 
-import { getMouse, lockPointer } from '@manapotion/r3f'
+import { getMouse, lockPointer } from '@manapotion/react'
 import { Html, useProgress, useTexture } from '@react-three/drei'
 import clsx from 'clsx'
 import { MeshLambertMaterial, SRGBColorSpace } from 'three'

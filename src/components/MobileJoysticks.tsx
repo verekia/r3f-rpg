@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 
-import { getJoysticks, JoystickArea, useAnimationFrame } from '@manapotion/r3f'
+import { getJoysticks, JoystickArea, useAnimationFrame } from '@manapotion/react'
 
 import { STAGE_UI } from '#/lib/stages'
 

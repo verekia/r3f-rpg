@@ -1,4 +1,4 @@
-import { getMouse, KeyDownPayload, Listeners, unlockPointer } from '@manapotion/r3f'
+import { getMouse, KeyDownPayload, Listeners, unlockPointer } from '@manapotion/react'
 import Head from 'next/head'
 
 import Canvas from '#/components/Canvas'

@@ -1,4 +1,4 @@
-import { useAnimationFrame } from '@manapotion/r3f'
+import { useAnimationFrame } from '@manapotion/react'
 
 import { STAGE_PHYSICS } from '#/lib/stages'
 import { exists } from '#/lib/util'
