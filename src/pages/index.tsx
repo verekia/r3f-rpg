@@ -77,15 +77,13 @@ const IndexPage = () => {
           onKeyDown={handleKeyDown}
           onLeftMouseButtonDown={handleLeftMouseDown}
           onRightMouseButtonDown={handleRightMouseDown}
-          onPageFocusChange={({ isPageFocused }) => {
-            if (isPageFocused) {
-              resumeMainLoop()
-            } else {
-              pauseMainLoop()
-              resetKeyboard()
-              resetMouse()
-              resetJoysticks()
-            }
+          onPageFocusChange={() => {
+            resetKeyboard()
+            resetMouse()
+            resetJoysticks()
+          }}
+          onPageVisibilityChange={({ isPageVisible }) => {
+            isPageVisible ? resumeMainLoop() : pauseMainLoop()
           }}
         />
       </div>
