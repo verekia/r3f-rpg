@@ -1,13 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 
-import { theme } from '@manapotion/tailwind'
+import { tailwindTheme as manapotionTheme } from '@manapotion/react'
 
 const config = {
   content: ['./index.html', './src/**/*.tsx'],
   theme: {
-    screens: theme.screens,
+    screens: manapotionTheme.screens,
     extend: {
-      screens: theme.extend.screens,
+      screens: manapotionTheme.extend.screens,
     },
   },
   plugins: [],
