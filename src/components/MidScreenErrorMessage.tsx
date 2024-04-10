@@ -1,29 +1,23 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 
-import { queryClient } from '#/lib/react-query'
-import { getIsGrounded } from '#/systems/MovementSystem'
-
 const MidScreenErrorMessage = () => {
-  const { data: message } = useQuery({
+  const { data: message, refetch: reset } = useQuery({
     queryKey: ['MidScreenErrorMessage'],
-    queryFn: getIsGrounded,
+    queryFn: () => null,
   })
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    let timeout = null
+    clearTimeout(timeoutRef.current)
 
-    if (message) {
-      timeout = setTimeout(() => {
-        queryClient.setQueryData(['MidScreenErrorMessage'], null)
-      }, 2000)
-    }
+    if (!message) return
 
-    return () => {
-      clearTimeout(timeout)
-    }
-  }, [message])
+    timeoutRef.current = setTimeout(reset, 2000)
+
+    return () => clearTimeout(timeoutRef.current)
+  }, [message, reset])
 
   if (!message) return null
 

@@ -17,13 +17,10 @@ const MODEL_ROT_LERP_FACTOR = 0.4
 
 export const getIsGrounded = () => {
   const [player] = players
-  const isGrounded = player.tra.pos.z! <= Z_OFFSET
 
-  if (queryClient.getQueryData(['isGrounded']) !== isGrounded) {
-    queryClient.setQueryData(['isGrounded'], isGrounded)
-  }
+  if (!player) return false
 
-  return isGrounded
+  return player.tra.pos.z! <= Z_OFFSET
 }
 
 const MovementSystem = () => {
@@ -36,6 +33,10 @@ const MovementSystem = () => {
       const { controls } = useControlsStore.getState()
 
       const isGrounded = getIsGrounded()
+
+      if (queryClient.getQueryData(['isGrounded']) !== isGrounded) {
+        queryClient.setQueryData(['isGrounded'], isGrounded)
+      }
 
       const forwardDirection = () => {
         if (controls.forwardDirection === undefined) {
