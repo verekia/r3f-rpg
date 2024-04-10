@@ -1,4 +1,6 @@
 import FullscreenButton from '#/components/FullscreenButton'
+import JumpHelper from '#/components/JumpHelper'
+import MidScreenErrorMessage from '#/components/MidScreenErrorMessage'
 import MobileJoysticks from '#/components/MobileJoysticks'
 import { LANDING_ROUTE } from '#/routes'
 import useStore from '#/store'
@@ -26,6 +28,8 @@ const UI = () => (
     <div className="absolute bottom-0 right-0 z-10 select-none rounded-tl-xl bg-slate-400 px-5 py-2 text-white">
       Actions
     </div>
+    <JumpHelper />
+    <MidScreenErrorMessage />
   </>
 )
 

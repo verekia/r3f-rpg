@@ -1,9 +1,10 @@
 import { getJoysticks, getKeyboard, getMouse, useMainLoop } from '@manapotion/react'
 import { clamp } from 'three/src/math/MathUtils'
 
+import { queryClient } from '#/lib/react-query'
 import { STAGE_CONTROLS } from '#/lib/stages'
 import { setControl, useControlsStore } from '#/stores/controls'
-import { jump } from '#/systems/MovementSystem'
+import { requestJump } from '#/systems/MovementSystem'
 import { cameras, players } from '#/world'
 
 const { PI: pi } = Math
@@ -207,11 +208,20 @@ const ControlsSystem = () => {
 }
 
 export const pressedSpace = () => {
-  jump()
+  const { error } = requestJump()
+
+  if (error?.code === 'ERROR_CODE_JUMP_NOT_GROUNDED') {
+    queryClient.setQueryData(['MidScreenErrorMessage'], 'You cannot jump while in the air!')
+  }
 }
 
+// Mobile button
 export const pressedJumpButton = () => {
-  jump()
+  const { error } = requestJump()
+
+  if (error?.code === 'ERROR_CODE_JUMP_NOT_GROUNDED') {
+    queryClient.setQueryData(['MidScreenErrorMessage'], 'You cannot jump while in the air!')
+  }
 }
 
 export const pressedBothMouseButtons = () => {

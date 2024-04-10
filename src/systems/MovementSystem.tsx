@@ -2,6 +2,8 @@ import { useMainLoop } from '@manapotion/react'
 import { lerp } from 'three/src/math/MathUtils'
 
 import { PLAYER_ROTATION_SPEED, PLAYER_SPEED, PLAYER_SPEED_BACKWARD } from '#/lib/constants'
+import { engineResponse } from '#/lib/engine'
+import { queryClient } from '#/lib/react-query'
 import { STAGE_PHYSICS } from '#/lib/stages'
 import { useControlsStore } from '#/stores/controls'
 import { players } from '#/world'
@@ -13,6 +15,17 @@ const JUMP_VELOCITY = 4.5 // Adjust for desired jump strength
 const Z_OFFSET = 0
 const MODEL_ROT_LERP_FACTOR = 0.4
 
+export const getIsGrounded = () => {
+  const [player] = players
+  const isGrounded = player.tra.pos.z! <= Z_OFFSET
+
+  if (queryClient.getQueryData(['isGrounded']) !== isGrounded) {
+    queryClient.setQueryData(['isGrounded'], isGrounded)
+  }
+
+  return isGrounded
+}
+
 const MovementSystem = () => {
   useMainLoop(
     ({ delta }) => {
@@ -22,7 +35,7 @@ const MovementSystem = () => {
 
       const { controls } = useControlsStore.getState()
 
-      const isGrounded = player.tra.pos.z! <= Z_OFFSET
+      const isGrounded = getIsGrounded()
 
       const forwardDirection = () => {
         if (controls.forwardDirection === undefined) {
@@ -186,13 +199,17 @@ const MovementSystem = () => {
   return null
 }
 
-export const jump = () => {
-  const [player] = players
-  const isGrounded = player.tra.pos.z! <= Z_OFFSET
+export const ERROR_CODE_JUMP_NOT_GROUNDED = 'ERROR_CODE_JUMP_NOT_GROUNDED'
 
-  if (isGrounded) {
+export const requestJump = () => {
+  const [player] = players
+
+  if (getIsGrounded()) {
     player.tra.pos.velZ = JUMP_VELOCITY
+    return engineResponse(true)
   }
+
+  return engineResponse({ errorCode: ERROR_CODE_JUMP_NOT_GROUNDED })
 }
 
 export default MovementSystem
