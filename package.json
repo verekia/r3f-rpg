@@ -19,6 +19,7 @@
     "@tanstack/react-query-devtools": "^5.29.0",
     "clsx": "^2.1.0",
     "detect-collisions": "^9.2.4",
+    "emittery": "^1.0.3",
     "mathjs": "^12.4.1",
     "miniplex": "^2.0.0",
     "miniplex-react": "^2.0.1",

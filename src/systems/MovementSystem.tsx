@@ -2,8 +2,8 @@ import { useMainLoop } from '@manapotion/react'
 import { lerp } from 'three/src/math/MathUtils'
 
 import { PLAYER_ROTATION_SPEED, PLAYER_SPEED, PLAYER_SPEED_BACKWARD } from '#/lib/constants'
+import emitter from '#/lib/emittery'
 import { engineResponse } from '#/lib/engine'
-import { queryClient } from '#/lib/react-query'
 import { STAGE_PHYSICS } from '#/lib/stages'
 import { useControlsStore } from '#/stores/controls'
 import { players } from '#/world'
@@ -34,9 +34,7 @@ const MovementSystem = () => {
 
       const isGrounded = getIsGrounded()
 
-      if (queryClient.getQueryData(['isGrounded']) !== isGrounded) {
-        queryClient.setQueryData(['isGrounded'], isGrounded)
-      }
+      emitter.emit('isGrounded', isGrounded)
 
       const forwardDirection = () => {
         if (controls.forwardDirection === undefined) {
