@@ -11,14 +11,14 @@ import {
 } from '@manapotion/react'
 import Head from 'next/head'
 
-import Canvas from '#/components/Canvas'
-import ForestScene from '#/components/ForestScene'
-import UI from '#/components/UI'
-import Landing from '#/Landing'
-import { FOREST_ROUTE, LANDING_ROUTE } from '#/routes'
-import useStore from '#/store'
-import { pressedBothMouseButtons, pressedSpace } from '#/systems/ControlsSystem'
-import Systems from '#/systems/Systems'
+import { pressedBothMouseButtons, pressedSpace } from '#/controls/ControlsSystem'
+import useStore from '#/core/store'
+import Systems from '#/core/Systems'
+import Canvas from '#/rendering/Canvas'
+import { FOREST_ROUTE, LANDING_ROUTE } from '#/routing/routes'
+import ForestScene from '#/scenes/ForestScene'
+import UI from '#/ui/UI'
+import Landing from '#/website/Landing'
 
 const IndexPage = () => {
   const route = useStore(s => s.route)
