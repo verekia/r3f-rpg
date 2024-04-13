@@ -2,8 +2,8 @@ import { pressedJumpButton } from '#/controls/ControlsSystem'
 import useStore from '#/core/store'
 import { LANDING_ROUTE } from '#/routing/routes'
 import FullscreenButton from '#/ui/FullscreenButton'
-import JumpHelper from '#/ui/JumpHelper'
-import MidScreenErrorMessage from '#/ui/MidScreenErrorMessage'
+// import JumpHelper from '#/ui/JumpHelper'
+// import MidScreenErrorMessage from '#/ui/MidScreenErrorMessage'
 import MobileJoysticks from '#/ui/MobileJoysticks'
 
 const UI = () => (
@@ -28,8 +28,8 @@ const UI = () => (
     <div className="absolute bottom-0 right-0 z-10 select-none rounded-tl-xl bg-slate-400 px-5 py-2 text-white">
       Actions
     </div>
-    <JumpHelper />
-    <MidScreenErrorMessage />
+    {/* <JumpHelper /> */}
+    {/* <MidScreenErrorMessage /> */}
   </>
 )
 

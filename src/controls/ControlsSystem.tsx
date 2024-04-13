@@ -155,22 +155,7 @@ const ControlsSystem = () => {
       const [camera] = cameras
       const [player] = players
 
-      setControl('forward', getForward())
-      setControl('backward', getBackward())
-      setControl('strafeLeft', getStrafeLeft())
-      setControl('strafeRight', getStrafeRight())
-      setControl('forwardLeft', getForwardLeft())
-      setControl('forwardRight', getForwardRight())
-      setControl('backwardLeft', getBackwardLeft())
-      setControl('backwardRight', getBackwardRight())
-      setControl('turnLeft', getTurnLeft())
-      setControl('turnRight', getTurnRight())
-      setControl('jump', Boolean(getKeyboard().codes.Space))
-
-      if (
-        movementJoystick.follow.distance !== undefined &&
-        movementJoystick.follow.angle !== undefined
-      ) {
+      if (movementJoystick.follow.distance !== null && movementJoystick.follow.angle !== null) {
         controls.forwardDirection =
           movementJoystick.follow.distance < 30
             ? undefined
@@ -201,6 +186,20 @@ const ControlsSystem = () => {
       ) {
         camera.tra.rot.x += cameraJoystick.movement.y * 0.015
       }
+
+      // This should not be done in the main loop, it should be done in input handlers
+      // setControl is a footgun, it replaces the `controls` object
+      setControl('forward', getForward())
+      setControl('backward', getBackward())
+      setControl('strafeLeft', getStrafeLeft())
+      setControl('strafeRight', getStrafeRight())
+      setControl('forwardLeft', getForwardLeft())
+      setControl('forwardRight', getForwardRight())
+      setControl('backwardLeft', getBackwardLeft())
+      setControl('backwardRight', getBackwardRight())
+      setControl('turnLeft', getTurnLeft())
+      setControl('turnRight', getTurnRight())
+      setControl('jump', Boolean(getKeyboard().codes.Space))
     },
     { stage: STAGE_CONTROLS },
   )

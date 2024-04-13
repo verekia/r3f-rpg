@@ -1,4 +1,4 @@
-import CameraFollowSystem from '#/camera/CameraFollow'
+import CameraFollowSystem from '#/camera/CameraFollowSystem'
 import ControlsSystem from '#/controls/ControlsSystem'
 import RemovalSystem from '#/core/RemovalSystem'
 import MovementSystem from '#/movement/MovementSystem'

@@ -22,14 +22,6 @@ export type Tra = {
   }
 }
 
-type KeyPressEvent = { type: 'keypress'; key: string }
-type InputEvent = { category: 'input' } & KeyPressEvent
-
-type JumpEvent = { type: 'jump' }
-type MovementEvent = { category: 'movement' } & JumpEvent
-
-type Event = InputEvent | MovementEvent
-
 type EntityBase = {
   id: string
   createdAt: number
@@ -45,8 +37,6 @@ export type Entity = {
   dcZone?: { system: DetectCollisionsSystem; obstaclesPolygon: Polygon }
   dcBody?: Circle
   tra?: Tra
-  reactRef?: any
-  event?: Event
 } & EntityBase
 
 export const world = new World<Entity>()
