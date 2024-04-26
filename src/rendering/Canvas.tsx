@@ -86,6 +86,7 @@ const Canvas = ({ className, children, ...props }: CanvasProps) => {
       {...props}
     >
       <Suspense fallback={<Loader />}>
+        <color attach="background" args={['white']} />
         {children}
         <GlobalMaterials />
         <SyncMainLoop />
