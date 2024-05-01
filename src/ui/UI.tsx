@@ -1,6 +1,7 @@
 import { pressedJumpButton } from '#/controls/ControlsSystem'
 import useStore from '#/core/store'
 import { LANDING_ROUTE } from '#/routing/routes'
+import Appearance from '#/ui/Appearance'
 import FullscreenButton from '#/ui/FullscreenButton'
 // import JumpHelper from '#/ui/JumpHelper'
 // import MidScreenErrorMessage from '#/ui/MidScreenErrorMessage'
@@ -11,6 +12,9 @@ const UI = () => (
     <MobileJoysticks className="absolute inset-0 z-10 h-full desktop:hidden" />
     <div className="absolute left-0 top-0 z-10 select-none rounded-br-xl bg-slate-400 px-5 py-2 text-white">
       Health
+    </div>
+    <div className="absolute left-0 top-10 z-10">
+      <Appearance />
     </div>
     <div className="absolute bottom-0 left-0 z-10 rounded-tr-xl bg-slate-400 px-5 py-2 text-white">
       Chat
