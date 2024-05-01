@@ -4,6 +4,11 @@ import { FOREST_ROUTE, LANDING_ROUTE, Route } from '#/routing/routes'
 
 import type { MeshLambertMaterial } from 'three'
 
+export type Glove = 'none' | 'mittensBasic' | 'mittensGold' | 'longGlovesBasic' | 'longGlovesGold'
+export type Boots = 'none' | 'shoesBasic' | 'shoesGold' | 'longBasic' | 'longGold'
+export type Chest = 'none' | 'chestBasic' | 'chestGold'
+export type Pants = 'none' | 'pantsBasic' | 'pantsGold'
+
 type Store = {
   globalMaterials: { palette: MeshLambertMaterial | null }
   setGlobalMaterials: (globalMaterials: { palette: MeshLambertMaterial }) => void
@@ -11,10 +16,10 @@ type Store = {
   setRoute: (route: Route) => void
   skin: '#FFC0CB' | '#8B4513'
   hair: '#A0522D' | '#F5DEB3'
-  chest: 'none' | 'basic'
-  pants: 'none' | 'basic'
-  gloves: 'none' | 'a' | 'b'
-  boots: 'none' | 'a' | 'b'
+  chest: Chest
+  pants: Pants
+  gloves: Glove
+  boots: Boots
 }
 
 const useStore = create<Store>(set => ({
@@ -24,10 +29,10 @@ const useStore = create<Store>(set => ({
   setRoute: (route: Route) => set(() => ({ route })),
   skin: '#FFC0CB',
   hair: '#A0522D',
-  chest: 'basic',
-  pants: 'basic',
-  gloves: 'a',
-  boots: 'a',
+  chest: 'chestBasic',
+  pants: 'pantsBasic',
+  gloves: 'mittensBasic',
+  boots: 'shoesBasic',
 }))
 
 export default useStore

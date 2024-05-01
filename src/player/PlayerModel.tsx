@@ -4,6 +4,7 @@ import { useAnimations, useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 
 import useStore from '#/core/store'
+import { boots, chests, gloves, pants } from '#/gear/gear'
 
 import type { Group, Mesh } from 'three'
 
@@ -12,19 +13,24 @@ const { PI: pi } = Math
 type GLTFResult = GLTF & {
   nodes: {
     Body: THREE.SkinnedMesh
-    BootsA: THREE.SkinnedMesh
-    BootsB: THREE.SkinnedMesh
+    BootsLong: THREE.SkinnedMesh
+    BootsShort: THREE.SkinnedMesh
     Chest: THREE.SkinnedMesh
     Eye: THREE.SkinnedMesh
-    GlovesA: THREE.SkinnedMesh
-    GlovesB: THREE.SkinnedMesh
+    GlovesLong_1: THREE.SkinnedMesh
+    GlovesLong_2: THREE.SkinnedMesh
+    GlovesMittens_1: THREE.SkinnedMesh
+    GlovesMittens_2: THREE.SkinnedMesh
     Hair: THREE.SkinnedMesh
     Pants: THREE.SkinnedMesh
     mixamorigHips: THREE.Bone
   }
   materials: {
     Skin: THREE.MeshStandardMaterial
+    Primary: THREE.MeshStandardMaterial
     Palette: THREE.MeshStandardMaterial
+    Secondary: THREE.MeshStandardMaterial
+    Hair: THREE.MeshStandardMaterial
   }
   animations: GLTFAction[]
 }
@@ -58,12 +64,17 @@ const PlayerModel = (
   const { actions } = useAnimations(animations, groupRef)
   const swordRef = useRef<Mesh>(null)
   const paletteMaterial = useStore(s => s.globalMaterials.palette)
-  const chest = useStore(s => s.chest)
-  const pants = useStore(s => s.pants)
-  const gloves = useStore(s => s.gloves)
-  const boots = useStore(s => s.boots)
+  const chestName = useStore(s => s.chest)
+  const pantsName = useStore(s => s.pants)
+  const glovesName = useStore(s => s.gloves)
+  const bootsName = useStore(s => s.boots)
   const skin = useStore(s => s.skin)
   const hair = useStore(s => s.hair)
+
+  const gloveDef = gloves[glovesName]
+  const bootsDef = boots[bootsName]
+  const chestDef = chests[chestName]
+  const pantsDef = pants[pantsName]
 
   useEffect(() => {
     actions[props.action]?.reset().fadeIn(0.12).play()
@@ -107,35 +118,25 @@ const PlayerModel = (
           >
             <meshLambertMaterial color={skin} />
           </skinnedMesh>
-          {boots === 'a' && (
+          {chestDef && (
             <skinnedMesh
-              name="BootsA"
-              geometry={nodes.BootsA.geometry}
-              material={paletteMaterial}
-              skeleton={nodes.BootsA.skeleton}
-              rotation={[Math.PI / 2, 0, 0]}
-              scale={0.01}
-            />
+              key={chestDef.mesh} // Otherwise it doesn't update
+              name={chestDef.mesh}
+              geometry={nodes[chestDef.mesh].geometry}
+              skeleton={nodes[chestDef.mesh].skeleton}
+            >
+              <meshLambertMaterial color={chestDef.colors[0]} />
+            </skinnedMesh>
           )}
-          {boots === 'b' && (
+          {pantsDef && (
             <skinnedMesh
-              name="BootsB"
-              geometry={nodes.BootsB.geometry}
-              material={paletteMaterial}
-              skeleton={nodes.BootsB.skeleton}
-              rotation={[Math.PI / 2, 0, 0]}
-              scale={0.01}
-            />
-          )}
-          {chest === 'basic' && (
-            <skinnedMesh
-              name="Chest"
-              geometry={nodes.Chest.geometry}
-              material={paletteMaterial}
-              skeleton={nodes.Chest.skeleton}
-              rotation={[Math.PI / 2, 0, 0]}
-              scale={0.01}
-            />
+              key={pantsDef.mesh} // Otherwise it doesn't update
+              name={pantsDef.mesh}
+              geometry={nodes[pantsDef.mesh].geometry}
+              skeleton={nodes[pantsDef.mesh].skeleton}
+            >
+              <meshLambertMaterial color={pantsDef.colors[0]} />
+            </skinnedMesh>
           )}
           <skinnedMesh
             name="Eye"
@@ -145,25 +146,29 @@ const PlayerModel = (
             rotation={[Math.PI / 2, 0, 0]}
             scale={0.01}
           />
-          {gloves === 'a' && (
-            <skinnedMesh
-              name="GlovesA"
-              geometry={nodes.GlovesA.geometry}
-              material={paletteMaterial}
-              skeleton={nodes.GlovesA.skeleton}
-              rotation={[Math.PI / 2, 0, 0]}
-              scale={0.01}
-            />
+          {gloveDef && (
+            <group name="Gloves" rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
+              {gloveDef.colors.map((c, i) => (
+                <skinnedMesh
+                  key={`${c}_${gloveDef.mesh}`}
+                  name={`${gloveDef.mesh}_${i + 1}`}
+                  geometry={nodes[`${gloveDef.mesh}_${i + 1}`].geometry}
+                  skeleton={nodes[`${gloveDef.mesh}_${i + 1}`].skeleton}
+                >
+                  <meshLambertMaterial color={c} />
+                </skinnedMesh>
+              ))}
+            </group>
           )}
-          {gloves === 'b' && (
+          {bootsDef && (
             <skinnedMesh
-              name="GlovesB"
-              geometry={nodes.GlovesB.geometry}
-              material={paletteMaterial}
-              skeleton={nodes.GlovesB.skeleton}
-              rotation={[Math.PI / 2, 0, 0]}
-              scale={0.01}
-            />
+              key={bootsDef.mesh} // Otherwise it doesn't update
+              name={bootsDef.mesh}
+              geometry={nodes[bootsDef.mesh].geometry}
+              skeleton={nodes[bootsDef.mesh].skeleton}
+            >
+              <meshLambertMaterial color={bootsDef.colors[0]} />
+            </skinnedMesh>
           )}
           <skinnedMesh
             name="Hair"
@@ -174,16 +179,6 @@ const PlayerModel = (
           >
             <meshLambertMaterial color={hair} />
           </skinnedMesh>
-          {pants === 'basic' && (
-            <skinnedMesh
-              name="Pants"
-              geometry={nodes.Pants.geometry}
-              material={paletteMaterial}
-              skeleton={nodes.Pants.skeleton}
-              rotation={[Math.PI / 2, 0, 0]}
-              scale={0.01}
-            />
-          )}
         </group>
       </group>
       <mesh ref={swordRef} scale={1000}>

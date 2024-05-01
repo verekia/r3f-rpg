@@ -1,4 +1,4 @@
-import useStore from '#/core/store'
+import useStore, { Boots, Chest, Glove, Pants } from '#/core/store'
 
 const Appearance = () => {
   const chest = useStore(s => s.chest)
@@ -27,10 +27,11 @@ const Appearance = () => {
         <select
           name="chest"
           value={chest}
-          onChange={e => useStore.setState({ chest: e.target.value as 'none' | 'basic' })}
+          onChange={e => useStore.setState({ chest: e.target.value as Chest })}
         >
           <option value="none">None</option>
-          <option value="basic">Basic</option>
+          <option value="chestBasic">Basic</option>
+          <option value="chestGold">Gold</option>
         </select>
       </div>
 
@@ -39,10 +40,11 @@ const Appearance = () => {
         <select
           name="pants"
           value={pants}
-          onChange={e => useStore.setState({ pants: e.target.value as 'none' | 'basic' })}
+          onChange={e => useStore.setState({ pants: e.target.value as Pants })}
         >
           <option value="none">None</option>
-          <option value="basic">Basic</option>
+          <option value="pantsBasic">Basic</option>
+          <option value="pantsGold">Gold</option>
         </select>
       </div>
 
@@ -51,11 +53,13 @@ const Appearance = () => {
         <select
           name="gloves"
           value={gloves}
-          onChange={e => useStore.setState({ gloves: e.target.value as 'none' | 'a' | 'b' })}
+          onChange={e => useStore.setState({ gloves: e.target.value as Glove })}
         >
           <option value="none">None</option>
-          <option value="a">A</option>
-          <option value="b">B</option>
+          <option value="mittensBasic">mittensBasic</option>
+          <option value="mittensGold">mittensGold</option>
+          <option value="longGlovesBasic">longGlovesBasic</option>
+          <option value="longGlovesGold">longGlovesGold</option>
         </select>
       </div>
 
@@ -64,11 +68,13 @@ const Appearance = () => {
         <select
           name="boots"
           value={boots}
-          onChange={e => useStore.setState({ boots: e.target.value as 'none' | 'a' | 'b' })}
+          onChange={e => useStore.setState({ boots: e.target.value as Boots })}
         >
           <option value="none">None</option>
-          <option value="a">A</option>
-          <option value="b">B</option>
+          <option value="shoesBasic">shoesBasic</option>
+          <option value="shoesGold">shoesGold</option>
+          <option value="longBasic">longBasic</option>
+          <option value="longGold">longGold</option>
         </select>
       </div>
 
