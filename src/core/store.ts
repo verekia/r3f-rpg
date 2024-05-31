@@ -2,7 +2,7 @@ import { create } from 'zustand'
 
 import { FOREST_ROUTE, LANDING_ROUTE, Route } from '#/routing/routes'
 
-import type { MeshLambertMaterial } from 'three'
+import type { MeshToonMaterial } from 'three'
 
 export type Glove = 'none' | 'mittensBasic' | 'mittensGold' | 'longGlovesBasic' | 'longGlovesGold'
 export type Boots = 'none' | 'shoesBasic' | 'shoesGold' | 'longBasic' | 'longGold'
@@ -10,8 +10,8 @@ export type Chest = 'none' | 'chestBasic' | 'chestGold'
 export type Pants = 'none' | 'pantsBasic' | 'pantsGold'
 
 type Store = {
-  globalMaterials: { palette: MeshLambertMaterial | null }
-  setGlobalMaterials: (globalMaterials: { palette: MeshLambertMaterial }) => void
+  globalMaterials: { palette: MeshToonMaterial | null }
+  setGlobalMaterials: (globalMaterials: { palette: MeshToonMaterial }) => void
   route: Route
   setRoute: (route: Route) => void
   skin: '#FFC0CB' | '#8B4513'

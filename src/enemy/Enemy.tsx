@@ -4,7 +4,7 @@ const Enemy = () => (
   <ECS.Component name="three">
     <mesh castShadow>
       <boxGeometry />
-      <meshLambertMaterial color="red" />
+      <meshToonMaterial color="red" />
     </mesh>
   </ECS.Component>
 )

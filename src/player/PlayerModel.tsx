@@ -116,7 +116,7 @@ const PlayerModel = (
             rotation={[Math.PI / 2, 0, 0]}
             scale={0.01}
           >
-            <meshLambertMaterial color={skin} />
+            <meshToonMaterial color={skin} />
           </skinnedMesh>
           {chestDef && (
             <skinnedMesh
@@ -125,7 +125,7 @@ const PlayerModel = (
               geometry={nodes[chestDef.mesh].geometry}
               skeleton={nodes[chestDef.mesh].skeleton}
             >
-              <meshLambertMaterial color={chestDef.colors[0]} />
+              <meshToonMaterial color={chestDef.colors[0]} />
             </skinnedMesh>
           )}
           {pantsDef && (
@@ -135,7 +135,7 @@ const PlayerModel = (
               geometry={nodes[pantsDef.mesh].geometry}
               skeleton={nodes[pantsDef.mesh].skeleton}
             >
-              <meshLambertMaterial color={pantsDef.colors[0]} />
+              <meshToonMaterial color={pantsDef.colors[0]} />
             </skinnedMesh>
           )}
           <skinnedMesh
@@ -155,7 +155,7 @@ const PlayerModel = (
                   geometry={nodes[`${gloveDef.mesh}_${i + 1}`].geometry}
                   skeleton={nodes[`${gloveDef.mesh}_${i + 1}`].skeleton}
                 >
-                  <meshLambertMaterial color={c} />
+                  <meshToonMaterial color={c} />
                 </skinnedMesh>
               ))}
             </group>
@@ -167,7 +167,7 @@ const PlayerModel = (
               geometry={nodes[bootsDef.mesh].geometry}
               skeleton={nodes[bootsDef.mesh].skeleton}
             >
-              <meshLambertMaterial color={bootsDef.colors[0]} />
+              <meshToonMaterial color={bootsDef.colors[0]} />
             </skinnedMesh>
           )}
           <skinnedMesh
@@ -177,13 +177,13 @@ const PlayerModel = (
             rotation={[Math.PI / 2, 0, 0]}
             scale={0.01}
           >
-            <meshLambertMaterial color={hair} />
+            <meshToonMaterial color={hair} />
           </skinnedMesh>
         </group>
       </group>
       <mesh ref={swordRef} scale={1000}>
         <boxGeometry args={[0.7, 0.05, 0.05]} />
-        <meshLambertMaterial color="red" />
+        <meshToonMaterial color="red" />
       </mesh>
     </>
   )

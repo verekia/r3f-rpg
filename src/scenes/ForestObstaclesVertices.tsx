@@ -42,7 +42,7 @@ export const BasicFlatShape = ({
       {isBasicMaterial ? (
         <meshBasicMaterial color={color} {...materialProps} />
       ) : (
-        <meshLambertMaterial color={color} {...materialProps} />
+        <meshToonMaterial color={color} {...materialProps} />
       )}
     </mesh>
   )

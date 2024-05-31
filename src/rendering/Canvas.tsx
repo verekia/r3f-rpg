@@ -4,7 +4,7 @@ import { getMouse, lockPointer, useMainLoop } from '@manapotion/react'
 import { Html, useProgress, useTexture } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
 import clsx from 'clsx'
-import { MeshLambertMaterial, SRGBColorSpace } from 'three'
+import { MeshToonMaterial, SRGBColorSpace } from 'three'
 
 import { STAGE_RENDER } from '#/core/core-constants'
 import useStore from '#/core/store'
@@ -18,7 +18,7 @@ const GlobalMaterials = () => {
   useTexture('/models/palette.png', texture => {
     texture.flipY = false
     texture.colorSpace = SRGBColorSpace
-    const paletteMaterial = new MeshLambertMaterial({ map: texture })
+    const paletteMaterial = new MeshToonMaterial({ map: texture })
     useStore.getState().setGlobalMaterials({ palette: paletteMaterial })
   })
 
