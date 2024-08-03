@@ -9,6 +9,8 @@ import Enemy from '#/enemy/Enemy'
 import { dcZones } from '#/physics/physics-ecs'
 import Player from '#/player/Player'
 import { createPlayer, players } from '#/player/players-ecs'
+import CityModel from '#/scenes/CityModel'
+import CityNavmeshModel from '#/scenes/CityNavmeshModel'
 import ForestModel from '#/scenes/ForestModel'
 
 const ForestScene = () => {
@@ -40,7 +42,8 @@ const ForestScene = () => {
       <ECS.Entities in={enemies}>{Enemy}</ECS.Entities>
       <ECS.Entities in={players}>{Player}</ECS.Entities>
       <ECS.Entities in={cameras}>{Camera}</ECS.Entities>
-      <ForestModel />
+      <CityModel />
+      <CityNavmeshModel />
       {/* <ForestNavmesh /> */}
       {/* <ForestObstacles /> */}
       {/* <ForestObstaclesVertices /> */}
