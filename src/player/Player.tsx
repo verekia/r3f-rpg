@@ -1,5 +1,5 @@
 import { ECS, Entity } from '#/ecs/world'
-import PlayerModel from '#/player/PlayerModel'
+import { Model as PlayerModel } from '#/player/NewPlayerModel'
 
 const Player = ({ player }: Entity) => {
   // Alternatively, watch for changes in a player.animation non-reactive value

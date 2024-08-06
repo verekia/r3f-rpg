@@ -43,7 +43,7 @@ const ForestScene = () => {
       <ECS.Entities in={players}>{Player}</ECS.Entities>
       <ECS.Entities in={cameras}>{Camera}</ECS.Entities>
       <CityModel />
-      <CityNavmeshModel />
+      {/* <CityNavmeshModel /> */}
       {/* <ForestNavmesh /> */}
       {/* <ForestObstacles /> */}
       {/* <ForestObstaclesVertices /> */}
