@@ -1,4 +1,5 @@
 import useStore, { Boots, Chest, Glove, Pants } from '#/core/store'
+import { players } from '#/player/players-ecs'
 
 const Appearance = () => {
   const chest = useStore(s => s.chest)
@@ -10,6 +11,41 @@ const Appearance = () => {
 
   return (
     <>
+      <div>
+        <button
+          onClick={() => {
+            const [player] = players
+
+            if (!player) return
+
+            player.player.usePlayerStore.getState().setWeapon('sword')
+          }}
+        >
+          Sword
+        </button>
+        <button
+          onClick={() => {
+            const [player] = players
+
+            if (!player) return
+
+            player.player.usePlayerStore.getState().setWeapon('gun')
+          }}
+        >
+          Gun
+        </button>
+        <button
+          onClick={() => {
+            const [player] = players
+
+            if (!player) return
+
+            player.player.usePlayerStore.getState().setWeapon('dagger')
+          }}
+        >
+          Dagger
+        </button>
+      </div>
       <div>
         Skin
         <select

@@ -24,38 +24,40 @@ const loader = new GLTFLoader()
 
 let navmesh
 
-loader.load(
-  // resource URL
-  '/models/city/city-navmesh.glb',
-  // called when the resource is loaded
-  function (gltf) {
-    // scene.add(gltf.scene)
-
-    // gltf.animations // Array<THREE.AnimationClip>
-    // gltf.scene // THREE.Group
-    // gltf.scenes // Array<THREE.Group>
-    // gltf.cameras // Array<THREE.Camera>
-    // gltf.asset // Object
-    console.log('OKAYYY')
-    navmesh = gltf.scene
-    console.log(navmesh)
-    navmeshScene.add(navmesh)
-  },
-  // called while loading is progressing
-  function (xhr) {
-    console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-  },
-  // called when loading has errors
-  function (error) {
-    console.log('An error happened')
-  },
-)
-
 const raycaster = new Raycaster()
 const navmeshScene = new Scene()
 
 const getZOffset = () => {
-  if (!navmesh) return 0
+  if (!navmesh) {
+    loader.load(
+      // resource URL
+      '/models/city/city-navmesh.glb',
+      // called when the resource is loaded
+      function (gltf) {
+        // scene.add(gltf.scene)
+
+        // gltf.animations // Array<THREE.AnimationClip>
+        // gltf.scene // THREE.Group
+        // gltf.scenes // Array<THREE.Group>
+        // gltf.cameras // Array<THREE.Camera>
+        // gltf.asset // Object
+        // console.log('OKAYYY')
+        navmesh = gltf.scene
+        // console.log(navmesh)
+        navmeshScene.add(navmesh)
+      },
+      // called while loading is progressing
+      function (xhr) {
+        // console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+      },
+      // called when loading has errors
+      function (error) {
+        console.log('An error happened')
+      },
+    )
+    return 0
+  }
+
   const [player] = players
 
   if (!player) return 0
@@ -64,9 +66,9 @@ const getZOffset = () => {
   raycaster.set(new Vector3(x, 100, -y), new Vector3(0, -1, 0))
 
   const intersects = raycaster.intersectObject(navmesh)
-  console.log(intersects)
+  // console.log(intersects)
   if (intersects.length > 0) {
-    console.log(intersects[0].point.y)
+    // console.log(intersects[0].point.y)
     return intersects[0].point.y
   }
 
