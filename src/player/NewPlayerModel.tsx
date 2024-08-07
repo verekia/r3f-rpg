@@ -13,7 +13,7 @@ import { GLTF, SkeletonUtils } from 'three-stdlib'
 
 import useStore from '#/core/store'
 
-type ActionName = '0TPose' | 'Idle' | 'Jump' | 'Run' | 'ShootLeft' | 'ShootRight'
+type ActionName = '0TPose' | 'Idle' | 'Jump' | 'Run' | 'ShootLeft' | 'ShootRight' | 'SlashRight'
 
 interface GLTFAction extends THREE.AnimationClip {
   name: ActionName

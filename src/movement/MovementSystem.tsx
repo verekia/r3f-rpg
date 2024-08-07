@@ -92,6 +92,10 @@ const MovementSystem = () => {
 
       const controls = getControls()
       const isGrounded = getIsGrounded()
+      const isNotAttacking =
+        player.player.usePlayerStore.getState().animation !== 'SlashRight' &&
+        player.player.usePlayerStore.getState().animation !== 'ShootLeft' &&
+        player.player.usePlayerStore.getState().animation !== 'ShootRight'
 
       if (getMovement().isGrounded !== isGrounded) {
         setMovement('isGrounded', isGrounded)
@@ -104,13 +108,13 @@ const MovementSystem = () => {
         player.tra.rot.z = controls.forwardDirection
         player.tra.pos.velX = cos(controls.forwardDirection) * PLAYER_SPEED
         player.tra.pos.velY = sin(controls.forwardDirection) * PLAYER_SPEED
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
+        isGrounded && isNotAttacking && player.player.usePlayerStore.getState().setAnimation('Run')
       }
 
       const forward = () => {
         player.tra.pos.velX = cos(player.tra.rot.z) * PLAYER_SPEED
         player.tra.pos.velY = sin(player.tra.rot.z) * PLAYER_SPEED
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
+        isGrounded && isNotAttacking && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           0,
@@ -121,7 +125,7 @@ const MovementSystem = () => {
       const backward = () => {
         player.tra.pos.velX = -cos(player.tra.rot.z) * PLAYER_SPEED_BACKWARD
         player.tra.pos.velY = -sin(player.tra.rot.z) * PLAYER_SPEED_BACKWARD
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
+        isGrounded && isNotAttacking && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           0,
@@ -132,7 +136,7 @@ const MovementSystem = () => {
       const strafeLeft = () => {
         player.tra.pos.velX = cos(player.tra.rot.z + pi / 2) * PLAYER_SPEED
         player.tra.pos.velY = sin(player.tra.rot.z + pi / 2) * PLAYER_SPEED
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
+        isGrounded && isNotAttacking && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           isGrounded ? 0 : pi / 2,
@@ -143,7 +147,7 @@ const MovementSystem = () => {
       const strafeRight = () => {
         player.tra.pos.velX = -cos(player.tra.rot.z + pi / 2) * PLAYER_SPEED
         player.tra.pos.velY = -sin(player.tra.rot.z + pi / 2) * PLAYER_SPEED
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
+        isGrounded && isNotAttacking && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           isGrounded ? 0 : -pi / 2,
@@ -154,7 +158,7 @@ const MovementSystem = () => {
       const forwardLeft = () => {
         player.tra.pos.velX = cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED
         player.tra.pos.velY = sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
+        isGrounded && isNotAttacking && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           pi / 4,
@@ -165,7 +169,7 @@ const MovementSystem = () => {
       const forwardRight = () => {
         player.tra.pos.velX = cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED
         player.tra.pos.velY = sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
+        isGrounded && isNotAttacking && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           -pi / 4,
@@ -176,7 +180,7 @@ const MovementSystem = () => {
       const backwardLeft = () => {
         player.tra.pos.velX = -cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED_BACKWARD
         player.tra.pos.velY = -sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED_BACKWARD
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
+        isGrounded && isNotAttacking && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           -pi / 4,
@@ -187,7 +191,7 @@ const MovementSystem = () => {
       const backwardRight = () => {
         player.tra.pos.velX = -cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED_BACKWARD
         player.tra.pos.velY = -sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED_BACKWARD
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
+        isGrounded && isNotAttacking && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           pi / 4,
@@ -198,7 +202,7 @@ const MovementSystem = () => {
       const idle = () => {
         player.tra.pos.velX = 0
         player.tra.pos.velY = 0
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Idle')
+        isGrounded && isNotAttacking && player.player.usePlayerStore.getState().setAnimation('Idle')
       }
 
       if (controls.forwardDirection !== undefined) {

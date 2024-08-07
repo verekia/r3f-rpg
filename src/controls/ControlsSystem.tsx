@@ -215,6 +215,45 @@ export const pressedSpace = () => {
   }
 }
 
+export const pressedOne = () => {
+  const [player] = players
+
+  if (!player) {
+    return
+  }
+
+  player.player.usePlayerStore.getState().setAnimation('SlashRight')
+  setTimeout(() => {
+    player.player.usePlayerStore.getState().setAnimation('Idle')
+  }, 500)
+}
+
+export const pressedTwo = () => {
+  const [player] = players
+
+  if (!player) {
+    return
+  }
+
+  player.player.usePlayerStore.getState().setAnimation('ShootRight')
+  setTimeout(() => {
+    player.player.usePlayerStore.getState().setAnimation('Idle')
+  }, 500)
+}
+
+export const pressedThree = () => {
+  const [player] = players
+
+  if (!player) {
+    return
+  }
+
+  player.player.usePlayerStore.getState().setAnimation('ShootLeft')
+  setTimeout(() => {
+    player.player.usePlayerStore.getState().setAnimation('Idle')
+  }, 500)
+}
+
 // Mobile button
 export const pressedJumpButton = () => {
   const canJump = requestJump()

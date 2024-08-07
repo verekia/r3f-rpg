@@ -11,7 +11,13 @@ import {
 } from '@manapotion/react'
 import Head from 'next/head'
 
-import { pressedBothMouseButtons, pressedSpace } from '#/controls/ControlsSystem'
+import {
+  pressedBothMouseButtons,
+  pressedOne,
+  pressedSpace,
+  pressedThree,
+  pressedTwo,
+} from '#/controls/ControlsSystem'
 import useStore from '#/core/store'
 import Systems from '#/core/Systems'
 import Canvas from '#/rendering/Canvas'
@@ -49,6 +55,9 @@ const IndexPage = () => {
 
   const handleKeyDown = ({ code }: KeyDownPayload) => {
     code === 'Space' && pressedSpace()
+    code === 'Digit1' && pressedOne()
+    code === 'Digit2' && pressedTwo()
+    code === 'Digit3' && pressedThree()
   }
 
   return (
