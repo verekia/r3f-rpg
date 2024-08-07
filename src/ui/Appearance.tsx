@@ -8,6 +8,7 @@ const Appearance = () => {
   const boots = useStore(s => s.boots)
   const skin = useStore(s => s.skin)
   const hair = useStore(s => s.hair)
+  const hairLength = useStore(s => s.hairLength)
 
   return (
     <>
@@ -55,6 +56,17 @@ const Appearance = () => {
         >
           <option value="#FFC0CB">Pink</option>
           <option value="#8B4513">Brown</option>
+        </select>
+      </div>
+      <div>
+        Hair length
+        <select
+          name="hairLength"
+          value={hairLength}
+          onChange={e => useStore.setState({ hairLength: e.target.value as 'long' | 'short' })}
+        >
+          <option value="long">Long</option>
+          <option value="short">Short</option>
         </select>
       </div>
 

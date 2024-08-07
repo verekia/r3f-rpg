@@ -11,6 +11,8 @@ import { useGraph } from '@react-three/fiber'
 import * as THREE from 'three'
 import { GLTF, SkeletonUtils } from 'three-stdlib'
 
+import useStore from '#/core/store'
+
 type ActionName = '0TPose' | 'Idle' | 'Jump' | 'Run' | 'ShootLeft' | 'ShootRight'
 
 interface GLTFAction extends THREE.AnimationClip {
@@ -19,9 +21,10 @@ interface GLTFAction extends THREE.AnimationClip {
 
 type GLTFResult = GLTF & {
   nodes: {
-    Eyes: THREE.Mesh
-    Hair_2: THREE.Mesh
-    Player: THREE.SkinnedMesh
+    Body: THREE.SkinnedMesh
+    Eyes: THREE.SkinnedMesh
+    HairLong: THREE.SkinnedMesh
+    HairShort: THREE.SkinnedMesh
     Root: THREE.Bone
     IKLegPoleL: THREE.Bone
     IKLegTargetL: THREE.Bone
@@ -29,9 +32,9 @@ type GLTFResult = GLTF & {
     IKLegTargetR: THREE.Bone
   }
   materials: {
+    Skin: THREE.MeshStandardMaterial
     Eyes: THREE.MeshStandardMaterial
     Hair: THREE.MeshStandardMaterial
-    Skin: THREE.MeshStandardMaterial
   }
   animations: GLTFAction[]
 }
@@ -69,6 +72,9 @@ export function Model(
   const { nodes, materials } = useGraph(clone) as GLTFResult
   const { actions } = useAnimations(animations, groupRef)
   const rightWeaponRef = useRef<THREE.Group>(null)
+  const skin = useStore(s => s.skin)
+  const hair = useStore(s => s.hair)
+  const hairLength = useStore(s => s.hairLength)
 
   useEffect(() => {
     actions[props.action]?.reset().fadeIn(0.12).play()
@@ -91,12 +97,35 @@ export function Model(
   return (
     <group ref={groupRef} {...props} dispose={null} rotation-y={Math.PI / 2}>
       <primitive object={nodes.Root} />
-      <skinnedMesh
-        name="Player"
-        geometry={nodes.Player.geometry}
-        material={materials.Skin}
-        skeleton={nodes.Player.skeleton}
-      />
+      <primitive object={nodes.IKLegPoleL} />
+      <primitive object={nodes.IKLegTargetL} />
+      <primitive object={nodes.IKLegPoleR} />
+      <primitive object={nodes.IKLegTargetR} />
+      <skinnedMesh name="Body" geometry={nodes.Body.geometry} skeleton={nodes.Body.skeleton}>
+        <meshLambertMaterial color={skin} />
+      </skinnedMesh>
+      <skinnedMesh name="Eyes" geometry={nodes.Eyes.geometry} skeleton={nodes.Eyes.skeleton}>
+        <meshLambertMaterial color="#fff" />
+      </skinnedMesh>
+      {hairLength === 'long' ? (
+        <skinnedMesh
+          key="hairLong"
+          name="HairLong"
+          geometry={nodes.HairLong.geometry}
+          skeleton={nodes.HairLong.skeleton}
+        >
+          <meshLambertMaterial color={hair} />
+        </skinnedMesh>
+      ) : (
+        <skinnedMesh
+          key="hairShort"
+          name="HairShort"
+          geometry={nodes.HairShort.geometry}
+          skeleton={nodes.HairShort.skeleton}
+        >
+          <meshLambertMaterial color={hair} />
+        </skinnedMesh>
+      )}
       <group dispose={null} ref={rightWeaponRef} rotation-x={Math.PI / 2} rotation-y={Math.PI}>
         {props.weapon === 'sword' ? (
           // Without a key, the weapons do not get swapped out correctly

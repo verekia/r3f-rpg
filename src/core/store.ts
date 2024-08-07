@@ -16,6 +16,7 @@ type Store = {
   setRoute: (route: Route) => void
   skin: '#FFC0CB' | '#8B4513'
   hair: '#A0522D' | '#F5DEB3'
+  hairLength: 'long' | 'short'
   chest: Chest
   pants: Pants
   gloves: Glove
@@ -29,6 +30,7 @@ const useStore = create<Store>(set => ({
   setRoute: (route: Route) => set(() => ({ route })),
   skin: '#FFC0CB',
   hair: '#A0522D',
+  hairLength: 'long',
   chest: 'chestBasic',
   pants: 'pantsBasic',
   gloves: 'mittensBasic',
