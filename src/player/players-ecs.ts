@@ -9,6 +9,8 @@ export const createPlayer = (tra: Tra) =>
     ...createBase(),
     player: {
       usePlayerStore: create<PlayerState>(set => ({
+        weapon: 'sword',
+        setWeapon: (weapon: 'sword' | 'gun' | 'dagger') => set({ weapon }),
         animation: 'Idle',
         setAnimation: (animation: PlayerAnimation) => set({ animation }),
         modelRotZ: 0,

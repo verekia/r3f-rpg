@@ -1,4 +1,6 @@
 import { useMainLoop } from '@manapotion/react'
+import { Raycaster, Scene, Vector3 } from 'three'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { lerp } from 'three/src/math/MathUtils'
 
 import { getControls } from '#/controls/controls-store'
@@ -15,15 +17,70 @@ const { PI: pi, cos, sin } = Math
 
 const GRAVITY = -9.8 // Adjust gravity force as needed
 const JUMP_VELOCITY = 4.5 // Adjust for desired jump strength
-const Z_OFFSET = 0
+// const Z_OFFSET = 0
 const MODEL_ROT_LERP_FACTOR = 0.4
+
+const loader = new GLTFLoader()
+
+let navmesh
+
+const raycaster = new Raycaster()
+const navmeshScene = new Scene()
+
+const getZOffset = () => {
+  if (!navmesh) {
+    loader.load(
+      // resource URL
+      '/models/city/city-navmesh.glb',
+      // called when the resource is loaded
+      function (gltf) {
+        // scene.add(gltf.scene)
+
+        // gltf.animations // Array<THREE.AnimationClip>
+        // gltf.scene // THREE.Group
+        // gltf.scenes // Array<THREE.Group>
+        // gltf.cameras // Array<THREE.Camera>
+        // gltf.asset // Object
+        // console.log('OKAYYY')
+        navmesh = gltf.scene
+        // console.log(navmesh)
+        navmeshScene.add(navmesh)
+      },
+      // called while loading is progressing
+      function (xhr) {
+        // console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+      },
+      // called when loading has errors
+      function (error) {
+        console.log('An error happened')
+      },
+    )
+    return 0
+  }
+
+  const [player] = players
+
+  if (!player) return 0
+
+  const { x, y } = player.tra.pos
+  raycaster.set(new Vector3(x, 100, -y), new Vector3(0, -1, 0))
+
+  const intersects = raycaster.intersectObject(navmesh)
+  // console.log(intersects)
+  if (intersects.length > 0) {
+    // console.log(intersects[0].point.y)
+    return intersects[0].point.y
+  }
+
+  return 0
+}
 
 export const getIsGrounded = () => {
   const [player] = players
 
   if (!player) return false
 
-  return player.tra.pos.z! <= Z_OFFSET
+  return player.tra.pos.z! <= getZOffset()
 }
 
 const MovementSystem = () => {
@@ -47,13 +104,13 @@ const MovementSystem = () => {
         player.tra.rot.z = controls.forwardDirection
         player.tra.pos.velX = cos(controls.forwardDirection) * PLAYER_SPEED
         player.tra.pos.velY = sin(controls.forwardDirection) * PLAYER_SPEED
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Running')
+        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
       }
 
       const forward = () => {
         player.tra.pos.velX = cos(player.tra.rot.z) * PLAYER_SPEED
         player.tra.pos.velY = sin(player.tra.rot.z) * PLAYER_SPEED
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Running')
+        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           0,
@@ -64,7 +121,7 @@ const MovementSystem = () => {
       const backward = () => {
         player.tra.pos.velX = -cos(player.tra.rot.z) * PLAYER_SPEED_BACKWARD
         player.tra.pos.velY = -sin(player.tra.rot.z) * PLAYER_SPEED_BACKWARD
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Walking Backward')
+        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           0,
@@ -75,7 +132,7 @@ const MovementSystem = () => {
       const strafeLeft = () => {
         player.tra.pos.velX = cos(player.tra.rot.z + pi / 2) * PLAYER_SPEED
         player.tra.pos.velY = sin(player.tra.rot.z + pi / 2) * PLAYER_SPEED
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Strafe Left')
+        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           isGrounded ? 0 : pi / 2,
@@ -86,7 +143,7 @@ const MovementSystem = () => {
       const strafeRight = () => {
         player.tra.pos.velX = -cos(player.tra.rot.z + pi / 2) * PLAYER_SPEED
         player.tra.pos.velY = -sin(player.tra.rot.z + pi / 2) * PLAYER_SPEED
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Strafe Right')
+        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           isGrounded ? 0 : -pi / 2,
@@ -97,7 +154,7 @@ const MovementSystem = () => {
       const forwardLeft = () => {
         player.tra.pos.velX = cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED
         player.tra.pos.velY = sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Running')
+        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           pi / 4,
@@ -108,7 +165,7 @@ const MovementSystem = () => {
       const forwardRight = () => {
         player.tra.pos.velX = cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED
         player.tra.pos.velY = sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Running')
+        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           -pi / 4,
@@ -119,7 +176,7 @@ const MovementSystem = () => {
       const backwardLeft = () => {
         player.tra.pos.velX = -cos(player.tra.rot.z - pi / 4) * PLAYER_SPEED_BACKWARD
         player.tra.pos.velY = -sin(player.tra.rot.z - pi / 4) * PLAYER_SPEED_BACKWARD
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Walking Backward')
+        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           -pi / 4,
@@ -130,7 +187,7 @@ const MovementSystem = () => {
       const backwardRight = () => {
         player.tra.pos.velX = -cos(player.tra.rot.z + pi / 4) * PLAYER_SPEED_BACKWARD
         player.tra.pos.velY = -sin(player.tra.rot.z + pi / 4) * PLAYER_SPEED_BACKWARD
-        isGrounded && player.player.usePlayerStore.getState().setAnimation('Walking Backward')
+        isGrounded && player.player.usePlayerStore.getState().setAnimation('Run')
         player.player.usePlayerStore.getState().modelRotZ = lerp(
           player.player.usePlayerStore.getState().modelRotZ,
           pi / 4,
@@ -177,10 +234,10 @@ const MovementSystem = () => {
       }
 
       if (isGrounded) {
-        player.tra.pos.z = Z_OFFSET // Ensure player is exactly on the ground
+        player.tra.pos.z = getZOffset() // Ensure player is exactly on the ground
         player.tra.pos.velZ = 0 // Reset vertical velocity when grounded
       } else {
-        player.player.usePlayerStore.getState().setAnimation('Jumping')
+        player.player.usePlayerStore.getState().setAnimation('Jump')
       }
 
       if (player.tra.pos.velZ === undefined) {
@@ -192,7 +249,7 @@ const MovementSystem = () => {
 
       // Clamp player's position to ground level to prevent it from going below
       if (player.tra.pos.z! < 0) {
-        player.tra.pos.z = Z_OFFSET
+        player.tra.pos.z = getZOffset()
         player.tra.pos.velZ = 0
       }
     },

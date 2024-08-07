@@ -19,7 +19,7 @@ type GLTFResult = GLTF & {
   }
 }
 
-const path = '/models/forest/forest-transformed.glb'
+const path = '/models/city/city-diy.glb'
 
 const ForestModel = (props: JSX.IntrinsicElements['group']) => {
   const { nodes } = useGLTF(path) as GLTFResult

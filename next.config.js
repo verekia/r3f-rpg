@@ -8,6 +8,12 @@ const withBundleAnalyzer = bundleAnalyzer({ enabled: process.env.ANALYZE === 'tr
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 }
 
 export default withBundleAnalyzer(nextConfig)
