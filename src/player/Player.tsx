@@ -7,12 +7,17 @@ const Player = ({ player }: Entity) => {
   // that expensive. This lets me keep the world and systems Zustand-free.
   const animation = player?.usePlayerStore((state: any) => state.animation)
   const weapon = player?.usePlayerStore((state: any) => state.weapon)
+  const weaponTier = player?.usePlayerStore((state: any) => state.weaponTier)
   // const modelRotZ = player?.usePlayerStore((state: any) => state.modelRotZ)
 
   return (
     <ECS.Component name="three">
       <group scale={0.2}>
-        <PlayerModel action={animation} /*modelRotZ={modelRotZ}*/ weapon={weapon} />
+        <PlayerModel
+          action={animation}
+          /*modelRotZ={modelRotZ}*/ weapon={weapon}
+          weaponTier={weaponTier}
+        />
       </group>
     </ECS.Component>
   )

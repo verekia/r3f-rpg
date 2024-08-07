@@ -11,6 +11,8 @@ export type PlayerState = {
   setAnimation: (animation: PlayerAnimation) => void
   weapon: 'sword' | 'gun' | 'dagger'
   setWeapon: (weapon: 'sword' | 'gun' | 'dagger') => void
+  weaponTier: 'wooden' | 'cyber' | 'evil'
+  setWeaponTier: (weaponTier: 'wooden' | 'cyber' | 'evil') => void
   modelRotZ: number
   setModelRotZ: (modelRotZ: number) => void
 }

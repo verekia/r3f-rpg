@@ -63,6 +63,7 @@ export function Model(
   props: JSX.IntrinsicElements['group'] & {
     action: ActionName
     weapon: 'sword' | 'gun' | 'dagger'
+    weaponTier: 'wooden' | 'cyber' | 'evil'
   },
 ) {
   const groupRef = React.useRef<THREE.Group>()
@@ -131,37 +132,109 @@ export function Model(
           // Without a key, the weapons do not get swapped out correctly
           <group key="sword">
             <mesh geometry={weaponNodes.Sword_1.geometry}>
-              <meshLambertMaterial color="#eee" />
+              <meshLambertMaterial
+                color={
+                  props.weaponTier === 'wooden'
+                    ? '#843'
+                    : props.weaponTier === 'cyber'
+                      ? '#eee'
+                      : '#222'
+                }
+              />
             </mesh>
             <mesh geometry={weaponNodes.Sword_2.geometry}>
-              <meshLambertMaterial color="#0fd" />
+              <meshLambertMaterial
+                color={
+                  props.weaponTier === 'wooden'
+                    ? 'orange'
+                    : props.weaponTier === 'cyber'
+                      ? '#0fd'
+                      : '#a00'
+                }
+              />
             </mesh>
             <mesh geometry={weaponNodes.Sword_3.geometry}>
-              <meshLambertMaterial color="#222" />
+              <meshLambertMaterial
+                color={
+                  props.weaponTier === 'wooden'
+                    ? 'orange'
+                    : props.weaponTier === 'cyber'
+                      ? '#222'
+                      : '#a00'
+                }
+              />
             </mesh>
           </group>
         ) : props.weapon === 'gun' ? (
           <group key="gun">
             <mesh geometry={weaponNodes.Gun_1.geometry}>
-              <meshLambertMaterial color="#eee" />
+              <meshLambertMaterial
+                color={
+                  props.weaponTier === 'wooden'
+                    ? '#843'
+                    : props.weaponTier === 'cyber'
+                      ? '#eee'
+                      : '#222'
+                }
+              />
             </mesh>
             <mesh geometry={weaponNodes.Gun_2.geometry}>
-              <meshLambertMaterial color="#0fd" />
+              <meshLambertMaterial
+                color={
+                  props.weaponTier === 'wooden'
+                    ? 'orange'
+                    : props.weaponTier === 'cyber'
+                      ? '#0fd'
+                      : '#a00'
+                }
+              />
             </mesh>
             <mesh geometry={weaponNodes.Gun_3.geometry}>
-              <meshLambertMaterial color="#222" />
+              <meshLambertMaterial
+                color={
+                  props.weaponTier === 'wooden'
+                    ? 'orange'
+                    : props.weaponTier === 'cyber'
+                      ? '#222'
+                      : '#a00'
+                }
+              />
             </mesh>
           </group>
         ) : props.weapon === 'dagger' ? (
           <group key="dagger">
             <mesh geometry={weaponNodes.Dagger_1.geometry}>
-              <meshLambertMaterial color="#eee" />
+              <meshLambertMaterial
+                color={
+                  props.weaponTier === 'wooden'
+                    ? '#843'
+                    : props.weaponTier === 'cyber'
+                      ? '#eee'
+                      : '#222'
+                }
+              />
             </mesh>
             <mesh geometry={weaponNodes.Dagger_2.geometry}>
-              <meshLambertMaterial color="#0fd" />
+              <meshLambertMaterial
+                color={
+                  props.weaponTier === 'wooden'
+                    ? 'orange'
+                    : props.weaponTier === 'cyber'
+                      ? '#0fd'
+                      : '#a00'
+                }
+              />
             </mesh>
             <mesh geometry={weaponNodes.Dagger_3.geometry}>
-              <meshLambertMaterial color="#222" />
+              <meshLambertMaterial
+                color={
+                  props.weaponTier === 'wooden'
+                    ? 'orange'
+                    : props.weaponTier === 'cyber'
+                      ? '#222'
+                      : '#a00'
+                }
+              />
             </mesh>
           </group>
         ) : null}

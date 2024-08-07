@@ -13,6 +13,7 @@ const Appearance = () => {
   return (
     <>
       <div>
+        <div>Weapon</div>
         <button
           onClick={() => {
             const [player] = players
@@ -45,6 +46,42 @@ const Appearance = () => {
           }}
         >
           Dagger
+        </button>
+      </div>
+      <div>
+        <div>Weapon Tier</div>
+        <button
+          onClick={() => {
+            const [player] = players
+
+            if (!player) return
+
+            player.player.usePlayerStore.getState().setWeaponTier('wooden')
+          }}
+        >
+          Wooden
+        </button>
+        <button
+          onClick={() => {
+            const [player] = players
+
+            if (!player) return
+
+            player.player.usePlayerStore.getState().setWeaponTier('cyber')
+          }}
+        >
+          Cyber
+        </button>
+        <button
+          onClick={() => {
+            const [player] = players
+
+            if (!player) return
+
+            player.player.usePlayerStore.getState().setWeaponTier('evil')
+          }}
+        >
+          Evil
         </button>
       </div>
       <div>
