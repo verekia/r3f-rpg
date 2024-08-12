@@ -1,10 +1,10 @@
 import { useMainLoop } from '@manapotion/react'
-import { Raycaster, Scene, Vector3 } from 'three'
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import { Raycaster, Vector3 } from 'three'
 import { lerp } from 'three/src/math/MathUtils'
 
 import { getControls } from '#/controls/controls-store'
 import { STAGE_PHYSICS } from '#/core/core-constants'
+import useStore from '#/core/store'
 import { getMovement, setMovement } from '#/movement/movement-store'
 import {
   PLAYER_ROTATION_SPEED,
@@ -20,41 +20,13 @@ const JUMP_VELOCITY = 4.5 // Adjust for desired jump strength
 // const Z_OFFSET = 0
 const MODEL_ROT_LERP_FACTOR = 0.4
 
-const loader = new GLTFLoader()
-
-let navmesh
-
 const raycaster = new Raycaster()
-const navmeshScene = new Scene()
+// const navmeshScene = new Scene()
 
 const getZOffset = () => {
-  if (!navmesh) {
-    loader.load(
-      // resource URL
-      '/models/city/city-navmesh.glb',
-      // called when the resource is loaded
-      function (gltf) {
-        // scene.add(gltf.scene)
+  const navmesh = useStore.getState().navmesh
 
-        // gltf.animations // Array<THREE.AnimationClip>
-        // gltf.scene // THREE.Group
-        // gltf.scenes // Array<THREE.Group>
-        // gltf.cameras // Array<THREE.Camera>
-        // gltf.asset // Object
-        // console.log('OKAYYY')
-        navmesh = gltf.scene
-        // console.log(navmesh)
-        navmeshScene.add(navmesh)
-      },
-      // called while loading is progressing
-      function (xhr) {
-        // console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-      },
-      // called when loading has errors
-      function (error) {
-        console.log('An error happened')
-      },
-    )
+  if (!navmesh) {
     return 0
   }
 
@@ -65,10 +37,10 @@ const getZOffset = () => {
   const { x, y } = player.tra.pos
   raycaster.set(new Vector3(x, 100, -y), new Vector3(0, -1, 0))
 
+  console.log(x, y)
   const intersects = raycaster.intersectObject(navmesh)
   // console.log(intersects)
   if (intersects.length > 0) {
-    // console.log(intersects[0].point.y)
     return intersects[0].point.y
   }
 
@@ -241,7 +213,8 @@ const MovementSystem = () => {
         player.tra.pos.z = getZOffset() // Ensure player is exactly on the ground
         player.tra.pos.velZ = 0 // Reset vertical velocity when grounded
       } else {
-        player.player.usePlayerStore.getState().setAnimation('Jump')
+        // A bit of a hack to prevent triggering the jump animation when walking downwards
+        player.tra.pos.velZ > 0 && player.player.usePlayerStore.getState().setAnimation('Jump')
       }
 
       if (player.tra.pos.velZ === undefined) {

@@ -2,7 +2,7 @@ import { create } from 'zustand'
 
 import { FOREST_ROUTE, LANDING_ROUTE, Route } from '#/routing/routes'
 
-import type { MeshToonMaterial } from 'three'
+import type { Mesh, MeshToonMaterial } from 'three'
 
 export type Glove = 'none' | 'mittensBasic' | 'mittensGold' | 'longGlovesBasic' | 'longGlovesGold'
 export type Boots = 'none' | 'shoesBasic' | 'shoesGold' | 'longBasic' | 'longGold'
@@ -21,6 +21,8 @@ type Store = {
   pants: Pants
   gloves: Glove
   boots: Boots
+  navmesh: Mesh | null
+  setNavmesh: (navmesh: Mesh) => void
 }
 
 const useStore = create<Store>(set => ({
@@ -35,6 +37,8 @@ const useStore = create<Store>(set => ({
   pants: 'pantsBasic',
   gloves: 'mittensBasic',
   boots: 'shoesBasic',
+  navmesh: null,
+  setNavmesh: navmesh => set(() => ({ navmesh })),
 }))
 
 export default useStore

@@ -12,10 +12,15 @@ import { createPlayer, players } from '#/player/players-ecs'
 import CityModel from '#/scenes/CityModel'
 import CityNavmeshModel from '#/scenes/CityNavmeshModel'
 import ForestModel from '#/scenes/ForestModel'
+import { Model as IslandModel } from '#/scenes/IslandModel'
 
 const ForestScene = () => {
   useEffect(() => {
-    const player = createPlayer({ pos: { x: 0, y: 0, z: 0.5 }, rot: { x: 0, y: 0, z: 0 }, sca: {} })
+    const player = createPlayer({
+      pos: { x: 106, y: 8, z: 0.5 },
+      rot: { x: 0, y: 0, z: 0 },
+      sca: {},
+    })
 
     const [dcZone] = dcZones
     // The DC system might not be ready yet
@@ -42,7 +47,11 @@ const ForestScene = () => {
       <ECS.Entities in={enemies}>{Enemy}</ECS.Entities>
       <ECS.Entities in={players}>{Player}</ECS.Entities>
       <ECS.Entities in={cameras}>{Camera}</ECS.Entities>
-      <CityModel />
+      <IslandModel />
+      <mesh scale={500} rotation-x={-Math.PI / 2}>
+        <planeGeometry />
+        <meshLambertMaterial color="#45f" />
+      </mesh>
       {/* <CityNavmeshModel /> */}
       {/* <ForestNavmesh /> */}
       {/* <ForestObstacles /> */}
