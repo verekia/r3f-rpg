@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 
+import { BackSide } from 'three'
+
 import Camera from '#/camera/Camera'
 import { DEFAULT_CAMERA_ROT_X } from '#/camera/camera-constants'
 import { cameras, createCamera } from '#/camera/cameras-ecs'
@@ -42,16 +44,38 @@ const ForestScene = () => {
 
   return (
     <>
-      <ambientLight intensity={2} />
-      <directionalLight position={[10, 10, 10]} intensity={2} castShadow />
-      <ECS.Entities in={enemies}>{Enemy}</ECS.Entities>
+      <ambientLight intensity={2.5} />
+      <directionalLight position={[10, 10, 10]} intensity={2.5} />
+      {/*
+        // Doesn't work well with WebGPU
+      <directionalLight
+        position={[200, 160, -150]}
+        intensity={2.5}
+        castShadow
+        // The map size doesn't get HMR, refresh page
+        shadow-mapSize={[8192, 8192]}
+        // shadow-bias={0.005}
+      >
+        <orthographicCamera
+          attach="shadow-camera"
+          args={[-75, 75, 75, -75]}
+          near={50}
+          far={250}
+        />
+      </directionalLight> */}
+      {/* <ECS.Entities in={enemies}>{Enemy}</ECS.Entities> */}
       <ECS.Entities in={players}>{Player}</ECS.Entities>
       <ECS.Entities in={cameras}>{Camera}</ECS.Entities>
       <IslandModel />
-      <mesh scale={500} rotation-x={-Math.PI / 2}>
+      <mesh scale={1000} rotation-x={-Math.PI / 2}>
         <planeGeometry />
-        <meshLambertMaterial color="#45f" />
+        <meshLambertMaterial color="#36f" />
       </mesh>
+      <mesh scale={500}>
+        <boxGeometry />
+        <meshBasicMaterial color="#49f" side={BackSide} />
+      </mesh>
+      {/* <Sky /> Not compatible with Three 165 WebGPU */}
       {/* <CityNavmeshModel /> */}
       {/* <ForestNavmesh /> */}
       {/* <ForestObstacles /> */}
