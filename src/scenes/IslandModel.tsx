@@ -14,7 +14,7 @@ import useStore from '#/core/store'
 
 type GLTFResult = GLTF & {
   nodes: {
-    Ground: THREE.Mesh
+    Island: THREE.Mesh
   }
   materials: {
     PaletteMaterial001: THREE.MeshStandardMaterial
@@ -28,42 +28,45 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   const setNavmesh = useStore(s => s.setNavmesh)
 
   useEffect(() => {
-    const geometry = nodes.Ground.geometry
+    const geometry = nodes.Island.geometry
 
-    if (!geometry.hasAttribute('normal')) {
-      geometry.computeVertexNormals()
-    }
+    // if (!geometry.hasAttribute('normal')) {
+    //   geometry.computeVertexNormals()
+    // }
 
     const positionAttribute = geometry.getAttribute('position')
-    const normalAttribute = geometry.getAttribute('normal')
+    // const normalAttribute = geometry.getAttribute('normal
     const indexAttribute = geometry.getIndex()
 
     const navmeshIndices = []
     const upVector = new Vector3(0, 1, 0)
 
-    // NOTE: This actually doesn't work. render the navmesh to see that it includes steep faces.
-
-    // Set your desired steepness threshold (45 degrees in this case)
-    const steepnessThreshold = Math.cos(Math.PI)
+    const steepnessThreshold = Math.PI / 4
 
     for (let i = 0; i < indexAttribute.count; i += 3) {
       const idxA = indexAttribute.getX(i)
       const idxB = indexAttribute.getX(i + 1)
       const idxC = indexAttribute.getX(i + 2)
 
-      const normal = new Vector3(
-        normalAttribute.getX(i),
-        normalAttribute.getY(i),
-        normalAttribute.getZ(i),
-      )
+      // Should be optimized for less GC
+      const vA = new Vector3().fromBufferAttribute(positionAttribute, idxA)
+      const vB = new Vector3().fromBufferAttribute(positionAttribute, idxB)
+      const vC = new Vector3().fromBufferAttribute(positionAttribute, idxC)
 
-      // Calculate the dot product of the triangle's normal with the up vector
-      const dotProduct = normal.dot(upVector)
+      const edge1 = new Vector3().subVectors(vB, vA)
+      const edge2 = new Vector3().subVectors(vC, vA)
+      const normal = new Vector3().crossVectors(edge1, edge2).normalize()
 
-      // console.log({ dotProduct, steepnessThreshold })
+      // Note: It seems like normals are not calculated correctly. When they are, use a code like this instead:
+      // https://github.com/verekia/r3f-rpg/commit/61408d448e36bdb552982a79410504786e073047
 
-      // Filter out triangles steeper than the threshold
-      if (dotProduct < steepnessThreshold) continue
+      // const normal = new Vector3(
+      //   normalAttribute.getX(i),
+      //   normalAttribute.getY(i),
+      //   normalAttribute.getZ(i),
+      // )
+
+      if (normal.dot(upVector) < steepnessThreshold) continue
 
       navmeshIndices.push([idxA, idxB, idxC])
     }
@@ -82,14 +85,14 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     navmeshGeometry.computeBoundingSphere()
 
     setNavmesh(newNavmesh)
-  }, [nodes.Ground.geometry, setNavmesh])
+  }, [nodes.Island.geometry, setNavmesh])
 
   return (
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.Ground.geometry}>
+      <mesh geometry={nodes.Island.geometry}>
         <meshLambertMaterial map={materials.PaletteMaterial001.map} />
       </mesh>
-      {/* {navmesh && <primitive object={navmesh} />} */}
+      {navmesh && <primitive object={navmesh} />}
     </group>
   )
 }
