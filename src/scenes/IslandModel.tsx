@@ -100,10 +100,10 @@ export function Model(props: JSX.IntrinsicElements['group']) {
       <mesh geometry={nodes.Island.geometry}>
         <meshLambertMaterial map={materials.PaletteMaterial001.map} side={DoubleSide} />
       </mesh>
-      <instancedMesh
+      {/* <instancedMesh
         args={[nodes.Cube001.geometry, materials.PaletteMaterial001, 9]}
         instanceMatrix={nodes.Cube001.instanceMatrix}
-      />
+      /> */}
       {/* {navmesh && <primitive object={navmesh} />} */}
     </group>
   )
