@@ -7,7 +7,14 @@ Files: island.glb [76.88KB] > /Users/verekia/Local/Code/r3f-rpg/public/models/is
 import { useEffect } from 'react'
 
 import { useGLTF } from '@react-three/drei'
-import { BufferAttribute, BufferGeometry, Mesh, MeshBasicMaterial, Vector3 } from 'three'
+import {
+  BufferAttribute,
+  BufferGeometry,
+  DoubleSide,
+  Mesh,
+  MeshBasicMaterial,
+  Vector3,
+} from 'three'
 import { GLTF } from 'three-stdlib'
 
 import useStore from '#/core/store'
@@ -15,6 +22,7 @@ import useStore from '#/core/store'
 type GLTFResult = GLTF & {
   nodes: {
     Island: THREE.Mesh
+    Cube001: THREE.Mesh & { instanceMatrix: THREE.InstancedBufferAttribute }
   }
   materials: {
     PaletteMaterial001: THREE.MeshStandardMaterial
@@ -90,9 +98,13 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   return (
     <group {...props} dispose={null}>
       <mesh geometry={nodes.Island.geometry}>
-        <meshLambertMaterial map={materials.PaletteMaterial001.map} />
+        <meshLambertMaterial map={materials.PaletteMaterial001.map} side={DoubleSide} />
       </mesh>
-      {navmesh && <primitive object={navmesh} />}
+      <instancedMesh
+        args={[nodes.Cube001.geometry, materials.PaletteMaterial001, 9]}
+        instanceMatrix={nodes.Cube001.instanceMatrix}
+      />
+      {/* {navmesh && <primitive object={navmesh} />} */}
     </group>
   )
 }
