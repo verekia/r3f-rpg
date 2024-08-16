@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { GradientTexture, GradientType } from '@react-three/drei'
 import { BackSide } from 'three'
 
 import Camera from '#/camera/Camera'
@@ -44,38 +45,44 @@ const ForestScene = () => {
 
   return (
     <>
-      <ambientLight intensity={2.5} />
+      <ambientLight intensity={1.6} />
       <directionalLight position={[10, 10, 10]} intensity={2.5} />
-      {/*
-        // Doesn't work well with WebGPU
+
+      {/* Doesn't work well with WebGPU */}
       <directionalLight
         position={[200, 160, -150]}
-        intensity={2.5}
+        intensity={6}
         castShadow
         // The map size doesn't get HMR, refresh page
         shadow-mapSize={[8192, 8192]}
         // shadow-bias={0.005}
       >
-        <orthographicCamera
-          attach="shadow-camera"
-          args={[-75, 75, 75, -75]}
-          near={50}
-          far={250}
-        />
-      </directionalLight> */}
+        <orthographicCamera attach="shadow-camera" args={[-75, 75, 75, -75]} near={50} far={250} />
+      </directionalLight>
       {/* <ECS.Entities in={enemies}>{Enemy}</ECS.Entities> */}
       <ECS.Entities in={players}>{Player}</ECS.Entities>
       <ECS.Entities in={cameras}>{Camera}</ECS.Entities>
       <IslandModel />
-      <mesh scale={1000} rotation-x={-Math.PI / 2}>
-        <planeGeometry />
-        <meshLambertMaterial color="#36f" />
+      <mesh scale={1200} rotation-x={-Math.PI / 2} position-z={-100} position-x={100}>
+        <circleGeometry />
+        <meshBasicMaterial>
+          <GradientTexture
+            stops={[0, 0.2]}
+            colors={['#187af2', '#239bfc']}
+            size={2048}
+            width={2048}
+            // @ts-expect-error
+            type={GradientType.Radial}
+          />
+        </meshBasicMaterial>
       </mesh>
-      <mesh scale={500}>
-        <boxGeometry />
-        <meshBasicMaterial color="#49f" side={BackSide} />
+      <mesh scale={1500} position-y={-10} position-z={-100} position-x={100}>
+        <sphereGeometry args={[1, 32, 16, 0, 2 * Math.PI, 0, Math.PI / 2]} />
+        <meshBasicMaterial side={BackSide}>
+          <GradientTexture stops={[0.75, 1]} colors={['#1476ff', '#57d2ff']} />
+        </meshBasicMaterial>
       </mesh>
-      {/* <Sky /> Not compatible with Three 165 WebGPU */}
+      {/* <Sky sunPosition={[1, 1, 1]} rayleigh={1} /> */}
       {/* <CityNavmeshModel /> */}
       {/* <ForestNavmesh /> */}
       {/* <ForestObstacles /> */}

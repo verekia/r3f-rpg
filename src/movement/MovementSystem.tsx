@@ -37,7 +37,7 @@ const getZOffset = () => {
   const { x, y } = player.tra.pos
   raycaster.set(new Vector3(x, 100, -y), new Vector3(0, -1, 0))
 
-  console.log(x, y)
+  // console.log(x, y)
   const intersects = raycaster.intersectObject(navmesh)
   // console.log(intersects)
   if (intersects.length > 0) {

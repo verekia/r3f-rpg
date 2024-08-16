@@ -4,9 +4,9 @@ Command: npx gltfjsx@6.5.0 island.glb -t -T
 Files: island.glb [76.88KB] > /Users/verekia/Local/Code/r3f-rpg/public/models/island/island-transformed.glb [6.53KB] (92%)
 */
 
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 
-import { useGLTF } from '@react-three/drei'
+import { BakeShadows, useGLTF } from '@react-three/drei'
 import {
   BufferAttribute,
   BufferGeometry,
@@ -97,9 +97,12 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 
   return (
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.Island.geometry}>
-        <meshLambertMaterial map={materials.PaletteMaterial001.map} side={DoubleSide} />
-      </mesh>
+      <Suspense fallback={null}>
+        <mesh geometry={nodes.Island.geometry} castShadow receiveShadow>
+          <meshLambertMaterial map={materials.PaletteMaterial001.map} side={DoubleSide} />
+        </mesh>
+        <BakeShadows />
+      </Suspense>
       {/* <instancedMesh
         args={[nodes.Cube001.geometry, materials.PaletteMaterial001, 9]}
         instanceMatrix={nodes.Cube001.instanceMatrix}
