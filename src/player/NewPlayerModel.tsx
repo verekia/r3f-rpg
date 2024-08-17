@@ -12,6 +12,22 @@ import * as THREE from 'three'
 import { GLTF, SkeletonUtils } from 'three-stdlib'
 
 import useStore from '#/core/store'
+import { boots, chests, pants } from '#/gear/gear'
+
+const Part = ({ def, nodes, name }) => (
+  <group name={name}>
+    {def.colors.map((c, i, arr) => (
+      <skinnedMesh
+        key={`${c}_${def.mesh}`}
+        name={arr.length > 1 ? `${def.mesh}_${i + 1}` : def.mesh}
+        geometry={nodes[arr.length > 1 ? `${def.mesh}_${i + 1}` : def.mesh].geometry}
+        skeleton={nodes[arr.length > 1 ? `${def.mesh}_${i + 1}` : def.mesh].skeleton}
+      >
+        <meshLambertMaterial color={c} />
+      </skinnedMesh>
+    ))}
+  </group>
+)
 
 type ActionName = '0TPose' | 'Idle' | 'Jump' | 'Run' | 'ShootLeft' | 'ShootRight' | 'SlashRight'
 
@@ -25,17 +41,20 @@ type GLTFResult = GLTF & {
     Eyes: THREE.SkinnedMesh
     HairLong: THREE.SkinnedMesh
     HairShort: THREE.SkinnedMesh
+    HairPunk: THREE.SkinnedMesh
+    ArmorShirt_1: THREE.SkinnedMesh
+    ArmorShirt_2: THREE.SkinnedMesh
+    ArmorShorts_1: THREE.SkinnedMesh
+    ArmorShorts_2: THREE.SkinnedMesh
+    ArmorShoes_1: THREE.SkinnedMesh
+    ArmorShoes_2: THREE.SkinnedMesh
     Root: THREE.Bone
     IKLegPoleL: THREE.Bone
     IKLegTargetL: THREE.Bone
     IKLegPoleR: THREE.Bone
     IKLegTargetR: THREE.Bone
   }
-  materials: {
-    Skin: THREE.MeshStandardMaterial
-    Eyes: THREE.MeshStandardMaterial
-    Hair: THREE.MeshStandardMaterial
-  }
+  materials: {}
   animations: GLTFAction[]
 }
 
@@ -59,6 +78,9 @@ type GLTFResultWeapons = GLTF & {
   animations: GLTFAction[]
 }
 
+const PLAYER_PATH = '/models/player/player-transformed.glb'
+const WEAPONS_PATH = '/models/player/weapons.glb'
+
 export function Model(
   props: JSX.IntrinsicElements['group'] & {
     action: ActionName
@@ -67,8 +89,8 @@ export function Model(
   },
 ) {
   const groupRef = React.useRef<THREE.Group>()
-  const { scene, animations } = useGLTF('/models/player/player.glb')
-  const { nodes: weaponNodes } = useGLTF('/models/player/weapons.glb') as GLTFResultWeapons
+  const { scene, animations } = useGLTF(PLAYER_PATH)
+  const { nodes: weaponNodes } = useGLTF(WEAPONS_PATH) as GLTFResultWeapons
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes, materials } = useGraph(clone) as GLTFResult
   const { actions } = useAnimations(animations, groupRef)
@@ -76,6 +98,13 @@ export function Model(
   const skin = useStore(s => s.skin)
   const hair = useStore(s => s.hair)
   const hairLength = useStore(s => s.hairLength)
+  const pantsName = useStore(s => s.pants)
+  const chestName = useStore(s => s.chest)
+  const bootsName = useStore(s => s.boots)
+
+  const pantsDef = pants[pantsName]
+  const chestDef = chests[chestName]
+  const bootsDef = boots[bootsName]
 
   useEffect(() => {
     actions[props.action]?.reset().fadeIn(0.12).play()
@@ -117,7 +146,7 @@ export function Model(
         >
           <meshLambertMaterial color={hair} />
         </skinnedMesh>
-      ) : (
+      ) : hairLength === 'short' ? (
         <skinnedMesh
           key="hairShort"
           name="HairShort"
@@ -126,7 +155,21 @@ export function Model(
         >
           <meshLambertMaterial color={hair} />
         </skinnedMesh>
-      )}
+      ) : hairLength === 'punk' ? (
+        <skinnedMesh
+          key="hairPunk"
+          name="HairPunk"
+          geometry={nodes.HairPunk.geometry}
+          skeleton={nodes.HairPunk.skeleton}
+        >
+          <meshLambertMaterial color={hair} />
+        </skinnedMesh>
+      ) : null}
+
+      {pantsDef && <Part name="Pants" def={pantsDef} nodes={nodes} />}
+      {chestDef && <Part name="Chest" def={chestDef} nodes={nodes} />}
+      {bootsDef && <Part name="Boots" def={bootsDef} nodes={nodes} />}
+
       <group dispose={null} ref={rightWeaponRef} rotation-x={Math.PI / 2} rotation-y={Math.PI}>
         {props.weapon === 'sword' ? (
           // Without a key, the weapons do not get swapped out correctly
@@ -243,5 +286,5 @@ export function Model(
   )
 }
 
-useGLTF.preload('/models/player/player.glb')
-useGLTF.preload('/models/player/weapons.glb')
+useGLTF.preload(PLAYER_PATH)
+useGLTF.preload(WEAPONS_PATH)

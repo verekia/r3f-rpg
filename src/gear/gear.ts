@@ -6,18 +6,13 @@ export const gloves = {
 } as const
 
 export const boots = {
-  shoesBasic: { mesh: 'BootsShort', colors: ['#8a6b50'] },
-  shoesGold: { mesh: 'BootsShort', colors: ['#f0ac54'] },
-  longBasic: { mesh: 'BootsLong', colors: ['#8a6b50'] },
-  longGold: { mesh: 'BootsLong', colors: ['#f0ac54'] },
+  shoesBasic: { mesh: 'ArmorShoes', colors: ['#949494', '#8a6b50', '#444'] },
 }
 
 export const chests = {
-  chestBasic: { mesh: 'Chest', colors: ['#8a6b50'] },
-  chestGold: { mesh: 'Chest', colors: ['#f0ac54'] },
+  chestBasic: { mesh: 'ArmorShirt', colors: ['#949494', '#8a6b50'] },
 }
 
 export const pants = {
-  pantsBasic: { mesh: 'Pants', colors: ['#8a6b50'] },
-  pantsGold: { mesh: 'Pants', colors: ['#f0ac54'] },
+  pantsBasic: { mesh: 'ArmorShorts', colors: ['#949494', '#8a6b50'] },
 }

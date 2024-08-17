@@ -89,9 +89,9 @@ const Appearance = () => {
         <select
           name="skin"
           value={skin}
-          onChange={e => useStore.setState({ skin: e.target.value as '#FFC0CB' | '#8B4513' })}
+          onChange={e => useStore.setState({ skin: e.target.value as '#fa9' | '#8B4513' })}
         >
-          <option value="#FFC0CB">Pink</option>
+          <option value="#fa9">Pink</option>
           <option value="#8B4513">Brown</option>
         </select>
       </div>
@@ -100,10 +100,13 @@ const Appearance = () => {
         <select
           name="hairLength"
           value={hairLength}
-          onChange={e => useStore.setState({ hairLength: e.target.value as 'long' | 'short' })}
+          onChange={e =>
+            useStore.setState({ hairLength: e.target.value as 'long' | 'short' | 'punk' })
+          }
         >
           <option value="long">Long</option>
           <option value="short">Short</option>
+          <option value="punk">Punk</option>
         </select>
       </div>
 
@@ -116,7 +119,6 @@ const Appearance = () => {
         >
           <option value="none">None</option>
           <option value="chestBasic">Basic</option>
-          <option value="chestGold">Gold</option>
         </select>
       </div>
 
@@ -129,7 +131,6 @@ const Appearance = () => {
         >
           <option value="none">None</option>
           <option value="pantsBasic">Basic</option>
-          <option value="pantsGold">Gold</option>
         </select>
       </div>
 
@@ -157,9 +158,7 @@ const Appearance = () => {
         >
           <option value="none">None</option>
           <option value="shoesBasic">shoesBasic</option>
-          <option value="shoesGold">shoesGold</option>
-          <option value="longBasic">longBasic</option>
-          <option value="longGold">longGold</option>
+          {/* <option value="longBasic">longBasic</option> */}
         </select>
       </div>
 

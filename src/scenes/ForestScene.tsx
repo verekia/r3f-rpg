@@ -45,13 +45,13 @@ const ForestScene = () => {
 
   return (
     <>
-      <ambientLight intensity={1.6} />
+      <ambientLight intensity={2} />
       <directionalLight position={[10, 10, 10]} intensity={2.5} />
 
       {/* Doesn't work well with WebGPU */}
       <directionalLight
-        position={[200, 160, -150]}
-        intensity={6}
+        position={[300, 160, -150]}
+        intensity={3}
         castShadow
         // The map size doesn't get HMR, refresh page
         shadow-mapSize={[8192, 8192]}
