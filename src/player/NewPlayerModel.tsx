@@ -38,7 +38,11 @@ interface GLTFAction extends THREE.AnimationClip {
 type GLTFResult = GLTF & {
   nodes: {
     Body: THREE.SkinnedMesh
-    Eyes: THREE.SkinnedMesh
+    Eyes_1: THREE.SkinnedMesh
+    Eyes_2: THREE.SkinnedMesh
+    Eyes_3: THREE.SkinnedMesh
+    Eyes_4: THREE.SkinnedMesh
+    Eyebrows: THREE.SkinnedMesh
     HairLong: THREE.SkinnedMesh
     HairShort: THREE.SkinnedMesh
     HairPunk: THREE.SkinnedMesh
@@ -134,8 +138,42 @@ export function Model(
       <skinnedMesh name="Body" geometry={nodes.Body.geometry} skeleton={nodes.Body.skeleton}>
         <meshLambertMaterial color={skin} />
       </skinnedMesh>
-      <skinnedMesh name="Eyes" geometry={nodes.Eyes.geometry} skeleton={nodes.Eyes.skeleton}>
-        <meshLambertMaterial color="#fff" />
+      <group name="Eyes">
+        <skinnedMesh
+          name="Eyes_1"
+          geometry={nodes.Eyes_1.geometry}
+          skeleton={nodes.Eyes_1.skeleton}
+        >
+          <meshLambertMaterial color="#fff" />
+        </skinnedMesh>
+        <skinnedMesh
+          name="Eyes_2"
+          geometry={nodes.Eyes_2.geometry}
+          skeleton={nodes.Eyes_2.skeleton}
+        >
+          <meshLambertMaterial color="#36f" />
+        </skinnedMesh>
+        <skinnedMesh
+          name="Eyes_3"
+          geometry={nodes.Eyes_3.geometry}
+          skeleton={nodes.Eyes_3.skeleton}
+        >
+          <meshLambertMaterial color="#222" />
+        </skinnedMesh>
+        <skinnedMesh
+          name="Eyes_4"
+          geometry={nodes.Eyes_4.geometry}
+          skeleton={nodes.Eyes_4.skeleton}
+        >
+          <meshLambertMaterial color={skin} />
+        </skinnedMesh>
+      </group>
+      <skinnedMesh
+        name="Eyebrows"
+        geometry={nodes.Eyebrows.geometry}
+        skeleton={nodes.Eyebrows.skeleton}
+      >
+        <meshLambertMaterial color={hair} />
       </skinnedMesh>
       {hairLength === 'long' ? (
         <skinnedMesh
