@@ -12,7 +12,7 @@ import * as THREE from 'three'
 import { GLTF, SkeletonUtils } from 'three-stdlib'
 
 import useStore from '#/core/store'
-import { boots, chests, pants } from '#/gear/gear'
+import { chest, feet, hands, legs } from '#/gear/gear'
 
 const Part = ({ def, nodes, name }) => (
   <group name={name}>
@@ -46,12 +46,16 @@ type GLTFResult = GLTF & {
     HairLong: THREE.SkinnedMesh
     HairShort: THREE.SkinnedMesh
     HairPunk: THREE.SkinnedMesh
+    ArmorGloves_1: THREE.SkinnedMesh
+    ArmorGloves_2: THREE.SkinnedMesh
     ArmorShirt_1: THREE.SkinnedMesh
     ArmorShirt_2: THREE.SkinnedMesh
     ArmorShorts_1: THREE.SkinnedMesh
     ArmorShorts_2: THREE.SkinnedMesh
     ArmorShoes_1: THREE.SkinnedMesh
     ArmorShoes_2: THREE.SkinnedMesh
+    ArmorSkirt_1: THREE.SkinnedMesh
+    ArmorSkirt_2: THREE.SkinnedMesh
     Root: THREE.Bone
     IKLegPoleL: THREE.Bone
     IKLegTargetL: THREE.Bone
@@ -102,13 +106,16 @@ export function Model(
   const skin = useStore(s => s.skin)
   const hair = useStore(s => s.hair)
   const hairLength = useStore(s => s.hairLength)
-  const pantsName = useStore(s => s.pants)
-  const chestName = useStore(s => s.chest)
-  const bootsName = useStore(s => s.boots)
 
-  const pantsDef = pants[pantsName]
-  const chestDef = chests[chestName]
-  const bootsDef = boots[bootsName]
+  const legsName = useStore(s => s.legs)
+  const chestName = useStore(s => s.chest)
+  const feetName = useStore(s => s.feet)
+  const handsName = useStore(s => s.hands)
+
+  const chestDef = chest[chestName]
+  const legsDef = legs[legsName]
+  const handsDef = hands[handsName]
+  const feetDef = feet[feetName]
 
   useEffect(() => {
     actions[props.action]?.reset().fadeIn(0.12).play()
@@ -204,9 +211,10 @@ export function Model(
         </skinnedMesh>
       ) : null}
 
-      {pantsDef && <Part name="Pants" def={pantsDef} nodes={nodes} />}
-      {chestDef && <Part name="Chest" def={chestDef} nodes={nodes} />}
-      {bootsDef && <Part name="Boots" def={bootsDef} nodes={nodes} />}
+      {legsDef && <Part name="LegsArmor" def={legsDef} nodes={nodes} />}
+      {chestDef && <Part name="ChestArmor" def={chestDef} nodes={nodes} />}
+      {handsDef && <Part name="HandsArmor" def={handsDef} nodes={nodes} />}
+      {feetDef && <Part name="FeetArmor" def={feetDef} nodes={nodes} />}
 
       <group dispose={null} ref={rightWeaponRef} rotation-x={Math.PI / 2} rotation-y={Math.PI}>
         {props.weapon === 'sword' ? (

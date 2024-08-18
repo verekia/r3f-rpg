@@ -1,11 +1,12 @@
-import useStore, { Boots, Chest, Glove, Pants } from '#/core/store'
+import useStore, { Chest, Feet, Hands, Legs } from '#/core/store'
+import { chest, feet, hands, legs } from '#/gear/gear'
 import { players } from '#/player/players-ecs'
 
 const Appearance = () => {
-  const chest = useStore(s => s.chest)
-  const pants = useStore(s => s.pants)
-  const gloves = useStore(s => s.gloves)
-  const boots = useStore(s => s.boots)
+  const chestValue = useStore(s => s.chest)
+  const legsValue = useStore(s => s.legs)
+  const handsValue = useStore(s => s.hands)
+  const feetValue = useStore(s => s.feet)
   const skin = useStore(s => s.skin)
   const hair = useStore(s => s.hair)
   const hairLength = useStore(s => s.hairLength)
@@ -114,51 +115,63 @@ const Appearance = () => {
         Chest
         <select
           name="chest"
-          value={chest}
+          value={chestValue}
           onChange={e => useStore.setState({ chest: e.target.value as Chest })}
         >
           <option value="none">None</option>
-          <option value="chestBasic">Basic</option>
+          {Object.entries(chest).map(([k, v]) => (
+            <option key={k} value={k}>
+              {v.name}
+            </option>
+          ))}
         </select>
       </div>
 
       <div>
         Pants
         <select
-          name="pants"
-          value={pants}
-          onChange={e => useStore.setState({ pants: e.target.value as Pants })}
+          name="legs"
+          value={legsValue}
+          onChange={e => useStore.setState({ legs: e.target.value as Legs })}
         >
           <option value="none">None</option>
-          <option value="pantsBasic">Basic</option>
+          {Object.entries(legs).map(([k, v]) => (
+            <option key={k} value={k}>
+              {v.name}
+            </option>
+          ))}
         </select>
       </div>
 
       <div>
-        Gloves
+        Hands
         <select
-          name="gloves"
-          value={gloves}
-          onChange={e => useStore.setState({ gloves: e.target.value as Glove })}
+          name="hands"
+          value={handsValue}
+          onChange={e => useStore.setState({ hands: e.target.value as Hands })}
         >
           <option value="none">None</option>
-          <option value="mittensBasic">mittensBasic</option>
-          <option value="mittensGold">mittensGold</option>
-          <option value="longGlovesBasic">longGlovesBasic</option>
-          <option value="longGlovesGold">longGlovesGold</option>
+          {Object.entries(hands).map(([k, v]) => (
+            <option key={k} value={k}>
+              {v.name}
+            </option>
+          ))}
         </select>
       </div>
 
       <div>
-        Boots
+        Feet
         <select
-          name="boots"
-          value={boots}
-          onChange={e => useStore.setState({ boots: e.target.value as Boots })}
+          name="feet"
+          value={feetValue}
+          onChange={e => useStore.setState({ feet: e.target.value as Feet })}
         >
           <option value="none">None</option>
-          <option value="shoesBasic">shoesBasic</option>
-          {/* <option value="longBasic">longBasic</option> */}
+          {Object.entries(feet).map(([k, v]) => (
+            <option key={k} value={k}>
+              {v.name}
+            </option>
+          ))}
         </select>
       </div>
 

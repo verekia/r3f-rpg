@@ -4,10 +4,10 @@ import { FOREST_ROUTE, LANDING_ROUTE, Route } from '#/routing/routes'
 
 import type { Mesh, MeshToonMaterial } from 'three'
 
-export type Glove = 'none' | 'mittensBasic' | 'mittensGold' | 'longGlovesBasic' | 'longGlovesGold'
-export type Boots = 'none' | 'shoesBasic' // | 'shoesGold' | 'longBasic' | 'longGold'
-export type Chest = 'none' | 'chestBasic'
-export type Pants = 'none' | 'pantsBasic'
+export type Chest = 'none' | 'chestBasic' | 'chestCyber'
+export type Legs = 'none' | 'shortsBasic' | 'skirtBasic' | 'shortsCyber' | 'skirtCyber'
+export type Hands = 'none' | 'glovesBasic' | 'glovesCyber'
+export type Feet = 'none' | 'shoesBasic' | 'shoesCyber'
 
 type Store = {
   globalMaterials: { palette: MeshToonMaterial | null }
@@ -18,9 +18,9 @@ type Store = {
   hair: '#A0522D' | '#F5DEB3'
   hairLength: 'long' | 'short' | 'punk'
   chest: Chest
-  pants: Pants
-  gloves: Glove
-  boots: Boots
+  legs: Legs
+  hands: Hands
+  feet: Feet
   navmesh: Mesh | null
   setNavmesh: (navmesh: Mesh) => void
 }
@@ -34,9 +34,9 @@ const useStore = create<Store>(set => ({
   hair: '#A0522D',
   hairLength: 'long',
   chest: 'chestBasic',
-  pants: 'pantsBasic',
-  gloves: 'mittensBasic',
-  boots: 'shoesBasic',
+  legs: 'shortsBasic',
+  hands: 'glovesBasic',
+  feet: 'shoesBasic',
   navmesh: null,
   setNavmesh: navmesh => set(() => ({ navmesh })),
 }))
